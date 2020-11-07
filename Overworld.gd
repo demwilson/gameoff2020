@@ -30,7 +30,9 @@ func _process(delta):
 	$CanvasLayer/Counter.text = "Counter: " + str(counter)
 
 func _input(event):
-	if event.is_action("map_change"):
+	if !event.is_pressed():
+		return
+	elif event.is_action("map_change"):
 		Global.goto_scene(Global.Scene.COMBAT)
 
 func _on_Button_pressed():
