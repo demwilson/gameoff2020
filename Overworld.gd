@@ -29,12 +29,13 @@ func _process(delta):
 	counter += delta
 	$CanvasLayer/Counter.text = "Counter: " + str(counter)
 #	#uncomment these lines to have player pos and mouse pos appear on canvas for testing
-#	$CanvasLayer/TilePos.visible = true
-#	$CanvasLayer/MousePos.visible = true
-#	var cpos = $TileMap.world_to_map($Player.position)
-#	$CanvasLayer/TilePos.text = str(cpos)
-#	var mpos = $TileMap.world_to_map(get_global_mouse_position())
-#	$CanvasLayer/MousePos.text = str(mpos)
+	if Settings.debug:
+		$CanvasLayer/TilePos.visible = true
+		$CanvasLayer/MousePos.visible = true
+		var cpos = $TileMap.world_to_map($Player.position)
+		$CanvasLayer/TilePos.text = str(cpos)
+		var mpos = $TileMap.world_to_map(get_global_mouse_position())
+		$CanvasLayer/MousePos.text = str(mpos)
 	
 
 func _input(event):

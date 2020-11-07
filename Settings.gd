@@ -1,10 +1,6 @@
 extends Node
 
-# Declare member variables here. Examples:
-var a = 2
-var b = "text"
-var c
+var debug = false
 
 func _init():
-	if a > 1:
-		c = 'potato'
+	pass
