@@ -36,6 +36,38 @@ func _ready():
 	overworld = get_parent()
 	randomize()
 	build_level()
+
+func _on_Player_collided(collision):
+	if collision.collider is TileMap:
+		var playerTilePos
+		if collision.normal.x == 1:
+			var remainderX = int(overworld.player.position.x) % 32
+			var newX = overworld.player.position.x + 32 - remainderX
+			playerTilePos = self.world_to_map(Vector2(newX, overworld.player.position.y))
+		elif collision.normal.y == 1:
+			var remainderY = int(overworld.player.position.y) % 32		
+			var newY = overworld.player.position.y + 32 - remainderY
+			playerTilePos = self.world_to_map(Vector2(overworld.player.position.x, newY))
+		else:
+			playerTilePos = self.world_to_map(overworld.player.position)
+
+		print("Player Position: " + str(playerTilePos))
+		print("Collision Normal: " + str(collision.normal))
+		playerTilePos -= collision.normal
+		print("Collision Object Position: " + str(playerTilePos))
+		var tile = collision.collider.get_cellv(playerTilePos)
+		print(str(tile))
+		if tile == 4:
+			set_tile(playerTilePos.x, playerTilePos.y, Tile.Floor)
+		elif tile == 3:
+			level_num += 1
+			overworld.score += 20
+			if level_num < LEVEL_SIZES.size():
+				build_level()
+				overworld.place_player()
+			else:
+				overworld.score += 1000
+				overworld.win_event()
 	
 func is_cell_vacant(pos, direction):
 	var x = (pos.x / tile_size.x) + direction.x

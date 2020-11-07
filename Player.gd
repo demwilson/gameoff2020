@@ -21,6 +21,8 @@ onready var animation_player = $AnimationPlayer
 onready var animation_tree = $AnimationTree
 onready var animation_state = animation_tree.get("parameters/playback")
 
+signal collided
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,6 +44,10 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 	
 	velocity = move_and_slide(velocity)
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision:
+			emit_signal('collided', collision)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
