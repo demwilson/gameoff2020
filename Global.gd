@@ -1,6 +1,6 @@
 extends Node
 
-const Settings = preload("res://settings.gd")
+const Settings = preload("res://Settings.gd")
 
 # Persisted scenes must be first in the enum
 enum Scene {
@@ -21,7 +21,6 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	settings = Settings.new()
-	print("HELLO " + settings.c + " WORLD")
 
 func goto_scene(target_scene):
 	# This function will usually be called from a signal callback,
