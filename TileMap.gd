@@ -41,25 +41,22 @@ func _on_Player_collided(collision):
 	if collision.collider is TileMap:
 		var playerTilePos
 		if collision.normal.x == 1:
-			var remainderX = int(overworld.player.position.x) % 32
-			var newX = overworld.player.position.x + 32 - remainderX
+			var remainderX = int(overworld.player.position.x) % int(tile_size.x)
+			var newX = overworld.player.position.x + tile_size.x - remainderX
 			playerTilePos = self.world_to_map(Vector2(newX, overworld.player.position.y))
 		elif collision.normal.y == 1:
-			var remainderY = int(overworld.player.position.y) % 32		
-			var newY = overworld.player.position.y + 32 - remainderY
+			var remainderY = int(overworld.player.position.y) % int(tile_size.y)
+			var newY = overworld.player.position.y + tile_size.y - remainderY
 			playerTilePos = self.world_to_map(Vector2(overworld.player.position.x, newY))
 		else:
 			playerTilePos = self.world_to_map(overworld.player.position)
 
-		print("Player Position: " + str(playerTilePos))
-		print("Collision Normal: " + str(collision.normal))
+
 		playerTilePos -= collision.normal
-		print("Collision Object Position: " + str(playerTilePos))
 		var tile = collision.collider.get_cellv(playerTilePos)
-		print(str(tile))
-		if tile == 4:
+		if tile == Tile.Door:
 			set_tile(playerTilePos.x, playerTilePos.y, Tile.Floor)
-		elif tile == 3:
+		elif tile == Tile.Ladder:
 			level_num += 1
 			overworld.score += 20
 			if level_num < LEVEL_SIZES.size():
