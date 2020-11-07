@@ -1,7 +1,5 @@
 extends Node
 
-const Settings = preload("res://Settings.gd")
-
 # Persisted scenes must be first in the enum
 enum Scene {
 	# persisted
@@ -12,7 +10,6 @@ enum Scene {
 	COMBAT
 }
 
-var settings
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
 var previous_scene = null
@@ -20,7 +17,6 @@ var current_scene = null
 func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
-	settings = Settings.new()
 
 func goto_scene(target_scene):
 	# This function will usually be called from a signal callback,
