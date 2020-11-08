@@ -30,12 +30,13 @@ func goto_scene(target_scene):
 	match target_scene:
 		Scene.OVERWORLD:
 			call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://Overworld.tscn")
-		Scene.MENU:
-			call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://Overworld.tscn")
 		Scene.TITLE:
 			_deferred_goto_scene(Scene.COMBAT, "res://Title.tscn")
 		Scene.COMBAT:
 			_deferred_goto_scene(Scene.COMBAT, "res://Combat.tscn")
+		Scene.GAME_OVER:
+			#call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://GameOver.tscn")
+			call_deferred(Scene.COMBAT, "res://Title.tscn")
 
 func _deferred_goto_scene(scene, path):
 	# stop/start processing
@@ -82,6 +83,9 @@ func is_scene_persisted(scene):
 func persist_scene(scene, scene_node):
 	persisted_scenes[scene] = scene_node
 
+func log(level, msg):
+	if Settings.debug <= level:
+		print(msg)
 
 
 
