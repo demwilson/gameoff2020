@@ -1,5 +1,6 @@
 class CombatCreature:
 	var _name = null
+	var scene = null
 	var _max_health = null
 	var _health = null
 	var _stats = null
@@ -7,8 +8,9 @@ class CombatCreature:
 	var _moves = null
 	var _ticks = null
 
-	func _init(name, max_health, health, attack=1, accuracy=1, speed=1, defense=1, dodge=1, attack_bonus=0, accuracy_bonus=0, dodge_bonus=0, defense_bonus=0):
+	func _init(name, scene, max_health, health, attack=1, accuracy=1, speed=1, defense=1, dodge=1, attack_bonus=0, accuracy_bonus=0, dodge_bonus=0, defense_bonus=0):
 		self._name = name
+		self.scene = scene
 		self._max_health = max_health
 		self._health = health
 		self._stats = {
@@ -82,6 +84,7 @@ class CombatCreature:
 	func is_active():
 		return self._health > 0
 
+	# Remove below once moves are created
 	func basic_damage(attack, atk_bonus, value):
 		return (pow(attack * 2, value)) + (atk_bonus * value)
 	func basic_accuracy(accuracy, acc_bonus):

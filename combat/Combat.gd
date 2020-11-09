@@ -1,10 +1,23 @@
 extends Node2D
 
-var CombatCreature = preload("res://CombatCreature.gd")
+var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
+var CombatCreature = preload("res://combat/CombatCreature.gd")
+var FloatingText = preload("res://combat/FloatingText.tscn")
+
+const ENEMY_POSITION_X = 80
+const ENEMY_POSITION_Y = 88
+
+const ALLY_POSITION_X = 528
+const ALLY_POSITION_Y = 88
 
 const ACTION_AVAILABLE_TICKS = 5.0
 const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
+
+const DODGE_PROCESSED_MAX = 60
+const ACCURACY_PROCESSED_MIN = 0.1
+const ACCURACY_PROCESSED_MAX = 99.9
+const PERCENT_MULTIPLIER = 100
 
 var counter = 0
 var enemies = []
@@ -14,18 +27,29 @@ var allies = []
 func _ready():
 	randomize()
 	# Populate the combatants
+#	for i in range(1):
 	for i in range(MAX_ENEMIES):
-		var creature = CombatCreature.CombatCreature.new("Monster" + str(i), 50, 50)
+		var creature_scene = EnemyScene.instance()
+		creature_scene.set("position", Vector2(ENEMY_POSITION_X, (i + 1) * ENEMY_POSITION_Y))
+		creature_scene.show_health = true
+		creature_scene.show_ticks = true
+		var creature = CombatCreature.CombatCreature.new("Monster" + str(i), creature_scene, 50, 50, 1, 2, (i + 1), 1, 1)
 		enemies.append(creature)
-		var ui_name = get_node("CanvasLayer/Enemy" + str(i))
-		ui_name.visible = true
-		
-	for i in range(1):
-		var creature = CombatCreature.CombatCreature.new("Astronaut", 50, 50, 3, 2, 1.5, 1, 4)
-		allies.append(creature)
-		var ui_name = get_node("CanvasLayer/Ally" + str(i))
-		ui_name.visible = true
+		$CanvasLayer.add_child(creature.scene)
 
+	for i in range(1):
+		var creature_scene = EnemyScene.instance()
+		creature_scene.set("position", Vector2(ALLY_POSITION_X, (i + 1) * ALLY_POSITION_Y))
+		creature_scene.show_name = true
+		creature_scene.show_health = true
+		creature_scene.show_ticks = true
+		creature_scene.texture_path = true
+		var creature = CombatCreature.CombatCreature.new("Astronaut", creature_scene, 50, 50, 3, 2, 1.5, 1, 4)
+		allies.append(creature)
+		$CanvasLayer.add_child(creature.scene)
+
+	OS.set_window_size(Vector2(1280, 720))
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -39,12 +63,12 @@ func _process(delta):
 				attack(creature, allies[0])
 			else:
 				creature.add_ticks(delta)
-			
-		var ui_name = get_node("CanvasLayer/Enemy" + str(i))
-		ui_name.text = creature.get_name()
-		var ui_health = get_node("CanvasLayer/Enemy" + str(i) + "/Health")
+		var node_name = "CombatEnemy"
+		if i > 0:
+			node_name = "@CombatEnemy@" + str(i+1)
+		var ui_health = get_node("CanvasLayer/" + node_name + "/Health")
 		ui_health.value = creature.get_health_percentage()
-		var ui_ticks = get_node("CanvasLayer/Enemy" + str(i) + "/Ticks")
+		var ui_ticks = get_node("CanvasLayer/" + node_name + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
 
 	for i in range(allies.size()):
@@ -52,20 +76,18 @@ func _process(delta):
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS:
 				var target = null
-				for j in range(enemies.size()):
-					var potential_target = enemies[j]
+				while target == null:
+					var target_position = randi() % enemies.size()
+					var potential_target = enemies[target_position]
 					if potential_target.is_active():
 						target = potential_target
-						break
-
 				attack(creature, target)
 			else:
 				creature.add_ticks(delta)
-		var ui_name = get_node("CanvasLayer/Ally" + str(i))
-		ui_name.text = creature.get_name()
-		var ui_health = get_node("CanvasLayer/Ally" + str(i) + "/Health")
+		var node_name = "@CombatEnemy@" + str(i+1+enemies.size())
+		var ui_health = get_node("CanvasLayer/" + node_name + "/Health")
 		ui_health.value = creature.get_health_percentage()
-		var ui_ticks = get_node("CanvasLayer/Ally" + str(i) + "/Ticks")
+		var ui_ticks = get_node("CanvasLayer/" + node_name + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
 
 	# Update canvas
@@ -90,7 +112,8 @@ func check_end_combat():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		self.set_process(false)
-		$CanvasLayer/Win.visible = true
+		return Global.goto_scene(Global.Scene.OVERWORLD)
+		# Show win screen
 
 func attack(attacker, target):
 	var log_arr = []
@@ -127,7 +150,17 @@ func attack(attacker, target):
 		else:
 			# apply damage
 			target.add_health(-damage)
+			# Floating damage
+			var damage_text = FloatingText.instance()
+			damage_text.amount = damage
+			damage_text.type = Global.AttackType.DAMAGE
+			target.scene.add_child(damage_text)
 			log_arr.append("DAMAGE: " + str(damage))
+
+	# TODO: target has died
+	if !target.is_active():
+		target.scene.stop_animation()
+
 	# reset ticks
 	attacker.set_ticks(0)
 
@@ -137,19 +170,19 @@ func attack(attacker, target):
 
 func check_to_hit(accuracy):
 	var processed = accuracy
-	if accuracy > 99.9:
-		processed = 99.9
-	elif accuracy < 0.1:
-		processed = 0.1
-	var rand = randf() * 100
+	if accuracy > ACCURACY_PROCESSED_MAX:
+		processed = ACCURACY_PROCESSED_MAX
+	elif accuracy < ACCURACY_PROCESSED_MIN:
+		processed = ACCURACY_PROCESSED_MIN
+	var rand = randf() * PERCENT_MULTIPLIER
 	var hit_target = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_hit] ACCURACY: " + str(accuracy) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return hit_target
 
 func check_to_dodge(dodge, bonus_dodge, move_level):
-	var processed = pow(dodge, 2) + bonus_dodge
-	if processed > 60:
-		processed = 60
+	var processed = pow(dodge, 2) + bonus_dodge - pow(move_level, 2)
+	if processed > DODGE_PROCESSED_MAX:
+		processed = DODGE_PROCESSED_MAX
 	var rand = randf() * 100
 	var dodged = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_dodge] DODGE: " + str(dodge) + " | BONUS: " + str(bonus_dodge) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
@@ -164,6 +197,3 @@ func calculate_defense(defense, bonus_defense):
 	var processed = pow(2, defense) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed
-
-func _on_Button_pressed():
-	Global.goto_scene(Global.Scene.OVERWORLD)
