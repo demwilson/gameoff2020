@@ -45,3 +45,14 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationTicks" type="Label" parent="CanvasLayer"]
+margin_left = 192.0
+margin_top = 72.0
+margin_right = 392.0
+margin_bottom = 112.0
+text = "Animation Ticks:"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

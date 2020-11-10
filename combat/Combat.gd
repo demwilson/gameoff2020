@@ -2,6 +2,7 @@ extends Node2D
 
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
 var CombatCreature = preload("res://combat/CombatCreature.gd")
+var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
 
 const ENEMY_POSITION_X = 80
@@ -10,6 +11,7 @@ const ENEMY_POSITION_Y = 88
 const ALLY_POSITION_X = 528
 const ALLY_POSITION_Y = 88
 
+const MAX_ANIMATION_TIMER = 2.0
 const ACTION_AVAILABLE_TICKS = 5.0
 const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
@@ -22,6 +24,10 @@ const PERCENT_MULTIPLIER = 100
 var counter = 0
 var enemies = []
 var allies = []
+
+var action_queue = []
+var animation_wait = 0
+var animation_ticks = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -53,45 +59,51 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	# game ticks
 	counter += delta
-	check_end_combat()
+	$CanvasLayer/Ticks.text = "Ticks: " + str(counter)
 
+    # animation ticks
+	if animation_wait > 0:
+		if animation_ticks < animation_wait:
+			animation_ticks += delta
+		else:
+			animation_wait = 0
+			animation_ticks = 0
+	$CanvasLayer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
+
+	# actual processing
+	check_end_combat()
+	check_action_queue()
 	for i in range(enemies.size()):
 		var creature = enemies[i]
 		if creature.is_active():
-			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS:
-				attack(creature, allies[0])
+			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
+				var target = allies[0]
+				action_queue.append(CombatEvent.CombatEvent.new(Global.AttackType.DAMAGE, creature, target))
+				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
-		var node_name = "CombatEnemy"
-		if i > 0:
-			node_name = "@CombatEnemy@" + str(i+1)
-		var ui_health = get_node("CanvasLayer/" + node_name + "/Health")
-		ui_health.value = creature.get_health_percentage()
-		var ui_ticks = get_node("CanvasLayer/" + node_name + "/Ticks")
-		ui_ticks.value = creature.get_ticks()
+		creature.update_health_percentage()
+		creature.update_ticks()
 
 	for i in range(allies.size()):
 		var creature = allies[i]
 		if creature.is_active():
-			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS:
+			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				var target = null
 				while target == null:
 					var target_position = randi() % enemies.size()
 					var potential_target = enemies[target_position]
 					if potential_target.is_active():
 						target = potential_target
-				attack(creature, target)
+				action_queue.append(CombatEvent.CombatEvent.new(Global.AttackType.DAMAGE, creature, target))
+				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
-		var node_name = "@CombatEnemy@" + str(i+1+enemies.size())
-		var ui_health = get_node("CanvasLayer/" + node_name + "/Health")
-		ui_health.value = creature.get_health_percentage()
-		var ui_ticks = get_node("CanvasLayer/" + node_name + "/Ticks")
-		ui_ticks.value = creature.get_ticks()
+		creature.update_health_percentage()
+		creature.update_ticks()
 
-	# Update canvas
-	$CanvasLayer/Ticks.text = "Ticks: " + str(counter)
 
 func _input(event):
 	if !event.is_pressed():
@@ -114,6 +126,15 @@ func check_end_combat():
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.OVERWORLD)
 		# Show win screen
+
+func check_action_queue():
+	if action_queue.size() == 0 || animation_wait > 0:
+		return
+	animation_wait = MAX_ANIMATION_TIMER
+	var combat_action = action_queue.pop_front()
+	match combat_action.action_type:
+		Global.AttackType.DAMAGE:
+			attack(combat_action.creature, combat_action.target)
 
 func attack(attacker, target):
 	var log_arr = []
@@ -163,6 +184,7 @@ func attack(attacker, target):
 
 	# reset ticks
 	attacker.set_ticks(0)
+	attacker.is_queued = false
 
 	# Logging stuff
 	var log_string = PoolStringArray(log_arr).join(" | ")

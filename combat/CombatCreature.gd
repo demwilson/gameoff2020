@@ -1,6 +1,8 @@
 class CombatCreature:
-	var _name = null
 	var scene = null
+	var is_queued = false
+	
+	var _name = null
 	var _max_health = null
 	var _health = null
 	var _stats = null
@@ -83,6 +85,13 @@ class CombatCreature:
 
 	func is_active():
 		return self._health > 0
+	func update_health_percentage():
+		var percentage = self.get_health_percentage()
+		self.scene.health.value = percentage
+	func update_ticks():
+		var current_ticks = self.get_ticks()
+		self.scene.ticks.value = current_ticks
+
 
 	# Remove below once moves are created
 	func basic_damage(attack, atk_bonus, value):
