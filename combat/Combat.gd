@@ -5,6 +5,7 @@ var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
 
+const COMBAT_POSITION_SPACING = 64
 const ENEMY_POSITION_X = 80
 const ENEMY_POSITION_Y = 88
 
@@ -36,7 +37,7 @@ func _ready():
 #	for i in range(1):
 	for i in range(MAX_ENEMIES):
 		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", Vector2(ENEMY_POSITION_X, (i + 1) * ENEMY_POSITION_Y))
+		creature_scene.set("position", Vector2(ENEMY_POSITION_X, ENEMY_POSITION_Y + i * COMBAT_POSITION_SPACING))
 		creature_scene.show_health = true
 		creature_scene.show_ticks = true
 		var creature = CombatCreature.CombatCreature.new("Monster" + str(i), creature_scene, 50, 50, 1, 2, (i + 1), 1, 1)
@@ -61,9 +62,9 @@ func _ready():
 func _process(delta):
 	# game ticks
 	counter += delta
-	$CanvasLayer/Ticks.text = "Ticks: " + str(counter)
+	$CanvasLayer/Background/Ticks.text = "Ticks: " + str(counter)
 
-    # animation ticks
+	# animation ticks
 	if animation_wait > 0:
 		if animation_ticks < animation_wait:
 			animation_ticks += delta
