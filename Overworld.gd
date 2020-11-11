@@ -50,4 +50,7 @@ func _on_Button_pressed():
 	tile_map.build_level()
 	place_player()
 	$CanvasLayer/Win.visible = false
+
+func win_event():
+	$CanvasLayer/Win.visible = true
 	
