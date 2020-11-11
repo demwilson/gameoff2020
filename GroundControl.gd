@@ -1,6 +1,6 @@
 extends Node2D
 
-var o2_button = 0
+var oxygen_button = 0
 var accuracy_button = 0
 var attack_button = 0
 var speed_button = 0
@@ -13,22 +13,22 @@ func _ready():
 	$CanvasLayer/Defense.visible = false
 	$CanvasLayer/Attack.visible = false
 	$CanvasLayer/Dodge.visible = false
-	$CanvasLayer/o2_1.visible = false
-	$CanvasLayer/o2_2.visible = false
-	$CanvasLayer/as_1.visible = false
-	$CanvasLayer/as_2.visible = false
-	$CanvasLayer/defense_line.visible = false
+	$CanvasLayer/TierConnector0_1.visible = false
+	$CanvasLayer/TierConnector0_2.visible = false
+	$CanvasLayer/TierConnector1_1.visible = false
+	$CanvasLayer/TierConnector1_2.visible = false
+	$CanvasLayer/TierConnector1_3.visible = false
 	
-func _on_O2_pressed():
-	if o2_button < 1:
-		o2_button += 1
+func _on_Oxygen_pressed():
+	if oxygen_button < 1:
+		oxygen_button += 1
 		
-	if o2_button == 1:
+	if oxygen_button == 1:
 		$CanvasLayer/Accuracy.visible = true
 		$CanvasLayer/Speed.visible = true
 		$CanvasLayer/Defense.visible = true
-		$CanvasLayer/o2_1.visible = true
-		$CanvasLayer/o2_2.visible = true
+		$CanvasLayer/TierConnector0_1.visible = true
+		$CanvasLayer/TierConnector0_2.visible = true
 
 
 func _on_Accuracy_pressed():
@@ -43,8 +43,8 @@ func _on_Speed_pressed():
 		
 	if speed_button == 5 && accuracy_button == 5:
 		$CanvasLayer/Attack.visible = true
-		$CanvasLayer/as_1.visible = true
-		$CanvasLayer/as_2.visible = true
+		$CanvasLayer/TierConnector1_1.visible = true
+		$CanvasLayer/TierConnector1_2.visible = true
 		
 func _on_Defense_pressed():
 	if defense_button < 5:
@@ -53,7 +53,7 @@ func _on_Defense_pressed():
 	
 	if defense_button == 5:
 		$CanvasLayer/Dodge.visible = true
-		$CanvasLayer/defense_line.visible = true
+		$CanvasLayer/TierConnector1_3.visible = true
 
 
 func _on_Dodge_pressed():
@@ -65,3 +65,6 @@ func _on_Attack_pressed():
 	if attack_button < 5:
 		attack_button +=1
 		$CanvasLayer/Attack/Label.text = str(attack_button) + "/5"
+
+
+
