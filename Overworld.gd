@@ -22,8 +22,9 @@ func _ready():
 	place_player()
 	
 func place_player():
-	player.position = tile_map.player_start_position
+	player.position = tile_map.playerStartPosition
 	print("The player starts at: " + str(player.position))
+	tile_map.isGeneratingNewLevel = false
 
 func _process(delta):
 	counter += delta
@@ -45,9 +46,16 @@ func _input(event):
 		Global.goto_scene(Global.Scene.COMBAT)
 
 func _on_Button_pressed():
-	tile_map.level_num = 0
+	$CanvasLayer/Win/Button.disabled = true
+	tile_map.levelNum = 0
 	score = 0
 	tile_map.build_level()
 	place_player()
+	player.get_node("AudioStreamPlayer2D").stream_paused = false
 	$CanvasLayer/Win.visible = false
+	$CanvasLayer/Win/Button.disabled = false
+
+func win_event():
+	player.get_node("AudioStreamPlayer2D").stream_paused = true
+	$CanvasLayer/Win.visible = true
 	
