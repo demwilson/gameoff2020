@@ -17,7 +17,7 @@ const ACTION_AVAILABLE_TICKS = 5.0
 const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
 
-const DODGE_PROCESSED_MAX = 60
+const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
@@ -147,18 +147,18 @@ func attack(attacker, target):
 	# check for a hit
 	var accuracy = move.accuracy.call_func(attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
 	var target_hit = false
-	var target_dodged = false
+	var target_evaded = false
 	var damaged_mitigated = false
 	if check_to_hit(accuracy):
 		target_hit = true
 		log_arr.append("ATTACK HIT!")
-		# check for a dodge
-		if check_to_dodge(target.get_stat("dodge"), target.get_bonus("dodge"), move.level):
-			target_dodged = true
-			log_arr.append("ATTACK DODGED!")
+		# check for a evade
+		if check_to_evade(target.get_stat("evade"), target.get_bonus("evade"), move.level):
+			target_evaded = true
+			log_arr.append("ATTACK EVADED!")
 			# TODO: Avoided text
 
-	if target_hit && !target_dodged:
+	if target_hit && !target_evaded:
 		# get the damage range
 		var minimum = move.damage.call_func(attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
 		var maximum = move.damage.call_func(attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
@@ -204,14 +204,14 @@ func check_to_hit(accuracy):
 	Global.log(Settings.LogLevel.TRACE, "[check_to_hit] ACCURACY: " + str(accuracy) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return hit_target
 
-func check_to_dodge(dodge, bonus_dodge, move_level):
-	var processed = pow(dodge, 2) + bonus_dodge - pow(move_level, 2)
-	if processed > DODGE_PROCESSED_MAX:
-		processed = DODGE_PROCESSED_MAX
+func check_to_evade(evade, bonus_evade, move_level):
+	var processed = pow(evade, 2) + bonus_evade - pow(move_level, 2)
+	if processed > EVADE_PROCESSED_MAX:
+		processed = EVADE_PROCESSED_MAX
 	var rand = randf() * PERCENT_MULTIPLIER
-	var dodged = rand <= processed
-	Global.log(Settings.LogLevel.TRACE, "[check_to_dodge] DODGE: " + str(dodge) + " | BONUS: " + str(bonus_dodge) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
-	return dodged
+	var evaded = rand <= processed
+	Global.log(Settings.LogLevel.TRACE, "[check_to_evade] EVADE: " + str(evade) + " | BONUS: " + str(bonus_evade) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
+	return evaded
 
 func calculate_damage(min_damage, max_damage):
 	var rand = 1 + randi() % int(max_damage - min_damage) + int(min_damage)

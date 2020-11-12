@@ -10,7 +10,7 @@ class CombatCreature:
 	var _moves = null
 	var _ticks = null
 
-	func _init(name, scene, max_health, health, attack=1, accuracy=1, speed=1, defense=1, dodge=1, attack_bonus=0, accuracy_bonus=0, dodge_bonus=0, defense_bonus=0):
+	func _init(name, scene, max_health, health, attack=1, accuracy=1, speed=1, defense=1, evade=1, attack_bonus=0, accuracy_bonus=0, evade_bonus=0, defense_bonus=0):
 		self._name = name
 		self.scene = scene
 		self._max_health = max_health
@@ -20,12 +20,12 @@ class CombatCreature:
 			"accuracy": accuracy,
 			"speed": speed,
 			"defense": defense,
-			"dodge": dodge,
+			"evade": evade,
 		}
 		self._bonuses = {
 			"attack": attack_bonus,
 			"accuracy": accuracy_bonus,
-			"dodge": dodge_bonus,
+			"evade": evade_bonus,
 			"defense": defense_bonus,
 		}
 		self._moves = [
