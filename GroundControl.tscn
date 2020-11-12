@@ -93,17 +93,17 @@ margin_bottom = 38.0
 align = 1
 valign = 1
 
-[node name="Dodge" type="Button" parent="CanvasLayer"]
+[node name="Evade" type="Button" parent="CanvasLayer"]
 margin_left = 408.0
 margin_top = 168.0
 margin_right = 488.0
 margin_bottom = 188.0
-text = "Dodge"
+text = "Evade"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/Dodge"]
+[node name="Label" type="Label" parent="CanvasLayer/Evade"]
 margin_top = 24.0
 margin_right = 80.0
 margin_bottom = 38.0
@@ -142,4 +142,4 @@ default_color = Color( 1, 0, 0, 1 )
 [connection signal="pressed" from="CanvasLayer/Attack" to="." method="_on_Attack_pressed"]
 [connection signal="pressed" from="CanvasLayer/Speed" to="." method="_on_Speed_pressed"]
 [connection signal="pressed" from="CanvasLayer/Defense" to="." method="_on_Defense_pressed"]
-[connection signal="pressed" from="CanvasLayer/Dodge" to="." method="_on_Dodge_pressed"]
+[connection signal="pressed" from="CanvasLayer/Evade" to="." method="_on_Evade_pressed"]

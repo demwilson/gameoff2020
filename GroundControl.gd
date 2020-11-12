@@ -5,14 +5,14 @@ var accuracy_button = 0
 var attack_button = 0
 var speed_button = 0
 var defense_button = 0
-var dodge_button = 0
+var evade_button = 0
 
 func _ready():
 	$CanvasLayer/Accuracy.visible = false
 	$CanvasLayer/Speed.visible = false
 	$CanvasLayer/Defense.visible = false
 	$CanvasLayer/Attack.visible = false
-	$CanvasLayer/Dodge.visible = false
+	$CanvasLayer/Evade.visible = false
 	$CanvasLayer/TierConnector0_1.visible = false
 	$CanvasLayer/TierConnector0_2.visible = false
 	$CanvasLayer/TierConnector1_1.visible = false
@@ -52,14 +52,14 @@ func _on_Defense_pressed():
 		$CanvasLayer/Defense/Label.text = str(defense_button) + "/5"
 	
 	if defense_button == 5:
-		$CanvasLayer/Dodge.visible = true
+		$CanvasLayer/Evade.visible = true
 		$CanvasLayer/TierConnector1_3.visible = true
 
 
-func _on_Dodge_pressed():
-	if dodge_button < 5:
-		dodge_button +=1
-		$CanvasLayer/Dodge/Label.text = str(dodge_button) + "/5"
+func _on_Evade_pressed():
+	if evade_button < 5:
+		evade_button +=1
+		$CanvasLayer/Evade/Label.text = str(evade_button) + "/5"
 		
 func _on_Attack_pressed():
 	if attack_button < 5:
