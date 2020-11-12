@@ -24,6 +24,7 @@ func _ready():
 func place_player():
 	player.position = tile_map.playerStartPosition
 	print("The player starts at: " + str(player.position))
+	tile_map.isGeneratingNewLevel = false
 
 func _process(delta):
 	counter += delta

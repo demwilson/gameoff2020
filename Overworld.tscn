@@ -313,7 +313,7 @@ shape = SubResource( 1 )
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2( 16, 16 )
 current = true
-zoom = Vector2( 4, 4 )
+zoom = Vector2( 0.75, 0.75 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
 anims/idle_down = SubResource( 2 )
