@@ -51,7 +51,7 @@ func _ready():
 		creature_scene.show_health = true
 		creature_scene.show_ticks = true
 		creature_scene.texture_path = true
-		var creature = CombatCreature.CombatCreature.new("Astronaut", creature_scene, 50, 50, 3, 2, 1.5, 1, 4)
+		var creature = CombatCreature.CombatCreature.new(Global.PLAYER_NAME, creature_scene, 50, 50, 3, 2, 1.5, 1, 4)
 		allies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -125,8 +125,8 @@ func check_end_combat():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		self.set_process(false)
+		# TODO: Show win screen
 		return Global.goto_scene(Global.Scene.OVERWORLD)
-		# Show win screen
 
 func check_action_queue():
 	if action_queue.size() == 0 || animation_wait > 0:
@@ -156,6 +156,7 @@ func attack(attacker, target):
 		if check_to_dodge(target.get_stat("dodge"), target.get_bonus("dodge"), move.level):
 			target_dodged = true
 			log_arr.append("ATTACK DODGED!")
+			# TODO: Avoided text
 
 	if target_hit && !target_dodged:
 		# get the damage range
@@ -169,6 +170,7 @@ func attack(attacker, target):
 		if damage <= 0:
 			damaged_mitigated = true
 			log_arr.append("DAMAGE MITIGATED!")
+			# TODO: Mitigated text
 		else:
 			# apply damage
 			target.add_health(-damage)
@@ -206,7 +208,7 @@ func check_to_dodge(dodge, bonus_dodge, move_level):
 	var processed = pow(dodge, 2) + bonus_dodge - pow(move_level, 2)
 	if processed > DODGE_PROCESSED_MAX:
 		processed = DODGE_PROCESSED_MAX
-	var rand = randf() * 100
+	var rand = randf() * PERCENT_MULTIPLIER
 	var dodged = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_dodge] DODGE: " + str(dodge) + " | BONUS: " + str(bonus_dodge) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return dodged

@@ -93,7 +93,7 @@ class CombatCreature:
 		self.scene.ticks.value = current_ticks
 
 
-	# Remove below once moves are created
+	# TODO: Remove below once moves are created
 	func basic_damage(attack, atk_bonus, value):
 		return (pow(attack * 2, value)) + (atk_bonus * value)
 	func basic_accuracy(accuracy, acc_bonus):

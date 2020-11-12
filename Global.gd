@@ -15,6 +15,12 @@ enum Scene {
 	COMBAT
 }
 
+var TEXT_COLOR = {
+	"DAMAGE": "ff3131",
+	"HEAL": "2eff27",
+}
+
+const PLAYER_NAME = "Astronaut"
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
 var previous_scene = null

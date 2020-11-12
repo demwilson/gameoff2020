@@ -12,10 +12,10 @@ colors = PoolColorArray( 0.0196078, 0, 0.294118, 1, 0.937255, 0.937255, 0.937255
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=5]
 size = 12
 outline_color = Color( 0.933333, 0.933333, 0.933333, 1 )
 font_data = ExtResource( 2 )
@@ -25,10 +25,10 @@ bg_color = Color( 0.4, 0.4, 0.4, 1 )
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=7]
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
 [node name="Combat" type="Node2D"]
@@ -126,8 +126,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="CanvasLayer/CombatMenu/NinePatchRect/Enemies/VBoxContainer"]
 margin_right = 160.0
 margin_bottom = 15.0
-custom_styles/normal = SubResource( 5 )
-custom_fonts/font = SubResource( 4 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ENEMIES"
 align = 1
@@ -159,7 +159,7 @@ __meta__ = {
 margin_right = 320.0
 margin_bottom = 19.0
 custom_styles/normal = SubResource( 6 )
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
 align = 1
@@ -190,8 +190,8 @@ __meta__ = {
 margin_right = 160.0
 margin_bottom = 15.0
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 7 )
-custom_fonts/font = SubResource( 4 )
+custom_styles/normal = SubResource( 8 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ALLIES"
 align = 1
