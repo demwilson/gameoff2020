@@ -48,6 +48,7 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		if collision:
 			emit_signal('collided', collision)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
