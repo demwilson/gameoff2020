@@ -57,6 +57,7 @@ func _deferred_goto_scene(scene, path):
 			stop_processing(overworld_node)
 		else:
 			start_processing(overworld_node)
+		overworld_node.toggle_audio()
 
 	# create/retrieve scene
 	match scene:

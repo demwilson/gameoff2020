@@ -1,16 +1,10 @@
 extends Node2D
 
+const CombatGlobal = preload("res://combat/CombatGlobal.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
 var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
-
-const COMBAT_POSITION_SPACING = 64
-const ENEMY_POSITION_X = 80
-const ENEMY_POSITION_Y = 88
-
-const ALLY_POSITION_X = 528
-const ALLY_POSITION_Y = 88
 
 const MAX_ANIMATION_TIMER = 2.0
 const ACTION_AVAILABLE_TICKS = 5.0
@@ -24,34 +18,39 @@ const PERCENT_MULTIPLIER = 100
 
 var counter = 0
 var enemies = []
+var enemy_positions = [
+	Vector2(40, 72),
+	Vector2(96, 140),
+	Vector2(40, 208),
+]
 var allies = []
+var ally_positions = [
+	Vector2(600, 72),
+	Vector2(544, 140),
+	Vector2(600, 208),
+]
 
 var action_queue = []
 var animation_wait = 0
 var animation_ticks = 0
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
 	# Populate the combatants
-#	for i in range(1):
+	#for i in range(1):
 	for i in range(MAX_ENEMIES):
-		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", Vector2(ENEMY_POSITION_X, ENEMY_POSITION_Y + i * COMBAT_POSITION_SPACING))
-		creature_scene.show_health = true
-		creature_scene.show_ticks = true
-		var creature = CombatCreature.CombatCreature.new("Monster" + str(i), creature_scene, 50, 50, 1, 2, (i + 1), 1, 1)
+		var position = enemy_positions[i]
+		var creature = CombatCreature.CombatCreature.new("Monster" + str(i), EnemyScene.instance(), CombatGlobal.CreatureSize.MEDIUM, position, 50, 50, CombatCreature.Stats.new(1, 2, (i + 1), 1, 1))
 		enemies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
-	for i in range(1):
-		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", Vector2(ALLY_POSITION_X, (i + 1) * ALLY_POSITION_Y))
-		creature_scene.show_name = true
-		creature_scene.show_health = true
-		creature_scene.show_ticks = true
-		creature_scene.texture_path = true
-		var creature = CombatCreature.CombatCreature.new(Global.PLAYER_NAME, creature_scene, 50, 50, 3, 2, 1.5, 1, 4)
+	for i in range(MAX_ALLIES):
+		var position = ally_positions[i]
+		var creature_name = Global.PLAYER_NAME
+		var creature_size = CombatGlobal.CreatureSize.LARGE_TALL
+		var creature = CombatCreature.CombatCreature.new(creature_name, EnemyScene.instance(), creature_size, position, 50, 50, CombatCreature.Stats.new(3, 2, 1.5, 1, 4))
 		allies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -80,7 +79,12 @@ func _process(delta):
 		var creature = enemies[i]
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var target = allies[0]
+				var target = null
+				while target == null:
+					var target_position = randi() % enemies.size()
+					var potential_target = allies[target_position]
+					if potential_target.is_active():
+						target = potential_target
 				action_queue.append(CombatEvent.CombatEvent.new(Global.AttackType.DAMAGE, creature, target))
 				creature.is_queued = true
 			else:

@@ -1,7 +1,22 @@
+class Stats:
+	var attack
+	var accuracy
+	var speed
+	var evade
+	var defense
+
+	func _init(attack=0, accuracy=0, speed=0, defense=0, evade=0):
+		self.attack = attack
+		self.accuracy = accuracy
+		self.speed = speed
+		self.defense = defense
+		self.evade = evade
+
 class CombatCreature:
 	var scene = null
 	var is_queued = false
-	
+	var size = null
+
 	var _name = null
 	var _max_health = null
 	var _health = null
@@ -10,24 +25,19 @@ class CombatCreature:
 	var _moves = null
 	var _ticks = null
 
-	func _init(name, scene, max_health, health, attack=1, accuracy=1, speed=1, defense=1, evade=1, attack_bonus=0, accuracy_bonus=0, evade_bonus=0, defense_bonus=0):
+	func _init(name, scene, size, position, max_health, health, stats=null, bonuses=null):
 		self._name = name
-		self.scene = scene
+		self.size = size
 		self._max_health = max_health
 		self._health = health
-		self._stats = {
-			"attack": attack,
-			"accuracy": accuracy,
-			"speed": speed,
-			"defense": defense,
-			"evade": evade,
-		}
-		self._bonuses = {
-			"attack": attack_bonus,
-			"accuracy": accuracy_bonus,
-			"evade": evade_bonus,
-			"defense": defense_bonus,
-		}
+		if stats:
+			self._stats = stats
+		else:
+			self._stats = Stats.new(1, 1, 1, 1, 1)
+		if bonuses:
+			self._bonuses = bonuses
+		else:
+			self._bonuses = Stats.new(0, 0, 0, 0, 0)
 		self._moves = [
 			{
 				"name": "Basic Attack",
@@ -39,6 +49,20 @@ class CombatCreature:
 			}
 		]
 		self._ticks = 0
+
+		# Setup Scene
+		scene.set("position", position)
+		scene.show_health = true
+		scene.show_ticks = true
+		scene.creature_size = self.size
+		# TODO: determine by creature type
+		if name == Global.PLAYER_NAME:
+			scene.texture_path = "res://assets/Tony_Created_Assets/astro_idle.png"
+			scene.idle_path = "combat/animations/astronaut_idle.tres"
+		else:
+			scene.texture_path = "res://assets/dead_hue.png"
+			scene.idle_path = "combat/animations/hue_idle.tres"
+		self.scene = scene
 
 	# name
 	func get_name():
@@ -91,7 +115,6 @@ class CombatCreature:
 	func update_ticks():
 		var current_ticks = self.get_ticks()
 		self.scene.ticks.value = current_ticks
-
 
 	# TODO: Remove below once moves are created
 	func basic_damage(attack, atk_bonus, value):

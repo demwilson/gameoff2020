@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/dead_hue.png" type="Texture" id=1]
+[ext_resource path="res://assets/Tony_Created_Assets/astro_idle.png" type="Texture" id=1]
 [ext_resource path="res://combat/enemies/CombatEnemy.gd" type="Script" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -9,28 +9,11 @@ bg_color = Color( 1, 0, 0, 1 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 1, 0, 1 )
 
-[sub_resource type="Animation" id=3]
-resource_name = "idle_hue"
-length = 0.8
-loop = true
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2, 3 ]
-}
-
 [node name="CombatEnemy" type="Sprite"]
-position = Vector2( 80, 88 )
 texture = ExtResource( 1 )
-hframes = 4
+vframes = 2
+hframes = 8
+frame = 1
 script = ExtResource( 2 )
 
 [node name="Name" type="Label" parent="."]
@@ -62,11 +45,10 @@ __meta__ = {
 }
 
 [node name="Ticks" type="ProgressBar" parent="."]
-visible = false
 margin_left = -16.0
-margin_top = 16.0
+margin_top = 32.0
 margin_right = 16.0
-margin_bottom = 24.0
+margin_bottom = 40.0
 rect_pivot_offset = Vector2( -128, 32 )
 custom_styles/fg = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -79,5 +61,3 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle_hue"
-anims/idle_hue = SubResource( 3 )

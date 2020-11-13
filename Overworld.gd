@@ -1,13 +1,9 @@
 extends Node2D
 
 const PERSIST = true
-
 const PLAYER_START_HP = 5
 
-
-
 var counter = 0
-
 
 # node references
 onready var tile_map = $TileMap
@@ -37,7 +33,6 @@ func _process(delta):
 		$CanvasLayer/TilePos.text = str(cpos)
 		var mpos = $TileMap.world_to_map(get_global_mouse_position())
 		$CanvasLayer/MousePos.text = str(mpos)
-	
 
 func _input(event):
 	if !event.is_pressed():
@@ -59,3 +54,8 @@ func win_event():
 	player.get_node("AudioStreamPlayer2D").stream_paused = true
 	$CanvasLayer/Win.visible = true
 	
+func toggle_audio():
+	if player.get_node("AudioStreamPlayer2D").stream_paused:
+		player.get_node("AudioStreamPlayer2D").stream_paused = false
+	else:
+		player.get_node("AudioStreamPlayer2D").stream_paused = true
