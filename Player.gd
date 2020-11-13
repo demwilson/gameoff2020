@@ -2,7 +2,6 @@ extends Area2D
 
 var overworld
 var canMove = true
-var facing = "right"
 var Moves = {
 	"right": Vector2(1,0),
 	"left": Vector2(-1,0),
@@ -28,21 +27,20 @@ func _process(delta):
 				
 func move(dir):
 	var tileSize = overworld.tile_map.tileSize
-	facing = dir
-	if has_collided(facing, dir):
+	if has_collided(dir):
 		return
 	canMove = false
-	$AnimationPlayer.play(facing)
-	$MoveTween.interpolate_property(self, "position", position, position + Moves[facing] * tileSize, $AnimationPlayer.current_animation_length, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+	$AnimationPlayer.play(dir)
+	$MoveTween.interpolate_property(self, "position", position, position + Moves[dir] * tileSize, $AnimationPlayer.current_animation_length, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$MoveTween.start()
 	return true
 
-func has_collided(facing, dir):
-	if get_node(Raycasts[facing]).is_colliding():
-		var hitCollider = get_node(Raycasts[facing]).get_collider()
+func has_collided(dir):
+	if get_node(Raycasts[dir]).is_colliding():
+		var hitCollider = get_node(Raycasts[dir]).get_collider()
 		if hitCollider:
 			var tileMap = hitCollider
-			var hitPos = get_node(Raycasts[facing]).get_collision_point()
+			var hitPos = get_node(Raycasts[dir]).get_collision_point()
 			emit_signal('collided', hitPos, dir)
 		return true
 	else:

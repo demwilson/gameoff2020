@@ -168,7 +168,7 @@ text = "You Win!"
 align = 1
 valign = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Win"]
+[node name="Restart" type="Button" parent="CanvasLayer/Win"]
 margin_left = 216.0
 margin_top = 104.0
 margin_right = 432.0
@@ -230,6 +230,6 @@ autoplay = true
 position = Vector2( 16, 16 )
 current = true
 zoom = Vector2( 0.75, 0.75 )
-[connection signal="pressed" from="CanvasLayer/Win/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Win/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="collided" from="Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="Player/MoveTween" to="Player" method="_on_MoveTween_tween_completed"]
