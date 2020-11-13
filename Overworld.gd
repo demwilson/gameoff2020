@@ -14,7 +14,6 @@ var player_tile
 var score = 0
 
 func _ready():
-	randomize()
 	place_player()
 	
 func place_player():
@@ -40,16 +39,6 @@ func _input(event):
 	elif event.is_action("map_change"):
 		Global.goto_scene(Global.Scene.COMBAT)
 
-func _on_Button_pressed():
-	$CanvasLayer/Win/Button.disabled = true
-	tile_map.levelNum = 0
-	score = 0
-	tile_map.build_level()
-	place_player()
-	player.get_node("AudioStreamPlayer2D").stream_paused = false
-	$CanvasLayer/Win.visible = false
-	$CanvasLayer/Win/Button.disabled = false
-
 func win_event():
 	player.get_node("AudioStreamPlayer2D").stream_paused = true
 	$CanvasLayer/Win.visible = true
@@ -59,3 +48,14 @@ func toggle_audio():
 		player.get_node("AudioStreamPlayer2D").stream_paused = false
 	else:
 		player.get_node("AudioStreamPlayer2D").stream_paused = true
+
+func _on_Restart_pressed():
+	$CanvasLayer/Win/Restart.disabled = true
+	tile_map.levelNum = 0
+	score = 0
+	tile_map.build_level()
+	tile_map.gameOver = false
+	place_player()
+	player.get_node("AudioStreamPlayer2D").stream_paused = false
+	$CanvasLayer/Win.visible = false
+	$CanvasLayer/Win/Restart.disabled = false
