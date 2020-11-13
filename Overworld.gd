@@ -14,7 +14,6 @@ var player_tile
 var score = 0
 
 func _ready():
-	randomize()
 	place_player()
 	
 func place_player():
@@ -45,6 +44,7 @@ func _on_Button_pressed():
 	tile_map.levelNum = 0
 	score = 0
 	tile_map.build_level()
+	tile_map.gameOver = false
 	place_player()
 	player.get_node("AudioStreamPlayer2D").stream_paused = false
 	$CanvasLayer/Win.visible = false
