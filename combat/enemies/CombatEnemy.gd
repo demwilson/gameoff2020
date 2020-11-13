@@ -12,6 +12,7 @@ const CREATURE_FRAMES_MEDIUM = 4
 const TICKS_LOCATION_Y_LARGE_TALL = 32
 const TICKS_LOCATION_Y_MEDIUM = 16
 
+var creature_name = null
 var show_name = false
 var show_health = false
 var show_ticks = false
@@ -21,6 +22,8 @@ var idle_path = "combat/animations/hue_idle.tres"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if creature_name:
+		name_label.text = creature_name
 	if show_name:
 		name_label.visible = true
 	if show_health:

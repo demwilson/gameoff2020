@@ -92,6 +92,11 @@ func _process(delta):
 		creature.update_health_percentage()
 		creature.update_ticks()
 
+		# UI Updates
+		var ui_text = get_node("CanvasLayer/CombatMenu/Enemies/VBoxContainer/Enemy" + str(i))
+		ui_text.text = creature.get_name()
+		ui_text.visible = true
+
 	for i in range(allies.size()):
 		var creature = allies[i]
 		if creature.is_active():
@@ -108,6 +113,16 @@ func _process(delta):
 				creature.add_ticks(delta)
 		creature.update_health_percentage()
 		creature.update_ticks()
+		
+		# UI Updates
+		var ui_node = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i))
+		ui_node.visible = true
+		var ui_name = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Name")
+		ui_name.text = creature.get_name()
+		var ui_health = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Health")
+		ui_health.text = str(creature.get_health()) + " / " + str(creature.get_max_health())
+		var ui_ticks = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Ticks")
+		ui_ticks.value = creature.get_ticks()
 
 
 func _input(event):
