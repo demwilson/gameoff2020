@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
@@ -7,198 +7,76 @@
 [ext_resource path="res://TileMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/astrowalk-Sheet.png" type="Texture" id=8]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 12.0
+[sub_resource type="RectangleShape2D" id=24]
+extents = Vector2( 16, 16 )
 
-[sub_resource type="Animation" id=2]
-length = 0.1
-loop = true
+[sub_resource type="Animation" id=25]
+resource_name = "down"
+length = 0.2
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ 2, 3, 6, 5 ]
 }
 
-[sub_resource type="Animation" id=3]
-length = 0.1
-loop = true
+[sub_resource type="Animation" id=26]
+resource_name = "left"
+length = 0.2
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 24 ]
+"values": [ 26, 27, 30, 31 ]
 }
 
-[sub_resource type="Animation" id=4]
-length = 0.1
-loop = true
+[sub_resource type="Animation" id=27]
+resource_name = "right"
+length = 0.2
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 8 ]
+"values": [ 14, 15, 10, 9 ]
 }
 
-[sub_resource type="Animation" id=5]
-length = 0.1
-loop = true
+[sub_resource type="Animation" id=28]
+resource_name = "up"
+length = 0.2
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 16 ]
+"values": [ 18, 19, 22, 23 ]
 }
-
-[sub_resource type="Animation" id=6]
-length = 0.6
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 1, 2, 3, 5, 6, 7 ]
-}
-
-[sub_resource type="Animation" id=7]
-length = 0.6
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 25, 26, 27, 29, 30, 31 ]
-}
-
-[sub_resource type="Animation" id=8]
-length = 0.6
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 9, 10, 11, 13, 14, 15 ]
-}
-
-[sub_resource type="Animation" id=9]
-length = 0.6
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("PlayerSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 17, 18, 19, 21, 22, 23 ]
-}
-
-[sub_resource type="AnimationNodeAnimation" id=10]
-animation = "idle_left"
-
-[sub_resource type="AnimationNodeAnimation" id=11]
-animation = "idle_down"
-
-[sub_resource type="AnimationNodeAnimation" id=12]
-animation = "idle_right"
-
-[sub_resource type="AnimationNodeAnimation" id=13]
-animation = "idle_up"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id=14]
-blend_point_0/node = SubResource( 10 )
-blend_point_0/pos = Vector2( -1, 0 )
-blend_point_1/node = SubResource( 11 )
-blend_point_1/pos = Vector2( 0, 1 )
-blend_point_2/node = SubResource( 12 )
-blend_point_2/pos = Vector2( 1, 0 )
-blend_point_3/node = SubResource( 13 )
-blend_point_3/pos = Vector2( 0, -1 )
-blend_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id=15]
-animation = "walk_left"
-
-[sub_resource type="AnimationNodeAnimation" id=16]
-animation = "walk_down"
-
-[sub_resource type="AnimationNodeAnimation" id=17]
-animation = "walk_right"
-
-[sub_resource type="AnimationNodeAnimation" id=18]
-animation = "walk_up"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id=19]
-blend_point_0/node = SubResource( 15 )
-blend_point_0/pos = Vector2( -1, 0 )
-blend_point_1/node = SubResource( 16 )
-blend_point_1/pos = Vector2( 0, 1.1 )
-blend_point_2/node = SubResource( 17 )
-blend_point_2/pos = Vector2( 1, 0 )
-blend_point_3/node = SubResource( 18 )
-blend_point_3/pos = Vector2( 0, -1.1 )
-min_space = Vector2( -1, -1.1 )
-max_space = Vector2( 1, 1.1 )
-blend_mode = 1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=20]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=21]
-
-[sub_resource type="AnimationNodeStateMachine" id=22]
-states/idle/node = SubResource( 14 )
-states/idle/position = Vector2( 347, 109 )
-states/walk/node = SubResource( 19 )
-states/walk/position = Vector2( 584, 109 )
-transitions = [ "idle", "walk", SubResource( 20 ), "walk", "idle", SubResource( 21 ) ]
-start_node = "idle"
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=23]
 
 [node name="Overworld" type="Node2D"]
 script = ExtResource( 1 )
@@ -290,52 +168,68 @@ text = "You Win!"
 align = 1
 valign = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Win"]
+[node name="Restart" type="Button" parent="CanvasLayer/Win"]
 margin_left = 216.0
 margin_top = 104.0
 margin_right = 432.0
 margin_bottom = 168.0
 text = "Restart"
 
-[node name="Player" type="KinematicBody2D" parent="."]
+[node name="Player" type="Area2D" parent="."]
+position = Vector2( 147.347, 57.5774 )
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="PlayerSprite" type="Sprite" parent="Player"]
+[node name="Sprite" type="Sprite" parent="Player"]
 texture = ExtResource( 8 )
 centered = false
 hframes = 32
-frame = 24
+frame = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2( 16, 16 )
-shape = SubResource( 1 )
+shape = SubResource( 24 )
+
+[node name="MoveTween" type="Tween" parent="Player"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+anims/down = SubResource( 25 )
+anims/left = SubResource( 26 )
+anims/right = SubResource( 27 )
+anims/up = SubResource( 28 )
+
+[node name="RayCastLeft" type="RayCast2D" parent="Player"]
+position = Vector2( 16, 16 )
+enabled = true
+cast_to = Vector2( -32, 0 )
+
+[node name="RayCastRight" type="RayCast2D" parent="Player"]
+position = Vector2( 16, 16 )
+enabled = true
+cast_to = Vector2( 32, 0 )
+
+[node name="RayCastUp" type="RayCast2D" parent="Player"]
+position = Vector2( 16, 16 )
+enabled = true
+cast_to = Vector2( 0, -32 )
+
+[node name="RayCastDown" type="RayCast2D" parent="Player"]
+position = Vector2( 16, 16 )
+enabled = true
+cast_to = Vector2( 0, 32 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
+position = Vector2( 16, 16 )
+stream = ExtResource( 3 )
+volume_db = -10.097
+autoplay = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2( 16, 16 )
 current = true
 zoom = Vector2( 0.75, 0.75 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-anims/idle_down = SubResource( 2 )
-anims/idle_left = SubResource( 3 )
-anims/idle_right = SubResource( 4 )
-anims/idle_up = SubResource( 5 )
-anims/walk_down = SubResource( 6 )
-anims/walk_left = SubResource( 7 )
-anims/walk_right = SubResource( 8 )
-anims/walk_up = SubResource( 9 )
-
-[node name="AnimationTree" type="AnimationTree" parent="Player"]
-tree_root = SubResource( 22 )
-anim_player = NodePath("../AnimationPlayer")
-active = true
-parameters/playback = SubResource( 23 )
-parameters/idle/blend_position = Vector2( 0, 0 )
-parameters/walk/blend_position = Vector2( 0, 0 )
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
-stream = ExtResource( 3 )
-volume_db = -10.097
-autoplay = true
-[connection signal="pressed" from="CanvasLayer/Win/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Win/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="collided" from="Player" to="TileMap" method="_on_Player_collided"]
+[connection signal="tween_completed" from="Player/MoveTween" to="Player" method="_on_MoveTween_tween_completed"]

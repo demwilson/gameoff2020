@@ -3,6 +3,7 @@ extends TileMap
 #Variables
 var overworld
 var tileSize = get_cell_size()
+var tileHalfSize = Vector2(tileSize.x / 2, tileSize.y / 2)
 var levelNum = 0
 var levelSize
 var playerStartPosition
@@ -11,6 +12,7 @@ var roomCellSize = Vector2(9,9)
 var nextTileCellQueue = []
 var possibleStartPoints = []
 var isGeneratingNewLevel = false
+var gameOver = false
 
 #Resources
 var Room_0000 = preload("res://Room_0000.tscn")
@@ -32,10 +34,10 @@ var MapCornerPoints = {
 }
 
 var DirectionValue = {
-	"Bottom": "Bottom",
-	"Top": "Top",
-	"Left": "Left",
-	"Right": "Right"
+	"Bottom": "down",
+	"Top": "up",
+	"Left": "left",
+	"Right": "right"
 }
 
 const LEVEL_SIZES = [
@@ -61,46 +63,40 @@ func _ready():
 	randomize()
 	build_level()
 
-func _on_Player_collided(collision):
-	if isGeneratingNewLevel:
+func _on_Player_collided(collisionPoint, direction):
+	if isGeneratingNewLevel || gameOver:
 		return
-
-	if collision.collider is TileMap:
-		var playerTilePos
-		if collision.normal.x == 1:
-			var remainderX = int(overworld.player.position.x) % int(tileSize.x)
-			var newX = overworld.player.position.x + tileSize.x - remainderX
-			playerTilePos = self.world_to_map(Vector2(newX, overworld.player.position.y))
-		elif collision.normal.y == 1:
-			var remainderY = int(overworld.player.position.y) % int(tileSize.y)
-			var newY = overworld.player.position.y + tileSize.y - remainderY
-			playerTilePos = self.world_to_map(Vector2(overworld.player.position.x, newY))
+	
+	match direction:
+		DirectionValue.Top:
+			collisionPoint = Vector2(collisionPoint.x, collisionPoint.y - tileHalfSize.y)
+		DirectionValue.Bottom:
+			collisionPoint = Vector2(collisionPoint.x, collisionPoint.y + tileHalfSize.y)
+		DirectionValue.Left:
+			collisionPoint = Vector2(collisionPoint.x - tileHalfSize.x, collisionPoint.y)
+		DirectionValue.Right:
+			collisionPoint = Vector2(collisionPoint.x + tileHalfSize.x, collisionPoint.y)
+	
+	var mapCollision = world_to_map(collisionPoint)
+	var tileIndex = get_cellv(mapCollision)
+	var playerPos = overworld.player.position
+	if tileIndex == Tile.DOOR:
+		set_tile(mapCollision.x, mapCollision.y, Tile.FLOOR)
+	elif tileIndex == Tile.LADDER:
+		levelNum += 1
+		overworld.score += 20
+		if levelNum < LEVEL_SIZES.size():
+			isGeneratingNewLevel = true
+			randomize()
+			build_level()
+			overworld.place_player()
 		else:
-			playerTilePos = self.world_to_map(overworld.player.position)
-
-
-		playerTilePos -= collision.normal
-		var tile = collision.collider.get_cellv(playerTilePos)
-		if tile == Tile.DOOR:
-			set_tile(playerTilePos.x, playerTilePos.y, Tile.FLOOR)
-		elif tile == Tile.LADDER:
-			levelNum += 1
-			overworld.score += 20
-			if levelNum < LEVEL_SIZES.size():
-				isGeneratingNewLevel = true
-				print("PlayerPos Prior to new level: " + str(overworld.player.position))
-				print("Player Start Post prior:" + str(playerStartPosition))
-				build_level()
-				overworld.place_player()
-				print("PlayerPos post to new level: " + str(overworld.player.position))
-				print("Player Start Position post:" + str(playerStartPosition))
-			else:
-				overworld.score += 1000
-				overworld.win_event()
+			gameOver = true
+			overworld.score += 1000
+			overworld.win_event()
 	
 func build_level():
 	self.clear()
-	randomize()
 	levelSize = LEVEL_SIZES[levelNum]
 	#populate possible starting points
 	generate_possible_start_points()
@@ -154,7 +150,7 @@ func place_player_start(startingSpot):
 	var offsetVariance = 2
 	var playerX = startRoom.x + roomOffset - randi() % offsetVariance
 	var playerY = startRoom.y + roomOffset - randi() % offsetVariance
-	playerStartPosition = Vector2(playerX, playerY) * tileSize
+	playerStartPosition = map_to_world(Vector2(playerX, playerY))
 	
 func place_exit(startingSpot):
 	var endRoom
@@ -194,6 +190,7 @@ func place_exit(startingSpot):
 	set_tile(exitX, exitY, Tile.LADDER)
 
 func generate_Anchor_Points():
+	topLeftAnchorPoints = []
 	var roomSizeX = roomCellSize.x
 	var roomSizeY = roomCellSize.y
 	for x in range(levelSize.x / roomCellSize.x):
@@ -322,7 +319,6 @@ func place_doors(anchorSpotPosition):
 
 		if forcedDoorToPlace == DirectionValue.Left:
 			add_door_and_get_point_to_add(forcedDoorToPlace, pointsToAdd, currentLeftMidPoint, anchorSpotPosition)
-	
 	
 	for point in pointsToAdd:
 		if nextTileCellQueue.find(point) == -1 && topLeftAnchorPoints.find(point) != -1:
@@ -484,6 +480,7 @@ func get_current_midpoint(anchorSpotPosition, MidpointDirection):
 	return Vector2(anchorSpotPosition.x + MidpointDirection.x, anchorSpotPosition.y + MidpointDirection.y)
 
 func generate_possible_start_points():
+	possibleStartPoints = []
 	#top left corner
 	possibleStartPoints.append(Vector2(0,0))
 	#top right corner
@@ -508,10 +505,10 @@ func set_tile(x, y, type, flipx = false, flipy = false, transpose = false):
 	
 func get_required_and_free_doors_to_palce(doorsToAdd, forcedDoorsToPlace, currentDirectionMidPoint, workingDirection):
 	var directionWallNeeded = {
-		"Bottom": Tile.HORIZONTAL_WALL,
-		"Top": Tile.TOP_WALL,
-		"Right": Tile.VERTICAL_WALL,
-		"Left": Tile.VERTICAL_WALL
+		"down": Tile.HORIZONTAL_WALL,
+		"up": Tile.TOP_WALL,
+		"right": Tile.VERTICAL_WALL,
+		"left": Tile.VERTICAL_WALL
 	}
 	
 	var canPlaceObj = { 
