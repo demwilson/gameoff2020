@@ -6,8 +6,8 @@
 [sub_resource type="Theme" id=1]
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0.0778443, 0.473054, 0.784431 )
-colors = PoolColorArray( 0.0196078, 0, 0.294118, 1, 0.937255, 0.937255, 0.937255, 1, 0.0196078, 0, 0.294118, 1 )
+offsets = PoolRealArray( 0.0778443, 1 )
+colors = PoolColorArray( 0.0196078, 0, 0.294118, 1, 0.0196078, 0, 0.294118, 1 )
 
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
@@ -102,28 +102,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CombatMenu/NinePatchRect"]
-margin_right = 640.0
-margin_bottom = 104.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Enemies" type="VSplitContainer" parent="CanvasLayer/CombatMenu/NinePatchRect"]
+[node name="Enemies" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
 margin_right = 160.0
 margin_bottom = 104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/NinePatchRect/Enemies"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Enemies"]
 margin_right = 160.0
 margin_bottom = 104.0
+size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/NinePatchRect/Enemies/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 margin_right = 160.0
 margin_bottom = 15.0
 custom_styles/normal = SubResource( 4 )
@@ -132,31 +126,70 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ENEMIES"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/NinePatchRect/Enemies/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 margin_top = 19.0
 margin_right = 160.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 5 )
 
-[node name="Menu" type="VSplitContainer" parent="CanvasLayer/CombatMenu/NinePatchRect"]
+[node name="Enemy0" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
+visible = false
+margin_top = 28.0
+margin_right = 160.0
+margin_bottom = 42.0
+size_flags_vertical = 0
+text = "Bad Guy"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enemy1" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
+visible = false
+margin_top = 28.0
+margin_right = 160.0
+margin_bottom = 42.0
+size_flags_vertical = 0
+text = "Bad Guy"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enemy2" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
+visible = false
+margin_top = 28.0
+margin_right = 160.0
+margin_bottom = 42.0
+size_flags_vertical = 0
+text = "Bad Guy"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
 margin_left = 160.0
-margin_right = 480.0
+margin_right = 416.0
 margin_bottom = 105.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/NinePatchRect/Menu"]
-margin_right = 320.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Menu"]
+margin_right = 256.0
 margin_bottom = 105.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/NinePatchRect/Menu/VBoxContainer"]
-margin_right = 320.0
+[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
+margin_right = 256.0
 margin_bottom = 19.0
 custom_styles/normal = SubResource( 6 )
 custom_fonts/font = SubResource( 7 )
@@ -165,40 +198,123 @@ text = "Combat Menu"
 align = 1
 valign = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/NinePatchRect/Menu/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
 margin_top = 23.0
-margin_right = 320.0
+margin_right = 256.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 0, 5 )
 
-[node name="Allies" type="VSplitContainer" parent="CanvasLayer/CombatMenu/NinePatchRect"]
-margin_left = 480.0
+[node name="Allies" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
+margin_left = 416.0
 margin_right = 640.0
 margin_bottom = 104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/NinePatchRect/Allies"]
-margin_right = 160.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Allies"]
+margin_right = 224.0
 margin_bottom = 104.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/NinePatchRect/Allies/VBoxContainer"]
-margin_right = 160.0
+[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
+margin_right = 224.0
 margin_bottom = 15.0
-size_flags_vertical = 1
+size_flags_vertical = 0
 custom_styles/normal = SubResource( 8 )
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ALLIES"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/NinePatchRect/Allies/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
 margin_top = 19.0
-margin_right = 160.0
+margin_right = 224.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 5 )
+
+[node name="Ally0" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
+visible = false
+margin_top = 28.0
+margin_right = 224.0
+margin_bottom = 42.0
+
+[node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
+margin_right = 62.0
+margin_bottom = 14.0
+size_flags_vertical = 1
+text = "Astronaut"
+align = 2
+
+[node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
+margin_left = 66.0
+margin_right = 111.0
+margin_bottom = 14.0
+size_flags_vertical = 1
+text = "46 / 50"
+align = 1
+valign = 1
+
+[node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
+margin_left = 115.0
+margin_right = 224.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+max_value = 5.0
+
+[node name="Ally1" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
+visible = false
+margin_top = 28.0
+margin_right = 224.0
+margin_bottom = 42.0
+
+[node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally1"]
+margin_right = 99.0
+margin_bottom = 14.0
+text = "Robotic Servant"
+align = 2
+
+[node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally1"]
+margin_left = 103.0
+margin_right = 148.0
+margin_bottom = 14.0
+text = "20 / 40"
+align = 1
+valign = 1
+
+[node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally1"]
+margin_left = 152.0
+margin_right = 224.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+max_value = 5.0
+
+[node name="Ally2" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
+visible = false
+margin_top = 28.0
+margin_right = 224.0
+margin_bottom = 42.0
+
+[node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally2"]
+margin_right = 82.0
+margin_bottom = 14.0
+text = "Mutated Dog"
+align = 2
+
+[node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally2"]
+margin_left = 86.0
+margin_right = 131.0
+margin_bottom = 14.0
+text = "15 / 50"
+align = 1
+valign = 1
+
+[node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally2"]
+margin_left = 135.0
+margin_right = 224.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+max_value = 5.0

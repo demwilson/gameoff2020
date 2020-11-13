@@ -52,8 +52,8 @@ class CombatCreature:
 
 		# Setup Scene
 		scene.set("position", position)
-		scene.show_health = true
-		scene.show_ticks = true
+		scene.creature_name = self._name
+		scene.show_name = true
 		scene.creature_size = self.size
 		# TODO: determine by creature type
 		if name == Global.PLAYER_NAME:
@@ -66,7 +66,10 @@ class CombatCreature:
 
 	# name
 	func get_name():
-		return self._name
+		var processed_name = self._name
+		if !self.is_active():
+			processed_name += " (Dead)"
+		return processed_name
 	func set_name(value):
 		self._name = value
 
@@ -80,6 +83,8 @@ class CombatCreature:
 	# health
 	func get_health():
 		return self._health
+	func get_max_health():
+		return self._max_health
 	func get_health_percentage():
 		return (self._health / self._max_health) * 100
 	func set_health(value):
