@@ -13,6 +13,7 @@ var nextTileCellQueue = []
 var possibleStartPoints = []
 var isGeneratingNewLevel = false
 var gameOver = false
+var chestIsOpen = false
 
 #Resources
 var Room_0000 = preload("res://Room_0000.tscn")
@@ -46,16 +47,18 @@ const LEVEL_SIZES = [
 ]
 
 enum Tile {
-	BOTTOM_RIGHT_CORNER,	# 0
-	DOOR,	# 1
-	FLOOR,	# 2
-	VERTICAL_WALL,	# 3
-	HORIZONTAL_WALL,	# 4
-	TOP_LEFT_CORNER,	# 5
+	BOTTOM_RIGHT_CORNER, # 0
+	DOOR, # 1
+	FLOOR, # 2
+	VERTICAL_WALL, # 3
+	HORIZONTAL_WALL, # 4
+	TOP_LEFT_CORNER, # 5
 	TOP_RIGHT_CORNER, #6
 	TOP_WALL, #7
 	BOTTOM_LEFT_CORNER, #8
-	LADDER
+	LADDER, #9
+	CLOSED_CHEST, #10
+	OPEN_CHEST #11
 }
 
 func _ready():
@@ -64,7 +67,7 @@ func _ready():
 	build_level()
 
 func _on_Player_collided(collisionPoint, direction):
-	if isGeneratingNewLevel || gameOver:
+	if isGeneratingNewLevel || gameOver || chestIsOpen:
 		return
 	
 	match direction:
@@ -82,6 +85,8 @@ func _on_Player_collided(collisionPoint, direction):
 	var playerPos = overworld.player.position
 	if tileIndex == Tile.DOOR:
 		set_tile(mapCollision.x, mapCollision.y, Tile.FLOOR)
+	elif tileIndex == Tile.CLOSED_CHEST:
+		open_treasure_chest(mapCollision)
 	elif tileIndex == Tile.LADDER:
 		levelNum += 1
 		overworld.score += 20
@@ -131,6 +136,9 @@ func build_level():
 		else:
 			#place doors
 			place_doors(currentSpot)
+			#place chest
+			if possibleStartPoints.find(currentSpot) == -1:
+				place_treasure_chest(currentSpot)
 		
 		numberOfCellsPlaced += 1
 		#mark position as palced
@@ -528,3 +536,29 @@ func get_required_and_free_doors_to_palce(doorsToAdd, forcedDoorsToPlace, curren
 		set_tile(currentDirectionMidPoint.x, currentDirectionMidPoint.y, directionWallNeeded[workingDirection])
 	
 	return [doorsToAdd, forcedDoorsToPlace]
+
+func place_treasure_chest(anchorPosition):
+	#generatePossible chest spawnPoints
+	var wallAndDoorOffset = 2
+	#remove spots where wall are	
+	#remove spots where a door could be
+	var possibleSpawnPoints = []
+	for possibleSpawnPointX in range(roomCellSize.x - wallAndDoorOffset * 2):
+		for possibleSpawnPointY in range(roomCellSize.y - wallAndDoorOffset * 2):
+			possibleSpawnPoints.append(anchorPosition + Vector2(possibleSpawnPointX + wallAndDoorOffset, possibleSpawnPointY + wallAndDoorOffset))
+	#randomly pic a position where the chest should be
+	var spawnPoint = possibleSpawnPoints[randi() % possibleSpawnPoints.size()]
+	#set the tile at the position to closed chest
+	set_tile(spawnPoint.x, spawnPoint.y, Tile.CLOSED_CHEST)
+	pass
+
+func open_treasure_chest(chestPosition):
+	#prevent player
+	overworld.player.set_can_move(false)
+	#prevent collision
+	chestIsOpen = true
+	#set tile at the position to open chest
+	set_tile(chestPosition.x, chestPosition.y, Tile.OPEN_CHEST)	
+	#get loot
+	overworld.get_loot_for_chest(levelNum)
+	pass
