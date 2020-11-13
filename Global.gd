@@ -12,7 +12,8 @@ enum Scene {
 	MENU,
 	# normal
 	TITLE,
-	COMBAT
+	COMBAT,
+	STATS
 }
 
 var TEXT_COLOR = {
@@ -45,6 +46,8 @@ func goto_scene(target_scene):
 			_deferred_goto_scene(Scene.COMBAT, "res://Title.tscn")
 		Scene.COMBAT:
 			_deferred_goto_scene(Scene.COMBAT, "res://combat/Combat.tscn")
+		Scene.STATS:
+			_deferred_goto_scene(Scene.STATS, "res://Stats.tscn")
 		Scene.GAME_OVER:
 			#call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://GameOver.tscn")
 			call_deferred(Scene.COMBAT, "res://Title.tscn")
