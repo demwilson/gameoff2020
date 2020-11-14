@@ -1,13 +1,15 @@
-extends "res://creature/Creature.gd"
+extends "res://game/Creature.gd"
 
 var scene = null
 var is_queued = false
 var size = null
 var _ticks = null
+var _moves = null
 
-func _init(name, scene, size, position, max_health, health, stats=null, bonuses=null).(name, max_health, health, stats, bonuses):
+func _init(name, scene, size, position, max_health, health, moves, stats, bonuses).(name, max_health, health, stats, bonuses):
 	self.size = size
 	self._ticks = 0
+	self._moves = moves
 
 	# Setup Scene
 	scene.set("position", position)
@@ -36,6 +38,14 @@ func set_ticks(value):
 	self._ticks = value
 func add_ticks(value):
 	self._ticks += value * self._stats.speed
+# moves
+func get_move(position=null):
+	var move
+	if position:
+		move = self._moves[position]
+	else:
+		move = self._moves[randi() % self._moves.size()]
+	return move
 
 func is_active():
 	return self._health > 0

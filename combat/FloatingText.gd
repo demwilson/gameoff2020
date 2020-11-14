@@ -1,5 +1,6 @@
 extends Position2D
 
+const Move = preload("res://game/Move.gd")
 const MOVEMENT_RANGE = 40
 const TEXT_MOVEMENT_SPEED = 15
 
@@ -7,7 +8,7 @@ onready var label = get_node("Label")
 onready var tween = get_node("Tween")
 
 var amount = 0
-var type = Global.AttackType.DAMAGE
+var type = Move.MoveType.DAMAGE
 
 var velocity = Vector2(0, 0)
 
@@ -21,9 +22,9 @@ var end_scale_down_time = 0.7
 func _ready():
 	label.set_text(str(amount))
 	match type:
-		Global.AttackType.HEAL:
+		Move.MoveType.HEAL:
 			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.HEAL))
-		Global.AttackType.DAMAGE:
+		Move.MoveType.DAMAGE:
 			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.DAMAGE))
 	randomize()
 	# Generate a number between -20 and 20

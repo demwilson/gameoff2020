@@ -1,6 +1,6 @@
-extends "res://creature/Creature.gd"
+extends "res://game/Creature.gd"
 
-const Item = preload("res://Item.gd")
+const Item = preload("res://game/Item.gd")
 
 const ITEM_MODIFIER_TYPE = 0
 const ITEM_MODIFIER_VALUE = 1
@@ -54,3 +54,10 @@ func get_combat_bonuses():
 	for property in properties:
 		processed.append(self.get_bonus(property))
 	return Stats.new(processed)
+
+func get_combat_moves():
+	var moves = []
+	for item in self._items:
+		if item.type == Item.ItemType.MOVE:
+				moves.append(item.modifier)
+	return moves
