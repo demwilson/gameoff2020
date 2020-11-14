@@ -1,109 +1,65 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://GroundControl.gd" type="Script" id=1]
+[ext_resource path="res://assets/saan.png" type="Texture" id=2]
+
+[sub_resource type="TileSet" id=1]
+0/name = "saan.png 0"
+0/texture = ExtResource( 2 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 640, 384 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
 
 [node name="GroundControl" type="Node2D"]
 script = ExtResource( 1 )
 
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+format = 1
+tile_data = PoolIntArray( 0, 0, 0 )
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="Currency" type="Label" parent="CanvasLayer"]
+margin_left = 520.0
+margin_top = 200.0
+margin_right = 632.0
+margin_bottom = 214.0
+custom_colors/font_color = Color( 0.0588235, 0.745098, 0, 1 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StatusArea" type="ColorRect" parent="CanvasLayer"]
 margin_right = 640.0
-margin_bottom = 360.0
-color = Color( 0.152941, 0.14902, 0.14902, 1 )
+margin_bottom = 64.0
+color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Oxygen" type="Button" parent="CanvasLayer"]
-margin_left = 288.0
-margin_top = 320.0
-margin_right = 352.0
-margin_bottom = 340.0
-text = "Oxygen"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Accuracy" type="Button" parent="CanvasLayer"]
-margin_left = 152.0
-margin_top = 256.0
-margin_right = 232.0
-margin_bottom = 276.0
-text = "Accuracy"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CanvasLayer/Accuracy"]
-margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
-align = 1
-valign = 1
-
-[node name="Attack" type="Button" parent="CanvasLayer"]
-margin_left = 216.0
-margin_top = 168.0
-margin_right = 296.0
-margin_bottom = 188.0
-text = "Attack"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CanvasLayer/Attack"]
-margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
-align = 1
-valign = 1
-
-[node name="Speed" type="Button" parent="CanvasLayer"]
-margin_left = 280.0
-margin_top = 256.0
+[node name="OxygenButton" type="Button" parent="CanvasLayer"]
+margin_left = 264.0
+margin_top = 296.0
 margin_right = 360.0
-margin_bottom = 276.0
-text = "Speed"
+margin_bottom = 316.0
+text = "Oxygen: 5"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/Speed"]
-margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
-align = 1
-valign = 1
-
-[node name="Defense" type="Button" parent="CanvasLayer"]
-margin_left = 408.0
-margin_top = 256.0
-margin_right = 488.0
-margin_bottom = 276.0
-text = "Defense"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CanvasLayer/Defense"]
-margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
-align = 1
-valign = 1
-
-[node name="Evade" type="Button" parent="CanvasLayer"]
-margin_left = 408.0
-margin_top = 168.0
-margin_right = 488.0
-margin_bottom = 188.0
-text = "Evade"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CanvasLayer/Evade"]
+[node name="OxygenCount" type="Label" parent="CanvasLayer/OxygenButton"]
+margin_left = 16.0
 margin_top = 24.0
 margin_right = 80.0
 margin_bottom = 38.0
@@ -113,33 +69,290 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TierConnector0_1" type="Line2D" parent="CanvasLayer"]
-points = PoolVector2Array( 192, 296, 448, 296 )
-width = 3.0
-default_color = Color( 0.988235, 0.00784314, 0.00784314, 1 )
+[node name="Tier1" type="Control" parent="CanvasLayer"]
+visible = false
+margin_left = 128.0
+margin_top = 248.0
+margin_right = 512.0
+margin_bottom = 288.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="TierConnector0_2" type="Line2D" parent="CanvasLayer"]
-points = PoolVector2Array( 320, 312, 320, 296 )
-width = 3.0
-default_color = Color( 0.984314, 0.0196078, 0.0196078, 1 )
+[node name="AttackButton" type="Button" parent="CanvasLayer/Tier1"]
+margin_left = 24.0
+margin_top = 8.0
+margin_right = 104.0
+margin_bottom = 28.0
+text = "Attack: 12"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="TierConnector1_1" type="Line2D" parent="CanvasLayer"]
-points = PoolVector2Array( 192, 248, 192, 224, 320, 224, 320, 248 )
-width = 3.0
-default_color = Color( 1, 0, 0, 1 )
+[node name="AttackCount" type="Label" parent="CanvasLayer/Tier1/AttackButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 72.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="TierConnector1_3" type="Line2D" parent="CanvasLayer"]
-points = PoolVector2Array( 448, 248, 448, 208 )
-width = 3.0
-default_color = Color( 1, 0, 0, 1 )
+[node name="AccuracyButton" type="Button" parent="CanvasLayer/Tier1"]
+margin_left = 136.0
+margin_right = 232.0
+margin_bottom = 20.0
+text = "Accuracy: 10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="TierConnector1_2" type="Line2D" parent="CanvasLayer"]
-points = PoolVector2Array( 256, 224, 256, 208 )
-width = 3.0
-default_color = Color( 1, 0, 0, 1 )
-[connection signal="pressed" from="CanvasLayer/Oxygen" to="." method="_on_Oxygen_pressed"]
-[connection signal="pressed" from="CanvasLayer/Accuracy" to="." method="_on_Accuracy_pressed"]
-[connection signal="pressed" from="CanvasLayer/Attack" to="." method="_on_Attack_pressed"]
-[connection signal="pressed" from="CanvasLayer/Speed" to="." method="_on_Speed_pressed"]
-[connection signal="pressed" from="CanvasLayer/Defense" to="." method="_on_Defense_pressed"]
-[connection signal="pressed" from="CanvasLayer/Evade" to="." method="_on_Evade_pressed"]
+[node name="AccuracyCount" type="Label" parent="CanvasLayer/Tier1/AccuracyButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 88.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefenseButton" type="Button" parent="CanvasLayer/Tier1"]
+margin_left = 264.0
+margin_top = 8.0
+margin_right = 361.0
+margin_bottom = 28.0
+text = "Defense: 15"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefenseCount" type="Label" parent="CanvasLayer/Tier1/DefenseButton"]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 80.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tier2" type="Control" parent="CanvasLayer"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeedButton" type="Button" parent="CanvasLayer/Tier2"]
+margin_left = 208.0
+margin_top = 200.0
+margin_right = 283.0
+margin_bottom = 220.0
+text = "Speed: 20"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeedCount" type="Label" parent="CanvasLayer/Tier2/SpeedButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 64.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EvadeButton" type="Button" parent="CanvasLayer/Tier2"]
+margin_left = 344.0
+margin_top = 200.0
+margin_right = 417.0
+margin_bottom = 220.0
+text = "Evade: 24"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EvadeCount" type="Label" parent="CanvasLayer/Tier2/EvadeButton"]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tier3" type="Control" parent="CanvasLayer"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasicWpnButton" type="Button" parent="CanvasLayer/Tier3"]
+margin_left = 136.0
+margin_top = 152.0
+margin_right = 246.0
+margin_bottom = 172.0
+text = "Basic Wpns: 50"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasicWpnCount" type="Label" parent="CanvasLayer/Tier3/BasicWpnButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+
+[node name="BasicDefButton" type="Button" parent="CanvasLayer/Tier3"]
+margin_left = 264.0
+margin_top = 152.0
+margin_right = 376.0
+margin_bottom = 172.0
+text = "Basic Def: 30"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasicDefenseCount" type="Label" parent="CanvasLayer/Tier3/BasicDefButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+
+[node name="CombatTrnButton" type="Button" parent="CanvasLayer/Tier3"]
+margin_left = 392.0
+margin_top = 152.0
+margin_right = 503.0
+margin_bottom = 172.0
+text = "Cbt Training: 60"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CombatTrnCount" type="Label" parent="CanvasLayer/Tier3/CombatTrnButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+
+[node name="Tier4" type="Control" parent="CanvasLayer"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdvWpnButton" type="Button" parent="CanvasLayer/Tier4"]
+margin_left = 136.0
+margin_top = 104.0
+margin_right = 248.0
+margin_bottom = 124.0
+text = "Adv. Wpns: 75"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdvWpnCount" type="Label" parent="CanvasLayer/Tier4/AdvWpnButton"]
+margin_left = 32.0
+margin_top = 24.0
+margin_right = 80.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+
+[node name="AdvDefButton" type="Button" parent="CanvasLayer/Tier4"]
+margin_left = 264.0
+margin_top = 104.0
+margin_right = 369.0
+margin_bottom = 124.0
+text = "Adv. Def: 50"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdvDefCount" type="Label" parent="CanvasLayer/Tier4/AdvDefButton"]
+margin_left = 32.0
+margin_top = 24.0
+margin_right = 80.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+
+[node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier4"]
+margin_left = 384.0
+margin_top = 104.0
+margin_right = 510.0
+margin_bottom = 124.0
+text = "Adv. Training: 60"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdvTrnCount" type="Label" parent="CanvasLayer/Tier4/AdvTrnButton"]
+margin_left = 40.0
+margin_top = 24.0
+margin_right = 88.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Alert" type="ColorRect" parent="CanvasLayer"]
+visible = false
+margin_left = 128.0
+margin_top = 104.0
+margin_right = 512.0
+margin_bottom = 288.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AlertButton" type="Button" parent="CanvasLayer/Alert"]
+margin_left = 144.0
+margin_top = 152.0
+margin_right = 240.0
+margin_bottom = 176.0
+text = "OK"
+
+[node name="Label" type="Label" parent="CanvasLayer/Alert"]
+margin_left = 72.0
+margin_top = 64.0
+margin_right = 320.0
+margin_bottom = 88.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Not enough currency"
+align = 1
+[connection signal="pressed" from="CanvasLayer/OxygenButton" to="." method="_on_OxygenButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_AttackButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_AccuracyButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier1/DefenseButton" to="." method="_on_DefenseButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier2/SpeedButton" to="." method="_on_SpeedButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier2/EvadeButton" to="." method="_on_EvadeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier3/BasicWpnButton" to="." method="_on_BasicWpnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier3/BasicDefButton" to="." method="_on_BasicDefButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier3/CombatTrnButton" to="." method="_on_CombatTrnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier4/AdvWpnButton" to="." method="_on_AdvWpnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_AdvDefButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier4/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Alert/AlertButton" to="." method="_on_AlertButton_pressed"]
