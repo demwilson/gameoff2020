@@ -21,7 +21,7 @@ var encounterStep = 20
 
 signal collided
 func _ready():
-	overworld = get_node("../..")
+	overworld = get_parent().get_parent()
 	generate_steps_to_trigger_combat()
 	
 func _process(delta):
