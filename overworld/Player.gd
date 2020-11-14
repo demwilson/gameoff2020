@@ -14,13 +14,24 @@ var Raycasts = {
 	"up": "RayCastUp",
 	"down": "RayCastDown"
 }
-var previousDir
+
+var stepsTaken = 0
+var stepsToTriggerCombat = 20
+var encounterStep = 20
+
 signal collided
 func _ready():
-	overworld = get_parent()
+	overworld = get_parent().get_parent()
+	generate_steps_to_trigger_combat()
 	
 func _process(delta):
 	if canMove:
+		if combat_triggered():
+			stepsTaken = 0
+			generate_steps_to_trigger_combat()
+			canMove = false
+			overworld.trigger_combat()
+			return
 		for dir in Moves.keys():
 			if Input.is_action_pressed(dir):
 				move(dir)
@@ -50,4 +61,14 @@ func has_collided(dir):
 		return false
 
 func _on_MoveTween_tween_completed(object, key):
+	stepsTaken += 1
 	canMove = true
+
+func generate_steps_to_trigger_combat():
+	stepsToTriggerCombat = randi() % encounterStep + (1 + randi() % encounterStep)
+
+func combat_triggered():
+	if stepsTaken >= stepsToTriggerCombat:
+		return true
+	else:
+		return false

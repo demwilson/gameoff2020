@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Overworld.gd" type="Script" id=1]
+[ext_resource path="res://overworld/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://assets/Music/overworld_loop.tres" type="AudioStream" id=3]
-[ext_resource path="res://Player.gd" type="Script" id=6]
-[ext_resource path="res://TileMap.gd" type="Script" id=7]
+[ext_resource path="res://overworld/Anchor.gd" type="Script" id=4]
+[ext_resource path="res://overworld/Player.gd" type="Script" id=6]
+[ext_resource path="res://overworld/TileMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/astrowalk-Sheet.png" type="Texture" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -112,6 +113,7 @@ __meta__ = {
 }
 
 [node name="Counter" type="Label" parent="GUI"]
+visible = false
 margin_left = 144.0
 margin_right = 232.0
 margin_bottom = 40.0
@@ -138,6 +140,30 @@ margin_left = 264.0
 margin_right = 304.0
 margin_bottom = 40.0
 text = "(0,0)"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StepCount" type="Label" parent="GUI"]
+visible = false
+margin_left = 512.0
+margin_top = 8.0
+margin_right = 632.0
+margin_bottom = 32.0
+text = "Steps: 398"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StepToFight" type="Label" parent="GUI"]
+visible = false
+margin_left = 384.0
+margin_top = 8.0
+margin_right = 456.0
+margin_bottom = 32.0
+text = "StepsToFight: 398"
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -211,62 +237,68 @@ cell_size = Vector2( 32, 32 )
 format = 1
 script = ExtResource( 7 )
 
-[node name="Player" type="Area2D" parent="."]
+[node name="PlayerRoot" type="Node2D" parent="."]
+
+[node name="Player" type="Area2D" parent="PlayerRoot"]
 position = Vector2( 147.347, 57.5774 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="Player"]
+[node name="Sprite" type="Sprite" parent="PlayerRoot/Player"]
 texture = ExtResource( 8 )
 centered = false
 hframes = 32
 frame = 10
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 shape = SubResource( 1 )
 
-[node name="MoveTween" type="Tween" parent="Player"]
+[node name="MoveTween" type="Tween" parent="PlayerRoot/Player"]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerRoot/Player"]
 anims/down = SubResource( 2 )
 anims/left = SubResource( 3 )
 anims/right = SubResource( 4 )
 anims/up = SubResource( 5 )
 
-[node name="RayCastLeft" type="RayCast2D" parent="Player"]
+[node name="RayCastLeft" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( -32, 0 )
 
-[node name="RayCastRight" type="RayCast2D" parent="Player"]
+[node name="RayCastRight" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 32, 0 )
 
-[node name="RayCastUp" type="RayCast2D" parent="Player"]
+[node name="RayCastUp" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, -32 )
 
-[node name="RayCastDown" type="RayCast2D" parent="Player"]
+[node name="RayCastDown" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, 32 )
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 stream = ExtResource( 3 )
 volume_db = -10.097
 autoplay = true
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Anchor" type="Position2D" parent="PlayerRoot"]
 position = Vector2( 16, 16 )
+script = ExtResource( 4 )
+
+[node name="Cam" type="Camera2D" parent="PlayerRoot/Anchor"]
 current = true
-zoom = Vector2( 0.75, 0.75 )
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
 [connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
-[connection signal="collided" from="Player" to="TileMap" method="_on_Player_collided"]
-[connection signal="tween_completed" from="Player/MoveTween" to="Player" method="_on_MoveTween_tween_completed"]
+[connection signal="collided" from="PlayerRoot/Player" to="TileMap" method="_on_Player_collided"]
+[connection signal="tween_completed" from="PlayerRoot/Player/MoveTween" to="PlayerRoot/Player" method="_on_MoveTween_tween_completed"]
