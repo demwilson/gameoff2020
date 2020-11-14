@@ -1,5 +1,14 @@
 extends Node
 
+const Creature = preload("res://creature/Creature.gd")
+const GlobalPlayer = preload("res://GlobalPlayer.gd")
+const Item = preload("res://Item.gd")
+
+enum AttackType {
+	DAMAGE,
+	HEAL,
+}
+
 # Persisted scenes must be first in the enum
 enum Scene {
 	# persisted
@@ -8,6 +17,11 @@ enum Scene {
 	# normal
 	TITLE,
 	COMBAT
+}
+
+var TEXT_COLOR = {
+	"DAMAGE": "ff3131",
+	"HEAL": "2eff27",
 }
 
 # A list of scenes that are persisted, default null for each
@@ -42,10 +56,29 @@ var Upgrades = {
 	"AdvanceDefenses": 0,
 	"AdvanceTraining": 0,
 }
+# game mechanics
+const PLAYER_NAME = "Astronaut"
+const BASE_HEALTH = 100
+const BASE_OXYGEN = 30
+var player = null
+var current_level = 1
 
 func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
+	player = build_player()
+
+func build_player():
+	# TODO: Add upgrades
+	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
+	var player_bonuses = Creature.Stats.new()
+	var basic_item = Item.new("Flimsy Sword", Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1])
+	var epic_item = Item.new("Cybernetic Eye", Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2])
+	# These do not exist yet.
+	# var ally_item = Item.new("Friendly Robot Servant", Item.ItemType.ALLY, "This robot will fight for you.", Enemy.RobotServant)
+	# var move_item = Item.new("Fire Bolt", Item.ItemType.MOVE, "This launches a bolt of fire at your enemy!", Move.FireBolt)
+	var player_items = [basic_item, epic_item]
+	return GlobalPlayer.new(PLAYER_NAME, BASE_HEALTH, BASE_HEALTH, BASE_OXYGEN, BASE_OXYGEN, player_stats, player_bonuses, player_items)
 
 func goto_scene(target_scene):
 	# This function will usually be called from a signal callback,
@@ -59,12 +92,13 @@ func goto_scene(target_scene):
 	match target_scene:
 		Scene.OVERWORLD:
 			call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://Overworld.tscn")
-		Scene.MENU:
-			call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://Overworld.tscn")
 		Scene.TITLE:
 			_deferred_goto_scene(Scene.COMBAT, "res://Title.tscn")
 		Scene.COMBAT:
-			_deferred_goto_scene(Scene.COMBAT, "res://Combat.tscn")
+			_deferred_goto_scene(Scene.COMBAT, "res://combat/Combat.tscn")
+		Scene.GAME_OVER:
+			#call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://GameOver.tscn")
+			call_deferred(Scene.COMBAT, "res://Title.tscn")
 
 func _deferred_goto_scene(scene, path):
 	# stop/start processing
@@ -74,6 +108,7 @@ func _deferred_goto_scene(scene, path):
 			stop_processing(overworld_node)
 		else:
 			start_processing(overworld_node)
+		overworld_node.toggle_audio()
 
 	# create/retrieve scene
 	match scene:
@@ -111,17 +146,6 @@ func is_scene_persisted(scene):
 func persist_scene(scene, scene_node):
 	persisted_scenes[scene] = scene_node
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+func log(level, msg):
+	if level <= Settings.debug:
+		print(msg)

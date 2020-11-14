@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/Tony_Created_Assets/astro_idle.png" type="Texture" id=1]
+[ext_resource path="res://combat/enemies/CombatEnemy.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 1, 0, 1 )
+
+[node name="CombatEnemy" type="Sprite"]
+texture = ExtResource( 1 )
+vframes = 2
+hframes = 8
+frame = 1
+script = ExtResource( 2 )
+
+[node name="Name" type="Label" parent="."]
+margin_left = -40.0
+margin_top = -40.0
+margin_right = 46.0
+margin_bottom = -26.0
+text = "Undead Hugh"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Health" type="ProgressBar" parent="."]
+visible = false
+margin_left = -16.0
+margin_top = -24.0
+margin_right = 16.0
+margin_bottom = -16.0
+rect_pivot_offset = Vector2( -128, 32 )
+custom_styles/fg = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+step = 0.1
+value = 80.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ticks" type="ProgressBar" parent="."]
+margin_left = -16.0
+margin_top = 32.0
+margin_right = 16.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( -128, 32 )
+custom_styles/fg = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+max_value = 5.0
+value = 5.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

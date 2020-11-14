@@ -1,13 +1,9 @@
 extends Node2D
 
 const PERSIST = true
-
 const PLAYER_START_HP = 5
 
-
-
 var counter = 0
-
 
 # node references
 onready var tile_map = $TileMap
@@ -18,12 +14,12 @@ var player_tile
 var score = 0
 
 func _ready():
-	randomize()
 	place_player()
 	
 func place_player():
-	player.position = tile_map.player_start_position
+	player.position = tile_map.playerStartPosition
 	print("The player starts at: " + str(player.position))
+	tile_map.isGeneratingNewLevel = false
 
 func _process(delta):
 	counter += delta
@@ -36,7 +32,6 @@ func _process(delta):
 		$CanvasLayer/TilePos.text = str(cpos)
 		var mpos = $TileMap.world_to_map(get_global_mouse_position())
 		$CanvasLayer/MousePos.text = str(mpos)
-	
 
 func _input(event):
 	if !event.is_pressed():
@@ -44,10 +39,23 @@ func _input(event):
 	elif event.is_action("map_change"):
 		Global.goto_scene(Global.Scene.COMBAT)
 
-func _on_Button_pressed():
-	tile_map.level_num = 0
+func win_event():
+	player.get_node("AudioStreamPlayer2D").stream_paused = true
+	$CanvasLayer/Win.visible = true
+	
+func toggle_audio():
+	if player.get_node("AudioStreamPlayer2D").stream_paused:
+		player.get_node("AudioStreamPlayer2D").stream_paused = false
+	else:
+		player.get_node("AudioStreamPlayer2D").stream_paused = true
+
+func _on_Restart_pressed():
+	$CanvasLayer/Win/Restart.disabled = true
+	tile_map.levelNum = 0
 	score = 0
 	tile_map.build_level()
+	tile_map.gameOver = false
 	place_player()
+	player.get_node("AudioStreamPlayer2D").stream_paused = false
 	$CanvasLayer/Win.visible = false
-	
+	$CanvasLayer/Win/Restart.disabled = false
