@@ -1,13 +1,10 @@
 extends Node
 
-const Creature = preload("res://creature/Creature.gd")
-const GlobalPlayer = preload("res://GlobalPlayer.gd")
-const Item = preload("res://Item.gd")
-
-enum AttackType {
-	DAMAGE,
-	HEAL,
-}
+const Creature = preload("res://game/Creature.gd")
+const GlobalPlayer = preload("res://game/GlobalPlayer.gd")
+const Item = preload("res://game/Item.gd")
+const Move = preload("res://game/Move.gd")
+const Moves = preload("res://game/Moves.gd")
 
 # Persisted scenes must be first in the enum
 enum Scene {
@@ -16,7 +13,8 @@ enum Scene {
 	MENU,
 	# normal
 	TITLE,
-	COMBAT
+	COMBAT,
+	STATS
 }
 
 var TEXT_COLOR = {
@@ -61,6 +59,7 @@ const PLAYER_NAME = "Astronaut"
 const BASE_HEALTH = 100
 const BASE_OXYGEN = 30
 var player = null
+var moves = null
 var current_level = 1
 var currency = 500
 
@@ -68,17 +67,21 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	player = build_player()
+	moves = Moves.new()
 
 func build_player():
 	# TODO: Add upgrades
 	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
 	var player_bonuses = Creature.Stats.new()
-	var basic_item = Item.new("Flimsy Sword", Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1])
-	var epic_item = Item.new("Cybernetic Eye", Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2])
+	
 	# These do not exist yet.
-	# var ally_item = Item.new("Friendly Robot Servant", Item.ItemType.ALLY, "This robot will fight for you.", Enemy.RobotServant)
-	# var move_item = Item.new("Fire Bolt", Item.ItemType.MOVE, "This launches a bolt of fire at your enemy!", Move.FireBolt)
-	var player_items = [basic_item, epic_item]
+	# Item.new("Friendly Robot Servant", Item.ItemType.ALLY, "This robot will fight for you.", Enemy.RobotServant)
+	var player_items = [
+		Item.new("Basic Attack", Item.ItemType.MOVE, "This is a basic attack.", Moves.MoveList.BASIC_ATTACK),
+		Item.new("Flimsy Sword", Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1]),
+		Item.new("Cybernetic Eye", Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2]),
+		Item.new("Firebolt", Item.ItemType.MOVE, "This launches a bolt of fire at your enemy!", Moves.MoveList.FIREBOLT),
+	]
 	return GlobalPlayer.new(PLAYER_NAME, BASE_HEALTH, BASE_HEALTH, BASE_OXYGEN, BASE_OXYGEN, player_stats, player_bonuses, player_items)
 
 func goto_scene(target_scene):
@@ -97,6 +100,8 @@ func goto_scene(target_scene):
 			_deferred_goto_scene(Scene.COMBAT, "res://Title.tscn")
 		Scene.COMBAT:
 			_deferred_goto_scene(Scene.COMBAT, "res://combat/Combat.tscn")
+		Scene.STATS:
+			_deferred_goto_scene(Scene.STATS, "res://Stats.tscn")
 		Scene.GAME_OVER:
 			#call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://GameOver.tscn")
 			call_deferred(Scene.COMBAT, "res://Title.tscn")

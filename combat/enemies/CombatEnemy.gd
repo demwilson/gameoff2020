@@ -1,6 +1,6 @@
 extends Sprite
 
-const CombatGlobal = preload("res://combat/CombatGlobal.gd")
+const Creature = preload("res://game/Creature.gd")
 onready var name_label = get_node("Name")
 onready var health = get_node("Health")
 onready var ticks = get_node("Ticks")
@@ -16,7 +16,7 @@ var creature_name = null
 var show_name = false
 var show_health = false
 var show_ticks = false
-var creature_size = CombatGlobal.CreatureSize.MEDIUM
+var creature_size = Creature.CreatureSize.MEDIUM
 var texture_path = "res://assets/dead_hue.png"
 var idle_path = "combat/animations/hue_idle.tres"
 
@@ -36,7 +36,7 @@ func _ready():
 	ani_player.add_animation(IDLE_ANIMATION_NAME, idle)
 	ani_player.play(IDLE_ANIMATION_NAME)
 	match self.creature_size:
-		CombatGlobal.CreatureSize.LARGE_TALL:
+		Creature.CreatureSize.LARGE_TALL:
 			self.hframes = CREATURE_FRAMES_LARGE_TALL
 			self.vframes = 2 # Temporary while using dummy monsters
 			self.ticks.rect_position.y = TICKS_LOCATION_Y_LARGE_TALL

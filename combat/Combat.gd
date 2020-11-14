@@ -1,6 +1,7 @@
 extends Node2D
 
-const CombatGlobal = preload("res://combat/CombatGlobal.gd")
+const Creature = preload("res://game/Creature.gd")
+const Move = preload("res://game/Move.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
 var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
@@ -42,19 +43,49 @@ func _ready():
 	#for i in range(1):
 	for i in range(MAX_ENEMIES):
 		var position = enemy_positions[i]
-		var creature = CombatCreature.new("Monster" + str(i), EnemyScene.instance(), CombatGlobal.CreatureSize.MEDIUM, position, 50, 50, CombatCreature.Stats.new(1, 2, (i + 1), 1, 1))
+		var creature = CombatCreature.new(
+			"Monster" + str(i),
+			EnemyScene.instance(),
+			Creature.CreatureSize.MEDIUM,
+			position,
+			50,
+			50,
+			[Global.moves.MoveList.BASIC_ATTACK],
+			CombatCreature.Stats.new(1, 2, (i + 1), 1, 1),
+			CombatCreature.Stats.new(CombatCreature.BASE_BONUSES)
+		)
 		enemies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
 	for i in range(MAX_ALLIES):
 		var position = ally_positions[i]
 		var creature_name = Global.PLAYER_NAME
-		var creature_size = CombatGlobal.CreatureSize.LARGE_TALL
+		var creature_size = Creature.CreatureSize.LARGE_TALL
 		var creature = null
 		if i == 0:
-			creature = CombatCreature.new(Global.player.get_name(), EnemyScene.instance(), creature_size, position, 50, 50, Global.player.get_combat_stats(), Global.player.get_combat_bonuses())
+			creature = CombatCreature.new(
+				Global.player.get_name(),
+				EnemyScene.instance(),
+				creature_size,
+				position,
+				Global.player.get_max_health(),
+				Global.player.get_health(),
+				Global.player.get_combat_moves(),
+				Global.player.get_combat_stats(),
+				Global.player.get_combat_bonuses()
+			)
 		else:
-			creature = CombatCreature.new(creature_name, EnemyScene.instance(), creature_size, position, 50, 50, CombatCreature.Stats.new(3, 2, 1.5, 1, 4))
+			creature = CombatCreature.new(
+				creature_name,
+				EnemyScene.instance(),
+				creature_size,
+				position,
+				50,
+				50,
+				[Global.moves.MoveList.BASIC_ATTACK],
+				CombatCreature.Stats.new(3, 2, 1.5, 1, 4),
+				CombatCreature.Stats.new(CombatCreature.BASE_BONUSES)
+			)
 		allies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -89,7 +120,7 @@ func _process(delta):
 					var potential_target = allies[target_position]
 					if potential_target.is_active():
 						target = potential_target
-				action_queue.append(CombatEvent.CombatEvent.new(Global.AttackType.DAMAGE, creature, target))
+				action_queue.append(CombatEvent.CombatEvent.new(Move.MoveType.DAMAGE, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -111,7 +142,7 @@ func _process(delta):
 					var potential_target = enemies[target_position]
 					if potential_target.is_active():
 						target = potential_target
-				action_queue.append(CombatEvent.CombatEvent.new(Global.AttackType.DAMAGE, creature, target))
+				action_queue.append(CombatEvent.CombatEvent.new(Move.MoveType.DAMAGE, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -157,7 +188,7 @@ func check_action_queue():
 	animation_wait = MAX_ANIMATION_TIMER
 	var combat_action = action_queue.pop_front()
 	match combat_action.action_type:
-		Global.AttackType.DAMAGE:
+		Move.MoveType.DAMAGE:
 			attack(combat_action.creature, combat_action.target)
 
 func attack(attacker, target):
@@ -165,10 +196,11 @@ func attack(attacker, target):
 	log_arr.append("ATTACKER: " + attacker.get_name())
 	log_arr.append("TARGET: " + target.get_name())
 	# get move
-	var move = attacker.get_move()
+	var move_id = attacker.get_move()
+	var move = Global.moves.get_move_by_id(move_id)
 	log_arr.append("MOVE: " + move.name)
 	# check for a hit
-	var accuracy = move.accuracy.call_func(attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
+	var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
 	var target_hit = false
 	var target_evaded = false
 	var damaged_mitigated = false
@@ -183,8 +215,8 @@ func attack(attacker, target):
 
 	if target_hit && !target_evaded:
 		# get the damage range
-		var minimum = move.damage.call_func(attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-		var maximum = move.damage.call_func(attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
+		var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
+		var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
 		# get raw damage
 		var raw_damage = calculate_damage(minimum, maximum)
 		var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
@@ -200,7 +232,7 @@ func attack(attacker, target):
 			# Floating damage
 			var damage_text = FloatingText.instance()
 			damage_text.amount = damage
-			damage_text.type = Global.AttackType.DAMAGE
+			damage_text.type = Move.MoveType.DAMAGE
 			target.scene.add_child(damage_text)
 			log_arr.append("DAMAGE: " + str(damage))
 
