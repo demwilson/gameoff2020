@@ -46,11 +46,11 @@ var Upgrades = {
 	"Speed": 0,
 	"Defense": 0,
 	"Evade": 0,
-	"BasicWeapons": 0,
+	"BasicWeapon": 0,
 	"BasicDefense": 0,
 	"CombatTraining": 0,
-	"AdvanceWeapons": 0,
-	"AdvanceDefenses": 0,
+	"AdvanceWeapon": 0,
+	"AdvanceDefense": 0,
 	"AdvanceTraining": 0,
 }
 
@@ -61,7 +61,7 @@ const BASE_OXYGEN = 30
 var player = null
 var moves = null
 var current_level = 1
-var currency = 500
+var currency = 0
 
 func _ready():
 	var root = get_tree().get_root()

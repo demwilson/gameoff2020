@@ -343,6 +343,16 @@ margin_bottom = 88.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Not enough currency"
 align = 1
+
+[node name="StartGameMission" type="Button" parent="CanvasLayer"]
+margin_left = 528.0
+margin_top = 296.0
+margin_right = 623.0
+margin_bottom = 316.0
+text = "Start Mission"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="CanvasLayer/OxygenButton" to="." method="_on_OxygenButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_AttackButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_AccuracyButton_pressed"]
@@ -356,3 +366,4 @@ align = 1
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_AdvDefButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Alert/AlertButton" to="." method="_on_AlertButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/StartGameMission" to="." method="_on_StartGameMission_pressed"]

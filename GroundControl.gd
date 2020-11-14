@@ -328,7 +328,22 @@ func _on_AdvTrnButton_pressed():
 	advance_training()
 func _on_AlertButton_pressed():
 	$CanvasLayer/Alert.visible = false
-	
-#TODO
-#Apply button to go back to apply the changes and go back to the game
-#Global.goto_scene(Global.Scene.OVERWORLD)
+
+func _on_StartGameMission_pressed():
+	#Update upgrades in global
+	Global.Upgrades.Oxygen = Button_Click.Oxygen
+	Global.Upgrades.Attack = Button_Click.Attack
+	Global.Upgrades.Accuracy = Button_Click.Accuracy
+	Global.Upgrades.Defense = Button_Click.Defense
+	Global.Upgrades.Speed = Button_Click.Speed
+	Global.Upgrades.Evade = Button_Click.Evade
+	Global.Upgrades.BasicWeapon = Button_Click.Basic_Weapon
+	Global.Upgrades.BasicDefense = Button_Click.Basic_Defense
+	Global.Upgrades.CombatTraining = Button_Click.Combat_Training
+	Global.Upgrades.AdvanceWeapon = Button_Click.Advance_Weapon
+	Global.Upgrades.AdvanceDefesne = Button_Click.Advance_Defense
+	Global.Upgrades.AdvanceTraining = Button_Click.Advance_Training
+	#update global currency 
+	Global.currency = actual_currency
+	#Goes back to game
+	Global.goto_scene(Global.Scene.OVERWORLD)
