@@ -14,6 +14,35 @@ enum Scene {
 var persisted_scenes = [null]
 var previous_scene = null
 var current_scene = null
+
+
+#Currency and base stats
+var BaseStats = {
+	"Currency": 0,
+	"BaseAttack": 1,
+	"BaseAccuracy": 1,
+	"BaseSpeed": 1,
+	"BaseDefense": 1,
+	"BaseEvade": 1,
+	"BaseOxygen": 0,
+}
+
+#Upgraded stats
+var Upgrades = {
+	"Oxygen": 0,
+	"Attack": 0,
+	"Accuracy": 0,
+	"Speed": 0,
+	"Defense": 0,
+	"Evade": 0,
+	"BasicWeapons": 0,
+	"BasicDefense": 0,
+	"CombatTraining": 0,
+	"AdvanceWeapons": 0,
+	"AdvanceDefenses": 0,
+	"AdvanceTraining": 0,
+}
+
 func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
