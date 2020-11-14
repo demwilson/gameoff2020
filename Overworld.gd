@@ -38,6 +38,8 @@ func _input(event):
 		return
 	elif event.is_action("map_change"):
 		Global.goto_scene(Global.Scene.COMBAT)
+	elif event.is_action("stats_profile"):
+		Global.goto_scene(Global.Scene.STATS)
 
 func win_event():
 	player.get_node("AudioStreamPlayer2D").stream_paused = true
