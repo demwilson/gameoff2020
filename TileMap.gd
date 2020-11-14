@@ -550,7 +550,6 @@ func place_treasure_chest(anchorPosition):
 	var spawnPoint = possibleSpawnPoints[randi() % possibleSpawnPoints.size()]
 	#set the tile at the position to closed chest
 	set_tile(spawnPoint.x, spawnPoint.y, Tile.CLOSED_CHEST)
-	pass
 
 func open_treasure_chest(chestPosition):
 	#prevent player
@@ -561,4 +560,3 @@ func open_treasure_chest(chestPosition):
 	set_tile(chestPosition.x, chestPosition.y, Tile.OPEN_CHEST)	
 	#get loot
 	overworld.get_loot_for_chest(levelNum)
-	pass
