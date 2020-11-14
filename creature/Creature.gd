@@ -1,5 +1,8 @@
 const Stats = preload("res://creature/Stats.gd")
 
+const BASE_BONUSES = [0, 0, 0, 0, 0]
+const BASE_STATS = [1, 1, 1, 1, 1]
+
 var _name = null
 var _max_health = null
 var _health = null
@@ -14,11 +17,11 @@ func _init(name, max_health, health, stats=null, bonuses=null):
 	if stats:
 		self._stats = stats
 	else:
-		self._stats = Stats.new(1, 1, 1, 1, 1)
+		self._stats = Stats.new(BASE_STATS)
 	if bonuses:
 		self._bonuses = bonuses
 	else:
-		self._bonuses = Stats.new(0, 0, 0, 0, 0)
+		self._bonuses = Stats.new(BASE_BONUSES)
 	
 	# TODO: Replace with actual moves
 	self._moves = [

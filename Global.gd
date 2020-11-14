@@ -43,7 +43,7 @@ func _ready():
 
 func build_player():
 	# TODO: Add upgrades
-	var player_stats = Creature.Stats.new(1, 1, 1, 1, 1)
+	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
 	var player_bonuses = Creature.Stats.new()
 	var basic_item = Item.new("Flimsy Sword", Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1])
 	var epic_item = Item.new("Cybernetic Eye", Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2])
