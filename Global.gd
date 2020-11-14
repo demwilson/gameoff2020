@@ -67,7 +67,7 @@ func goto_scene(target_scene):
 	# we can be sure that no code from the current scene is running:
 	match target_scene:
 		Scene.OVERWORLD:
-			call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://Overworld.tscn")
+			call_deferred("_deferred_goto_scene", Scene.OVERWORLD, "res://overworld/Overworld.tscn")
 		Scene.TITLE:
 			_deferred_goto_scene(Scene.COMBAT, "res://Title.tscn")
 		Scene.COMBAT:
@@ -85,6 +85,7 @@ func _deferred_goto_scene(scene, path):
 		if scene != Scene.OVERWORLD:
 			stop_processing(overworld_node)
 		else:
+			overworld_node.player.set_can_move(true)
 			start_processing(overworld_node)
 		overworld_node.toggle_audio()
 

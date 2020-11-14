@@ -16,8 +16,8 @@ var gameOver = false
 var chestIsOpen = false
 
 #Resources
-var Room_0000 = preload("res://Room_0000.tscn")
-var Corridor_1111 = preload("res://Corridor_1111.tscn")
+var Room_0000 = preload("res://overworld/Room_0000.tscn")
+var Corridor_1111 = preload("res://overworld/Corridor_1111.tscn")
 
 #Objects
 var CellMidpoints = {

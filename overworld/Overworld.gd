@@ -7,7 +7,7 @@ var counter = 0
 
 # node references
 onready var tile_map = $TileMap
-onready var player = $Player
+onready var player = $PlayerRoot/Player
 
 # game state
 var player_tile
@@ -18,26 +18,29 @@ func _ready():
 	
 func place_player():
 	player.position = tile_map.playerStartPosition
+	$PlayerRoot/Anchor.set_start_position(player.position)
 	print("The player starts at: " + str(player.position))
 	tile_map.isGeneratingNewLevel = false
 
 func _process(delta):
-	counter += delta
-	$GUI/Counter.text = "Counter: " + str(counter)
-#	#uncomment these lines to have player pos and mouse pos appear on canvas for testing
 	if Settings.debug:
 		$GUI/TilePos.visible = true
 		$GUI/MousePos.visible = true
-		var cpos = $TileMap.world_to_map($Player.position)
+		$GUI/Counter.visible = true
+		$GUI/StepCount.visible = true
+		$GUI/StepToFight.visible = true
+		var cpos = $TileMap.world_to_map(player.position)
 		$GUI/TilePos.text = str(cpos)
 		var mpos = $TileMap.world_to_map(get_global_mouse_position())
 		$GUI/MousePos.text = str(mpos)
+		counter += delta
+		$GUI/Counter.text = "Counter: " + str(counter)
+		$GUI/StepCount.text = "Steps Taken: " + str(player.stepsTaken)
+		$GUI/StepToFight.text = "StepsToFight: " + str(player.stepsToTriggerCombat)
 
 func _input(event):
 	if !event.is_pressed():
 		return
-	elif event.is_action("map_change"):
-		Global.goto_scene(Global.Scene.COMBAT)
 	elif event.is_action("stats_profile"):
 		Global.goto_scene(Global.Scene.STATS)
 
@@ -79,3 +82,6 @@ func _on_LootAccept_pressed():
 	player.set_can_move(true)
 	#allow collision
 	tile_map.chestIsOpen = false
+
+func trigger_combat():
+	Global.goto_scene(Global.Scene.COMBAT)	
