@@ -35,6 +35,9 @@ func move(dir):
 	$MoveTween.start()
 	return true
 
+func set_can_move(active):
+	canMove = active
+
 func has_collided(dir):
 	if get_node(Raycasts[dir]).is_colliding():
 		var hitCollider = get_node(Raycasts[dir]).get_collider()

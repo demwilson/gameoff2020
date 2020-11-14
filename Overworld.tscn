@@ -7,10 +7,10 @@
 [ext_resource path="res://TileMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/astrowalk-Sheet.png" type="Texture" id=8]
 
-[sub_resource type="RectangleShape2D" id=24]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
 
-[sub_resource type="Animation" id=25]
+[sub_resource type="Animation" id=2]
 resource_name = "down"
 length = 0.2
 step = 0.05
@@ -27,7 +27,7 @@ tracks/0/keys = {
 "values": [ 2, 3, 6, 5 ]
 }
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=3]
 resource_name = "left"
 length = 0.2
 step = 0.05
@@ -44,7 +44,7 @@ tracks/0/keys = {
 "values": [ 26, 27, 30, 31 ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=4]
 resource_name = "right"
 length = 0.2
 step = 0.05
@@ -61,7 +61,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 10, 9 ]
 }
 
-[sub_resource type="Animation" id=28]
+[sub_resource type="Animation" id=5]
 resource_name = "up"
 length = 0.2
 step = 0.05
@@ -81,15 +81,9 @@ tracks/0/keys = {
 [node name="Overworld" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 2 )
-cell_size = Vector2( 32, 32 )
-format = 1
-script = ExtResource( 7 )
+[node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="GUI"]
 margin_right = 640.0
 margin_bottom = 40.0
 color = Color( 0, 0, 0, 0.564706 )
@@ -97,7 +91,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Level" type="Label" parent="CanvasLayer"]
+[node name="Level" type="Label" parent="GUI"]
 margin_left = 16.0
 margin_right = 80.0
 margin_bottom = 40.0
@@ -107,7 +101,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HP" type="Label" parent="CanvasLayer"]
+[node name="HP" type="Label" parent="GUI"]
 margin_left = 88.0
 margin_right = 136.0
 margin_bottom = 40.0
@@ -117,7 +111,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Counter" type="Label" parent="CanvasLayer"]
+[node name="Counter" type="Label" parent="GUI"]
 margin_left = 144.0
 margin_right = 232.0
 margin_bottom = 40.0
@@ -127,7 +121,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TilePos" type="Label" parent="CanvasLayer"]
+[node name="TilePos" type="Label" parent="GUI"]
 visible = false
 margin_left = 320.0
 margin_right = 352.0
@@ -138,7 +132,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MousePos" type="Label" parent="CanvasLayer"]
+[node name="MousePos" type="Label" parent="GUI"]
 visible = false
 margin_left = 264.0
 margin_right = 304.0
@@ -149,7 +143,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Win" type="ColorRect" parent="CanvasLayer"]
+[node name="Win" type="ColorRect" parent="GUI"]
 visible = false
 margin_top = 40.0
 margin_right = 640.0
@@ -159,7 +153,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/Win"]
+[node name="Label" type="Label" parent="GUI/Win"]
 margin_left = 128.0
 margin_top = 40.0
 margin_right = 512.0
@@ -168,12 +162,54 @@ text = "You Win!"
 align = 1
 valign = 1
 
-[node name="Restart" type="Button" parent="CanvasLayer/Win"]
+[node name="Restart" type="Button" parent="GUI/Win"]
 margin_left = 216.0
 margin_top = 104.0
 margin_right = 432.0
 margin_bottom = 168.0
 text = "Restart"
+
+[node name="Loot" type="ColorRect" parent="GUI"]
+visible = false
+margin_left = 115.0
+margin_top = 40.0
+margin_right = 372.0
+margin_bottom = 355.0
+color = Color( 0, 0, 0, 0.694118 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LootText" type="Label" parent="GUI/Loot"]
+margin_left = 26.0
+margin_top = 20.0
+margin_right = 240.0
+margin_bottom = 60.0
+text = "After fighting with the lock mechanism you pry open the chest and find:"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LootAccept" type="Button" parent="GUI/Loot"]
+margin_left = 58.0
+margin_top = 255.0
+margin_right = 194.0
+margin_bottom = 290.0
+text = "Take All"
+
+[node name="LootList" type="ItemList" parent="GUI/Loot"]
+margin_left = 22.0
+margin_top = 71.0
+margin_right = 239.0
+margin_bottom = 247.0
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 32, 32 )
+format = 1
+script = ExtResource( 7 )
 
 [node name="Player" type="Area2D" parent="."]
 position = Vector2( 147.347, 57.5774 )
@@ -190,15 +226,15 @@ frame = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2( 16, 16 )
-shape = SubResource( 24 )
+shape = SubResource( 1 )
 
 [node name="MoveTween" type="Tween" parent="Player"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-anims/down = SubResource( 25 )
-anims/left = SubResource( 26 )
-anims/right = SubResource( 27 )
-anims/up = SubResource( 28 )
+anims/down = SubResource( 2 )
+anims/left = SubResource( 3 )
+anims/right = SubResource( 4 )
+anims/up = SubResource( 5 )
 
 [node name="RayCastLeft" type="RayCast2D" parent="Player"]
 position = Vector2( 16, 16 )
@@ -230,6 +266,7 @@ autoplay = true
 position = Vector2( 16, 16 )
 current = true
 zoom = Vector2( 0.75, 0.75 )
-[connection signal="pressed" from="CanvasLayer/Win/Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
 [connection signal="collided" from="Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="Player/MoveTween" to="Player" method="_on_MoveTween_tween_completed"]

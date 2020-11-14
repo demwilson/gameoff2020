@@ -23,15 +23,15 @@ func place_player():
 
 func _process(delta):
 	counter += delta
-	$CanvasLayer/Counter.text = "Counter: " + str(counter)
+	$GUI/Counter.text = "Counter: " + str(counter)
 #	#uncomment these lines to have player pos and mouse pos appear on canvas for testing
 	if Settings.debug:
-		$CanvasLayer/TilePos.visible = true
-		$CanvasLayer/MousePos.visible = true
+		$GUI/TilePos.visible = true
+		$GUI/MousePos.visible = true
 		var cpos = $TileMap.world_to_map($Player.position)
-		$CanvasLayer/TilePos.text = str(cpos)
+		$GUI/TilePos.text = str(cpos)
 		var mpos = $TileMap.world_to_map(get_global_mouse_position())
-		$CanvasLayer/MousePos.text = str(mpos)
+		$GUI/MousePos.text = str(mpos)
 
 func _input(event):
 	if !event.is_pressed():
@@ -41,7 +41,7 @@ func _input(event):
 
 func win_event():
 	player.get_node("AudioStreamPlayer2D").stream_paused = true
-	$CanvasLayer/Win.visible = true
+	$GUI/Win.visible = true
 	
 func toggle_audio():
 	if player.get_node("AudioStreamPlayer2D").stream_paused:
@@ -50,12 +50,30 @@ func toggle_audio():
 		player.get_node("AudioStreamPlayer2D").stream_paused = true
 
 func _on_Restart_pressed():
-	$CanvasLayer/Win/Restart.disabled = true
+	$GUI/Win/Restart.disabled = true
 	tile_map.levelNum = 0
 	score = 0
 	tile_map.build_level()
 	tile_map.gameOver = false
 	place_player()
 	player.get_node("AudioStreamPlayer2D").stream_paused = false
-	$CanvasLayer/Win.visible = false
-	$CanvasLayer/Win/Restart.disabled = false
+	$GUI/Win.visible = false
+	$GUI/Win/Restart.disabled = false
+
+func get_loot_for_chest(floorLevel):
+	$GUI/Loot/LootList.clear()
+	#TODO: call global to generate list of items
+	print("Generating Loot")
+	#loop through items and add them to LootList
+	$GUI/Loot/LootList.add_item("Fancy Pointy Stick", null, false)
+	$GUI/Loot/LootList.add_item("Greased Animal Hide", null, false)
+	$GUI/Loot/LootList.add_item("Boots of Running Really Fast", null, false)
+	#show Loot Screen
+	$GUI/Loot.visible = true
+
+func _on_LootAccept_pressed():
+	$GUI/Loot.visible = false
+	#allow player movement again
+	player.set_can_move(true)
+	#allow collision
+	tile_map.chestIsOpen = false
