@@ -1,5 +1,9 @@
 extends Node
 
+const Creature = preload("res://creature/Creature.gd")
+const GlobalPlayer = preload("res://GlobalPlayer.gd")
+const Item = preload("res://Item.gd")
+
 enum AttackType {
 	DAMAGE,
 	HEAL,
@@ -20,14 +24,34 @@ var TEXT_COLOR = {
 	"HEAL": "2eff27",
 }
 
-const PLAYER_NAME = "Astronaut"
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
 var previous_scene = null
 var current_scene = null
+
+# game mechanics
+const PLAYER_NAME = "Astronaut"
+const BASE_HEALTH = 100
+const BASE_OXYGEN = 30
+var player = null
+var current_level = 1
+
 func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
+	player = build_player()
+
+func build_player():
+	# TODO: Add upgrades
+	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
+	var player_bonuses = Creature.Stats.new()
+	var basic_item = Item.new("Flimsy Sword", Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1])
+	var epic_item = Item.new("Cybernetic Eye", Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2])
+	# These do not exist yet.
+	# var ally_item = Item.new("Friendly Robot Servant", Item.ItemType.ALLY, "This robot will fight for you.", Enemy.RobotServant)
+	# var move_item = Item.new("Fire Bolt", Item.ItemType.MOVE, "This launches a bolt of fire at your enemy!", Move.FireBolt)
+	var player_items = [basic_item, epic_item]
+	return GlobalPlayer.new(PLAYER_NAME, BASE_HEALTH, BASE_HEALTH, BASE_OXYGEN, BASE_OXYGEN, player_stats, player_bonuses, player_items)
 
 func goto_scene(target_scene):
 	# This function will usually be called from a signal callback,
@@ -96,5 +120,5 @@ func persist_scene(scene, scene_node):
 	persisted_scenes[scene] = scene_node
 
 func log(level, msg):
-	if Settings.debug <= level:
+	if level <= Settings.debug:
 		print(msg)

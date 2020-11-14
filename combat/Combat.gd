@@ -42,7 +42,7 @@ func _ready():
 	#for i in range(1):
 	for i in range(MAX_ENEMIES):
 		var position = enemy_positions[i]
-		var creature = CombatCreature.CombatCreature.new("Monster" + str(i), EnemyScene.instance(), CombatGlobal.CreatureSize.MEDIUM, position, 50, 50, CombatCreature.Stats.new(1, 2, (i + 1), 1, 1))
+		var creature = CombatCreature.new("Monster" + str(i), EnemyScene.instance(), CombatGlobal.CreatureSize.MEDIUM, position, 50, 50, CombatCreature.Stats.new(1, 2, (i + 1), 1, 1))
 		enemies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -50,7 +50,11 @@ func _ready():
 		var position = ally_positions[i]
 		var creature_name = Global.PLAYER_NAME
 		var creature_size = CombatGlobal.CreatureSize.LARGE_TALL
-		var creature = CombatCreature.CombatCreature.new(creature_name, EnemyScene.instance(), creature_size, position, 50, 50, CombatCreature.Stats.new(3, 2, 1.5, 1, 4))
+		var creature = null
+		if i == 0:
+			creature = CombatCreature.new(Global.player.get_name(), EnemyScene.instance(), creature_size, position, 50, 50, Global.player.get_combat_stats(), Global.player.get_combat_bonuses())
+		else:
+			creature = CombatCreature.new(creature_name, EnemyScene.instance(), creature_size, position, 50, 50, CombatCreature.Stats.new(3, 2, 1.5, 1, 4))
 		allies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -81,7 +85,7 @@ func _process(delta):
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				var target = null
 				while target == null:
-					var target_position = randi() % enemies.size()
+					var target_position = randi() % allies.size()
 					var potential_target = allies[target_position]
 					if potential_target.is_active():
 						target = potential_target
