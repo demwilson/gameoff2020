@@ -32,7 +32,6 @@ var current_scene = null
 
 #Currency and base stats
 var BaseStats = {
-	"Currency": 0,
 	"BaseAttack": 1,
 	"BaseAccuracy": 1,
 	"BaseSpeed": 1,
@@ -62,6 +61,7 @@ const BASE_HEALTH = 100
 const BASE_OXYGEN = 30
 var player = null
 var current_level = 1
+var currency = 0
 
 func _ready():
 	var root = get_tree().get_root()

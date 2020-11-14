@@ -47,7 +47,7 @@ var currency
 var actual_currency
 
 func _ready():
-	actual_currency = Global.BaseStats.Currency
+	actual_currency = Global.currency
 	initialize_cost()
 	$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 	
