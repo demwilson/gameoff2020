@@ -213,6 +213,15 @@ static func sum_array(array):
 		 sum += element
 	return sum
 
+func get_random_type_by_weight(weight_list):
+	var total_weight = sum_array(weight_list)
+	var rand = 1 + (randi() % total_weight)
+	for position in range(weight_list.size()):
+		var chance = weight_list[position]
+		if rand <= chance:
+			return position
+		rand -= chance
+
 func populate_loot_list(loot_list, loot):
 	var entries = []
 	match loot.type:
