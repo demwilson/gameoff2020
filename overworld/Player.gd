@@ -18,6 +18,7 @@ var Raycasts = {
 var stepsTaken = 0
 var stepsToTriggerCombat = 20
 var encounterStep = 20
+var oxygenStepCost = 1
 
 signal collided
 func _ready():
@@ -62,11 +63,16 @@ func has_collided(dir):
 
 func _on_MoveTween_tween_completed(object, key):
 	stepsTaken += 1
+	Global.player.add_oxygen(-1)
+	if Global.player.get_oxygen() <= 0:
+		canMove = false
+		overworld.lose_event()
+		return
 	canMove = true
 
 func generate_steps_to_trigger_combat():
 	stepsToTriggerCombat = randi() % encounterStep + (1 + randi() % encounterStep)
-
+	
 func combat_triggered():
 	if stepsTaken >= stepsToTriggerCombat:
 		return true

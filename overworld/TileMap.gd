@@ -95,6 +95,7 @@ func _on_Player_collided(collisionPoint, direction):
 			randomize()
 			build_level()
 			overworld.place_player()
+			overworld.update_floor_level(levelNum)
 		else:
 			gameOver = true
 			overworld.score += 1000

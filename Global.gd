@@ -53,7 +53,7 @@ var Upgrades = {
 # game mechanics
 const PLAYER_NAME = "Astronaut"
 const BASE_HEALTH = 100
-const BASE_OXYGEN = 30
+const BASE_OXYGEN = 200
 const CURRENCY_TEXT = "Currency"
 const OXYGEN_TEXT = "Oxygen"
 var player = null
@@ -122,7 +122,7 @@ func build_player():
 		Creature.BasePath.PLAYER
 	)
 
-func goto_scene(target_scene):
+func goto_scene(target_scene, function_call = null):
 	# This function will usually be called from a signal callback,
 	# or some other function in the current scene.
 	# Deleting the current scene at this point is
@@ -133,7 +133,7 @@ func goto_scene(target_scene):
 	# we can be sure that no code from the current scene is running:
 	match target_scene:
 		Scene.OVERWORLD:
-			call_deferred("_deferred_goto_scene", target_scene, "res://overworld/Overworld.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://overworld/Overworld.tscn", function_call)
 		Scene.TITLE:
 			_deferred_goto_scene(target_scene, "res://Title.tscn")
 		Scene.COMBAT:
@@ -147,7 +147,7 @@ func goto_scene(target_scene):
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 
-func _deferred_goto_scene(scene, path):
+func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing
 	var overworld_node = persisted_scenes[Scene.OVERWORLD]
 	if overworld_node != null:
@@ -170,7 +170,10 @@ func _deferred_goto_scene(scene, path):
 				continue
 		_:
 			load_new_scene(scene, path)
-
+	
+	if function_call != null && current_scene.has_method(function_call):
+		current_scene.call(function_call)
+		
 func load_new_scene(scene, path):
 	# Load the new scene.
 	var s = ResourceLoader.load(path)

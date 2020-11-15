@@ -360,4 +360,5 @@ func _on_StartGameMission_pressed():
 	#update global currency 
 	Global.currency = actual_currency
 	#Goes back to game
-	Global.goto_scene(Global.Scene.OVERWORLD)
+	Global.build_player()
+	Global.goto_scene(Global.Scene.OVERWORLD, "restart_overworld")

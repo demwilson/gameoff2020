@@ -8,6 +8,7 @@ const ITEM_MODIFIER_VALUE = 1
 var _items = null
 var _max_oxygen = null
 var _oxygen = null
+var _combat_count = 0
 
 func _init(name, size, max_health, health, max_oxygen, oxygen, stats, bonuses, items, base_path, behavior=Behavior.PLAYER, tier="").(tier, name, size, max_health, health, stats, bonuses, base_path, behavior):
 	self._max_oxygen = max_oxygen
@@ -28,7 +29,10 @@ func get_oxygen():
 func get_max_oxygen():
 	return self._max_oxygen
 func get_oxygen_percentage():
-	return (self._oxygen / self._max_oxygen) * 100
+	var fOxygen = float(self._oxygen)
+	var fMaxOxygen = float(self._max_oxygen)
+	var fpercentage = (fOxygen / fMaxOxygen) * 100
+	return int(fpercentage)
 func set_oxygen(value):
 	if value > self._max_oxygen:
 		value = self._max_oxygen
@@ -37,6 +41,13 @@ func set_oxygen(value):
 	self._oxygen = value
 func add_oxygen(value):
 	self.set_oxygen(self._oxygen + value)
+
+func get_combat_count():
+	return self._combat_count
+func add_combat_count(value):
+	self.set_combat_count(self._combat_count + value)
+func set_combat_count(value):
+	self._combat_count = value
 
 func get_stat(type):
 	var bonus = .get_stat(type)
