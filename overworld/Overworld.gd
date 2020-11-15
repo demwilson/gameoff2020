@@ -98,7 +98,7 @@ func trigger_combat():
 	Global.goto_scene(Global.Scene.COMBAT)
 
 func update_floor_level(value):
-	Global.current_level = value
+	Global.floor_level = value
 
 func update_HUD_values():
 	var hud = $GUI/HUD
@@ -107,7 +107,7 @@ func update_HUD_values():
 	oxygenHudValue.text = str(Global.player.get_oxygen())
 	oxygenHudGauge.value = int(Global.player.get_oxygen_percentage())
 	var levelHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Level
-	levelHudValue.text = "Level: " + str(Global.current_level)
+	levelHudValue.text = "Level: " + str(Global.floor_level)
 	var healthHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Health
 	healthHudValue.text = "Health: " + str(Global.player.get_health())
 	var combatsHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Combats
