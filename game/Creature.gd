@@ -52,9 +52,3 @@ func get_stat(type):
 # bonuses
 func get_bonus(type):
 	return self._bonuses[type]
-
-# TODO: Remove below once moves are created
-func basic_damage(attack, atk_bonus, value):
-	return (pow(attack * 2, value)) + (atk_bonus * value)
-func basic_accuracy(accuracy, acc_bonus):
-	return 90 + pow(4, accuracy) + (1.5 * acc_bonus)
