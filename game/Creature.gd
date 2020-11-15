@@ -1,3 +1,11 @@
+enum BasePath {
+	DOG,
+	TARDIGRADE,
+	ROBOT,
+	PLAYER,
+	BOSS,
+}
+
 enum CreatureSize {
 	NONE,
 	MEDIUM,
@@ -6,24 +14,51 @@ enum CreatureSize {
 	LARGE,
 }
 
+enum Behavior {
+	STUPID,
+	FOCUSED,
+	REVENGE,
+	BOSS,
+	PLAYER,
+}
+
 const Stats = preload("res://game/Stats.gd")
 
 const BASE_BONUSES = [0, 0, 0, 0, 0]
 const BASE_STATS = [1, 1, 1, 1, 1]
 
+const file_paths = [
+	"res://assets/Tony_Created_Assets/dog",
+	"res://assets/Tony_Created_Assets/tardigrade",
+	"res://assets/Tony_Created_Assets/robot",
+	"res://assets/Tony_Created_Assets/astro_idle",
+	"res://", # NOT ADDED
+]
+
+var _tier = null
 var _name = null
+var size = null
 var _max_health = null
 var _health = null
 var _stats = null
 var _bonuses = null
+var _base_path = null
+var _behavior = null
 
-func _init(name, max_health, health, stats, bonuses):
+func _init(tier, name, size, max_health, health, stats, bonuses, base_path, behavior):
+	self._tier = tier
 	self._name = name
+	self.size = size
 	self._max_health = max_health
 	self._health = health
 	self._stats = stats
 	self._bonuses = bonuses
+	self._base_path = base_path
+	self._behavior = behavior
 
+# tier
+func get_tier():
+	return self._tier
 # name
 func get_name():
 	return self._name
@@ -47,8 +82,19 @@ func set_health(value):
 func add_health(value):
 	self.set_health(self._health + value)
 # stats
+func get_stats(): pass
 func get_stat(type):
 	return self._stats[type]
 # bonuses
+func get_bonuses(): pass
 func get_bonus(type):
 	return self._bonuses[type]
+# behavior
+func get_behavior():
+	return self._behavior
+# behavior
+func get_base_path():
+	return self._base_path
+
+# moves
+func get_moves(): pass

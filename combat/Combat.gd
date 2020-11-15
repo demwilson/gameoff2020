@@ -7,10 +7,11 @@ var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
 
-const MAX_ANIMATION_TIMER = 2.0
-const ACTION_AVAILABLE_TICKS = 5.0
+const MAX_ANIMATION_TIMER = 1.2
+const ACTION_AVAILABLE_TICKS = 6.0
 const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
+const PLAYER_POSITION = 0
 
 const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
@@ -40,52 +41,52 @@ var animation_ticks = 0
 func _ready():
 	randomize()
 	# Populate the combatants
-	#for i in range(1):
-	for i in range(MAX_ENEMIES):
+	var num_enemies = 1 + randi() % MAX_ENEMIES
+	for i in range(num_enemies):
 		var position = enemy_positions[i]
+		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
 		var creature = CombatCreature.new(
-			"Monster" + str(i),
+			enemy.get_tier(),
+			enemy.get_name(),
 			EnemyScene.instance(),
-			Creature.CreatureSize.MEDIUM,
+			enemy.size,
 			position,
-			50,
-			50,
-			[Global.moves.MoveList.BASIC_ATTACK],
-			CombatCreature.Stats.new(1, 2, (i + 1), 1, 1),
-			CombatCreature.Stats.new(CombatCreature.BASE_BONUSES)
+			enemy.get_max_health(),
+			enemy.get_health(),
+			enemy.get_moves(),
+			enemy.get_stats(),
+			enemy.get_bonuses(),
+			enemy.get_base_path(),
+			enemy.get_behavior()
 		)
 		enemies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
-	for i in range(MAX_ALLIES):
+	var ally_list = Global.player.get_allies()
+	ally_list.push_front(Global.player)
+	for i in range(ally_list.size()):
 		var position = ally_positions[i]
-		var creature_name = Global.PLAYER_NAME
-		var creature_size = Creature.CreatureSize.LARGE_TALL
 		var creature = null
-		if i == 0:
-			creature = CombatCreature.new(
-				Global.player.get_name(),
-				EnemyScene.instance(),
-				creature_size,
-				position,
-				Global.player.get_max_health(),
-				Global.player.get_health(),
-				Global.player.get_combat_moves(),
-				Global.player.get_combat_stats(),
-				Global.player.get_combat_bonuses()
-			)
+		var ally = ally_list[i]
+		if typeof(ally) != TYPE_INT:
+			ally = Global.player
 		else:
-			creature = CombatCreature.new(
-				creature_name,
-				EnemyScene.instance(),
-				creature_size,
-				position,
-				50,
-				50,
-				[Global.moves.MoveList.BASIC_ATTACK],
-				CombatCreature.Stats.new(3, 2, 1.5, 1, 4),
-				CombatCreature.Stats.new(CombatCreature.BASE_BONUSES)
-			)
+			ally = Global.enemies.get_enemy_by_id(ally)
+
+		creature = CombatCreature.new(
+			ally.get_tier(),
+			ally.get_name(),
+			EnemyScene.instance(),
+			ally.size,
+			position,
+			ally.get_max_health(),
+			ally.get_health(),
+			ally.get_moves(),
+			ally.get_stats(),
+			ally.get_bonuses(),
+			ally.get_base_path(),
+			ally.get_behavior()
+		)
 		allies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -114,13 +115,10 @@ func _process(delta):
 		var creature = enemies[i]
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var target = null
-				while target == null:
-					var target_position = randi() % allies.size()
-					var potential_target = allies[target_position]
-					if potential_target.is_active():
-						target = potential_target
-				action_queue.append(CombatEvent.CombatEvent.new(Move.MoveType.DAMAGE, creature, target))
+				var move_id = creature.get_move()
+				var move = Global.moves.get_move_by_id(move_id)
+				var target = creature.choose_target(move, allies)
+				action_queue.append(CombatEvent.new(move.type, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -136,13 +134,11 @@ func _process(delta):
 		var creature = allies[i]
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var target = null
-				while target == null:
-					var target_position = randi() % enemies.size()
-					var potential_target = enemies[target_position]
-					if potential_target.is_active():
-						target = potential_target
-				action_queue.append(CombatEvent.CombatEvent.new(Move.MoveType.DAMAGE, creature, target))
+				# TODO: Player windowing
+				var move_id = creature.get_move()
+				var move = Global.moves.get_move_by_id(move_id)
+				var target = creature.choose_target(move, enemies)
+				action_queue.append(CombatEvent.new(move.type, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -178,8 +174,12 @@ func check_end_combat():
 		if !creature.is_active():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
+		save_player_changes(allies[PLAYER_POSITION])
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.COMBAT_WIN)
+
+func save_player_changes(combat_player):
+	Global.player.set_health(combat_player.get_health())
 
 func check_action_queue():
 	if action_queue.size() == 0 || animation_wait > 0:
