@@ -25,6 +25,21 @@ func add_item(item):
 func add_items(items):
 	for item in items:
 		self._items.append(item)
+# oxygen
+func get_oxygen():
+	return self._oxygen
+func get_max_oxygen():
+	return self._max_oxygen
+func get_oxygen_percentage():
+	return (self._oxygen / self._max_oxygen) * 100
+func set_oxygen(value):
+	if value > self._max_oxygen:
+		value = self._max_oxygen
+	elif value < 0:
+		value = 0
+	self._oxygen = value
+func add_oxygen(value):
+	self.set_oxygen(self._oxygen + value)
 
 func get_stat(type):
 	var bonus = .get_stat(type)

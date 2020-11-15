@@ -8,6 +8,7 @@ var counter = 0
 # node references
 onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
+onready var loot_list = $GUI/Loot/LootList
 
 # game state
 var player_tile
@@ -45,7 +46,7 @@ func _input(event):
 		Global.goto_scene(Global.Scene.STATS)
 
 func win_event():
-	set_audio(true)
+	set_audio(false)
 	$GUI/Win.visible = true
 	
 func set_audio(value):
@@ -58,18 +59,16 @@ func _on_Restart_pressed():
 	tile_map.build_level()
 	tile_map.gameOver = false
 	place_player()
-	set_audio(false)
+	set_audio(true)
 	$GUI/Win.visible = false
 	$GUI/Win/Restart.disabled = false
 
 func get_loot_for_chest(floorLevel):
-	$GUI/Loot/LootList.clear()
-	#TODO: call global to generate list of items
-	print("Generating Loot")
-	#loop through items and add them to LootList
-	$GUI/Loot/LootList.add_item("Fancy Pointy Stick", null, false)
-	$GUI/Loot/LootList.add_item("Greased Animal Hide", null, false)
-	$GUI/Loot/LootList.add_item("Boots of Running Really Fast", null, false)
+	loot_list.clear()
+	# generate list of items
+	var loot = Global.items.generate_loot(Global.current_level, Global.player)
+	# Add to UI
+	Global.populate_loot_list(loot_list, loot)
 	#show Loot Screen
 	$GUI/Loot.visible = true
 

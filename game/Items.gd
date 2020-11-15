@@ -48,11 +48,18 @@ func generate_loot(tier_level, player=null):
 			loot = get_random_count(OXYGEN_BASE, tier_level)
 		LootType.CURRENCY:
 			loot = get_random_count(CURRENCY_BASE, tier_level)
-	if player && loot_type == LootType.ITEM:
-		var loot_ids = []
-		for item in loot:
-			loot_ids.append(item.id)
-		player.add_items(loot_ids)
+
+	if player:
+		match loot_type:
+			LootType.ITEM:
+				var loot_ids = []
+				for item in loot:
+					loot_ids.append(item.id)
+				player.add_items(loot_ids)
+			LootType.OXYGEN:
+				player.add_oxygen(loot)
+			LootType.CURRENCY:
+				Global.currency += loot
 
 	Global.log(Settings.LogLevel.TRACE, "[generate_loot] Type: " + LootTypeMap[loot_type] + " | Loot: " + str(loot))
 	return {

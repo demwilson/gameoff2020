@@ -18,6 +18,7 @@ enum Scene {
 	STATS,
 	COMBAT_WIN,
 	GAME_OVER,
+	GROUND_CONTROL,
 }
 
 var TEXT_COLOR = {
@@ -116,9 +117,11 @@ func goto_scene(target_scene):
 		Scene.STATS:
 			_deferred_goto_scene(target_scene, "res://Stats.tscn")
 		Scene.GAME_OVER:
-			call_deferred("_deferred_goto_scene", target_scene, "res://GroundControl.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 		Scene.COMBAT_WIN:
 			call_deferred("_deferred_goto_scene", target_scene, "res://combat/CombatWin.tscn")
+		Scene.GROUND_CONTROL:
+			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 
 func _deferred_goto_scene(scene, path):
 	# stop/start processing
@@ -182,3 +185,16 @@ static func sum_array(array):
 	for element in array:
 		 sum += element
 	return sum
+
+func populate_loot_list(loot_list, loot):
+	var entries = []
+	match loot.type:
+		Items.LootType.ITEM:
+			for item in loot.items:
+				entries.append(item.name)
+		Items.LootType.CURRENCY:
+			entries.append(str(loot.items) + " " + Global.CURRENCY_TEXT)
+		Items.LootType.OXYGEN:
+			entries.append(str(loot.items) + " " + Global.OXYGEN_TEXT)
+	for entry in entries:
+		loot_list.add_item(entry, null, false)
