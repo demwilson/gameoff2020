@@ -31,16 +31,6 @@ var current_scene_id = null
 var current_scene = null
 
 
-#Currency and base stats
-var BaseStats = {
-	"BaseAttack": 1,
-	"BaseAccuracy": 1,
-	"BaseSpeed": 1,
-	"BaseDefense": 1,
-	"BaseEvade": 1,
-	"BaseOxygen": 0,
-}
-
 #Upgraded stats
 var Upgrades = {
 	"Oxygen": 0,
@@ -67,7 +57,7 @@ var player = null
 var moves = null
 var items = null
 var current_level = 1
-var currency = 600
+var currency = 6000
 
 func _ready():
 	var root = get_tree().get_root()
@@ -89,7 +79,7 @@ func _ready():
 
 	moves = Moves.new(available_moves)
 	items = Items.new(available_items)
-	
+
 	# Build player after initializing everything
 	build_player()
 
