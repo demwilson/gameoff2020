@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://combat/Combat.gd" type="Script" id=1]
 [ext_resource path="res://font/micross.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/Tony_Created_Assets/combat_background.png" type="Texture" id=3]
 
 [sub_resource type="Theme" id=1]
 
@@ -54,6 +55,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CombatArea" type="TextureRect" parent="CanvasLayer/Background"]
+margin_top = 40.0
+margin_right = 640.0
+margin_bottom = 256.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
 [node name="Title" type="Label" parent="CanvasLayer/Background"]
 margin_right = 640.0
 margin_bottom = 40.0
@@ -61,6 +72,7 @@ text = "Combat Screen"
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -71,18 +83,18 @@ margin_bottom = 40.0
 text = "Ticks:"
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="AnimationTicks" type="Label" parent="CanvasLayer"]
-margin_left = 192.0
-margin_top = 72.0
-margin_right = 392.0
-margin_bottom = 112.0
+margin_left = 224.0
+margin_top = 136.0
+margin_right = 424.0
+margin_bottom = 176.0
 text = "Animation Ticks:"
 valign = 1
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/big_boy.png-c8fa468962248ee943d95a9d616a76fc.stex"
+path="res://.import/tardigrade1.png-65682138fd8f4c525b66fc64b50d8d80.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/big_boy.png"
-dest_files=[ "res://.import/big_boy.png-c8fa468962248ee943d95a9d616a76fc.stex" ]
+source_file="res://assets/Tony_Created_Assets/tardigrade1.png"
+dest_files=[ "res://.import/tardigrade1.png-65682138fd8f4c525b66fc64b50d8d80.stex" ]
 
 [params]
 
