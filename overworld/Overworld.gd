@@ -23,6 +23,7 @@ func place_player():
 	tile_map.isGeneratingNewLevel = false
 
 func _process(delta):
+	update_HUD_values()
 	if Settings.debug:
 		$GUI/TilePos.visible = true
 		$GUI/MousePos.visible = true
@@ -84,4 +85,7 @@ func _on_LootAccept_pressed():
 	tile_map.chestIsOpen = false
 
 func trigger_combat():
-	Global.goto_scene(Global.Scene.COMBAT)	
+	Global.goto_scene(Global.Scene.COMBAT)
+
+func update_HUD_values():
+	pass
