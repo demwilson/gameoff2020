@@ -179,8 +179,7 @@ func check_end_combat():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		self.set_process(false)
-		# TODO: Show win screen
-		return Global.goto_scene(Global.Scene.OVERWORLD)
+		return Global.goto_scene(Global.Scene.COMBAT_WIN)
 
 func check_action_queue():
 	if action_queue.size() == 0 || animation_wait > 0:
