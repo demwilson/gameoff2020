@@ -64,7 +64,8 @@ func _ready():
 
 	var ally_list = Global.player.get_allies()
 	ally_list.push_front(Global.player)
-	for i in range(ally_list.size()):
+	var num_allies = min(ally_list.size(), MAX_ALLIES)
+	for i in range(num_allies):
 		var position = ally_positions[i]
 		var creature = null
 		var ally = ally_list[i]
