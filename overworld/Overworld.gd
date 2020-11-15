@@ -45,14 +45,11 @@ func _input(event):
 		Global.goto_scene(Global.Scene.STATS)
 
 func win_event():
-	player.get_node("AudioStreamPlayer2D").stream_paused = true
+	set_audio(true)
 	$GUI/Win.visible = true
 	
-func toggle_audio():
-	if player.get_node("AudioStreamPlayer2D").stream_paused:
-		player.get_node("AudioStreamPlayer2D").stream_paused = false
-	else:
-		player.get_node("AudioStreamPlayer2D").stream_paused = true
+func set_audio(value):
+	player.get_node("AudioStreamPlayer2D").stream_paused = !value
 
 func _on_Restart_pressed():
 	$GUI/Win/Restart.disabled = true
@@ -61,7 +58,7 @@ func _on_Restart_pressed():
 	tile_map.build_level()
 	tile_map.gameOver = false
 	place_player()
-	player.get_node("AudioStreamPlayer2D").stream_paused = false
+	set_audio(false)
 	$GUI/Win.visible = false
 	$GUI/Win/Restart.disabled = false
 
