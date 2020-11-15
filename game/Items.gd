@@ -6,17 +6,19 @@ enum LootType {
 	OXYGEN,
 	CURRENCY
 }
-const LootTypeMap = [
-	"ITEM",
-	"OXYGEN",
-	"CURRENCY"
-]
 enum ItemList {
 	CROWBAR,
 	FLIMSY_SWORD,
 	CYBERNETIC_EYE,
 	FIREBOLT,
+	ROBOT_T1,
 }
+
+const LootTypeMap = [
+	"ITEM",
+	"OXYGEN",
+	"CURRENCY"
+]
 
 # List positions match LootType enum
 const LOOT_PROBABILITY_WEIGHTS = [60, 30, 10]
@@ -32,9 +34,9 @@ var _items = null
 func _init(items):
 	self._items = items
 
-func get_item_by_id(item_id):
-	if item_id < self._items.size():
-		return self._items[item_id]
+func get_item_by_id(id):
+	if id < self._items.size():
+		return self._items[id]
 	return null
 
 func generate_loot(tier_level, player=null):

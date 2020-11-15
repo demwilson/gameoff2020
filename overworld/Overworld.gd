@@ -80,7 +80,7 @@ func _on_Restart_pressed():
 func get_loot_for_chest(floorLevel):
 	loot_list.clear()
 	# generate list of items
-	var loot = Global.items.generate_loot(Global.current_level, Global.player)
+	var loot = Global.items.generate_loot(Global.floor_level, Global.player)
 	# Add to UI
 	Global.populate_loot_list(loot_list, loot)
 	#show Loot Screen

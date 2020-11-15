@@ -1,7 +1,7 @@
 [gd_resource type="Animation" format=2]
 
 [resource]
-resource_name = "astronaut_idle"
+resource_name = "astro_idle"
 length = 1.4
 loop = true
 tracks/0/type = "value"

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/robot_servant.png-2b021cd1c4e0ea18159d2180520db8ec.stex"
+path="res://.import/combat_background.png-0e6a92b781fea8bb545c26dc82efab42.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/robot_servant.png"
-dest_files=[ "res://.import/robot_servant.png-2b021cd1c4e0ea18159d2180520db8ec.stex" ]
+source_file="res://assets/Tony_Created_Assets/combat_background.png"
+dest_files=[ "res://.import/combat_background.png-0e6a92b781fea8bb545c26dc82efab42.stex" ]
 
 [params]
 
