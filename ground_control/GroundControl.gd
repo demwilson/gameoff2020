@@ -30,6 +30,13 @@ var Max_Click = {
 	"AdvanceDefense": 1,
 	"AdvanceTraining": 1,
 }
+
+var Upgrades_Needed = {
+	"Tier0_to_Tier1": 1,
+	"Tier1_to_Tier2": 3,
+	"Tier2_to_Tier3": 2,
+	"Basic_to_Advance": 1,
+}
 #Upgrade
 enum UpgradeType {
 	OXYGEN,
@@ -295,17 +302,17 @@ func tier_list():
 	#Either one of each or 3 of one tier 1 and tier 2
 	tier1_total = Button_Click.Attack + Button_Click.Accuracy + Button_Click.Defense
 	tier2_total = Button_Click.Speed + Button_Click.Evade
-	if Button_Click.Oxygen >= 1:
+	if Button_Click.Oxygen >= Upgrades_Needed.Tier0_to_Tier1:
 		$CanvasLayer/Tier1.visible = true
-	if tier1_total >= 3:
+	if tier1_total >= Upgrades_Needed.Tier1_to_Tier2:
 		$CanvasLayer/Tier2.visible = true
-	if tier2_total >= 2:
+	if tier2_total >= Upgrades_Needed.Tier2_to_Tier3:
 		$CanvasLayer/Tier3.visible = true
-	if Button_Click.Basic_Weapon == 1:
+	if Button_Click.Basic_Weapon == Upgrades_Needed.Basic_to_Advance:
 		$CanvasLayer/Tier4/AdvWpnButton.visible = true
-	if Button_Click.Basic_Defense == 1:
+	if Button_Click.Basic_Defense == Upgrades_Needed.Basic_to_Advance:
 		$CanvasLayer/Tier4/AdvDefButton.visible = true
-	if Button_Click.Combat_Training == 1:
+	if Button_Click.Combat_Training == Upgrades_Needed.Basic_to_Advance:
 		$CanvasLayer/Tier4/AdvTrnButton.visible = true
 		
 ##### Button_Click

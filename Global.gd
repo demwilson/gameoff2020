@@ -51,7 +51,7 @@ const BASE_OXYGEN = 30
 var player = null
 var moves = null
 var current_level = 1
-var currency = 0
+var currency = 6000
 
 func _ready():
 	var root = get_tree().get_root()
