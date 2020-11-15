@@ -21,15 +21,15 @@ const PERCENT_MULTIPLIER = 100
 var counter = 0
 var enemies = []
 var enemy_positions = [
-	Vector2(40, 72),
-	Vector2(96, 140),
-	Vector2(40, 208),
+	Vector2(48, 136),
+	Vector2(48, 216),
+	Vector2(136, 176),
 ]
 var allies = []
 var ally_positions = [
-	Vector2(600, 72),
-	Vector2(544, 140),
-	Vector2(600, 208),
+	Vector2(592, 136),
+	Vector2(592, 216),
+	Vector2(512, 176),
 ]
 
 var action_queue = []
