@@ -7,6 +7,21 @@ var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
 
+onready var CombatInstructions = $CanvasLayer/CombatMenu/Instructions
+onready var MoveSelectionArrow = $CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveSelectionArrow
+onready var TargetSelectionArrow = $CanvasLayer/TargetSelectionArrow
+onready var MoveNameLabels = [
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName0,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName1,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName2,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName3,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName4,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName5,
+]
+
+const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
+const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
+
 const MAX_ANIMATION_TIMER = 1.2
 const ACTION_AVAILABLE_TICKS = 6.0
 const MAX_ENEMIES = 3
@@ -17,6 +32,13 @@ const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
+
+const MENU_ARROW_POSITION = 0
+const TARGET_ARROW_POSITION = 1
+const FIRST_POSITION = 0
+const STEP_AMOUNT = 1
+const MOVE_COLUMN_COUNT = 3
+const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 
 var counter = 0
 var enemies = []
@@ -31,11 +53,31 @@ var ally_positions = [
 	Vector2(592, 216),
 	Vector2(512, 176),
 ]
+var menu_positions = [
+	[Vector2(8, 0), Vector2(48, 0)],
+	[Vector2(8, 32), Vector2(48, 32)],
+	[Vector2(8, 64), Vector2(48, 64)],
+	[Vector2(128, 0), Vector2(168, 0)],
+	[Vector2(128, 32), Vector2(168, 32)],
+	[Vector2(128, 64), Vector2(168, 64)],
+]
 
 var action_queue = []
 var animation_wait = 0
 var animation_ticks = 0
 
+# Menuing
+enum MenuPhase {
+	NONE,
+	MOVE_SELECT,
+	TARGET_SELECT,
+}
+var _phase = MenuPhase.NONE
+var _menu_move = null
+var _menu_target = null
+var _menu_creature = null
+var _creature_moves = null
+var _hover = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -135,11 +177,13 @@ func _process(delta):
 		var creature = allies[i]
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				# TODO: Player windowing
-				var move_id = creature.get_move()
-				var move = Global.moves.get_move_by_id(move_id)
-				var target = creature.choose_target(move, enemies)
-				action_queue.append(CombatEvent.new(move.type, creature, target))
+				if creature.get_behavior() == Creature.Behavior.PLAYER:
+					show_move_options(creature)
+				else:
+					var move_id = creature.get_move()
+					var move = Global.moves.get_move_by_id(move_id)
+					var target = creature.choose_target(move, enemies)
+					action_queue.append(CombatEvent.new(move.type, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -156,12 +200,102 @@ func _process(delta):
 		var ui_ticks = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
 
-
 func _input(event):
 	if !event.is_pressed():
 		return
 	if event.is_action("map_change_again"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
+	elif _phase != MenuPhase.NONE:
+		if event.is_action("up"):
+			update_hover(-STEP_AMOUNT)
+		elif event.is_action("down"):
+			update_hover(STEP_AMOUNT)
+		elif event.is_action("left"):
+			update_hover(-STEP_AMOUNT * MOVE_COLUMN_COUNT)
+		elif event.is_action("right"):
+			update_hover(STEP_AMOUNT * MOVE_COLUMN_COUNT)
+		elif event.is_action("ui_accept"):
+			if _phase == MenuPhase.MOVE_SELECT:
+				var move = _creature_moves[_hover]
+				_menu_move = move
+				_phase = MenuPhase.TARGET_SELECT
+				MoveSelectionArrow.visible = false
+				_hover = FIRST_POSITION
+				update_selection_arrow(_hover)
+				TargetSelectionArrow.visible = true
+			elif _phase == MenuPhase.TARGET_SELECT:
+				var targeted_list = get_target_list(_menu_move)
+				_menu_target = targeted_list[_hover]
+				add_selected_move_to_queue()
+				reset_menuing()
+
+func update_hover(amount):
+	_hover += amount
+	var list_size = null
+	match _phase:
+		MenuPhase.MOVE_SELECT:
+			list_size = _creature_moves.size()
+		MenuPhase.TARGET_SELECT:
+			var targeted_list = get_target_list(_menu_move)
+			list_size = targeted_list.size()
+	if _hover >= list_size:
+		_hover = FIRST_POSITION
+	elif _hover < FIRST_POSITION:
+		_hover = list_size - STEP_AMOUNT
+	update_selection_arrow(_hover)
+
+func get_target_list(move):
+	var targeted_list = null
+	match move.type:
+		Move.MoveType.DAMAGE:
+			targeted_list = enemies
+		Move.MoveType.HEAL:
+			targeted_list = allies
+	return targeted_list
+
+func add_selected_move_to_queue():
+	action_queue.append(CombatEvent.new(_menu_move.type, _menu_creature, _menu_target))
+
+func show_move_options(creature):
+	_phase = MenuPhase.MOVE_SELECT
+	_menu_creature = creature
+	CombatInstructions.text = "Select Attack"
+	# Get move ids
+	var move_ids = creature.get_moves()
+	# Get moves
+	var moves = []
+	for move_id in move_ids:
+		var move = Global.moves.get_move_by_id(move_id)
+		moves.append(move)
+	_creature_moves = moves
+	# Load moves
+	for i in range(moves.size()):
+		MoveNameLabels[i].text = moves[i].name
+		MoveNameLabels[i].visible = true
+	# Show menu
+	CombatInstructions.visible = true
+	update_selection_arrow(_hover)
+	MoveSelectionArrow.texture = COMBAT_ARROW_RIGHT
+	MoveSelectionArrow.visible = true
+
+func reset_menuing():
+	_menu_creature = null
+	_menu_move = null
+	_phase = MenuPhase.NONE
+	_hover = 0
+	CombatInstructions.visible = false
+	TargetSelectionArrow.visible = false
+	MoveSelectionArrow.visible = false
+
+func update_selection_arrow(position):
+	match _phase:
+		MenuPhase.MOVE_SELECT:
+			MoveSelectionArrow.rect_position = menu_positions[position][MENU_ARROW_POSITION]
+		MenuPhase.TARGET_SELECT:
+			var targeted_list = get_target_list(_menu_move)
+			var creature_location = targeted_list[position].scene.position
+			var altered_position = creature_location + COMBAT_ARROW_DOWN_OFFSET
+			TargetSelectionArrow.rect_position = altered_position
 
 func check_end_combat():
 	var dead_enemies = 0
