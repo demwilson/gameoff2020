@@ -15,18 +15,17 @@
 [ext_resource path="res://assets/Label_Battery.png" type="Texture" id=13]
 [ext_resource path="res://assets/coin.png" type="Texture" id=14]
 
-[sub_resource type="Gradient" id=6]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0 )
-colors = PoolColorArray( 0.00231934, 0.149496, 0.59375, 0.294118 )
+colors = PoolColorArray( 0.00392157, 0.14902, 0.592157, 0.588235 )
 
-[sub_resource type="GradientTexture" id=7]
-gradient = SubResource( 6 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 16, 16 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "down"
+[sub_resource type="Animation" id=4]
 length = 0.2
 step = 0.05
 tracks/0/type = "value"
@@ -42,8 +41,7 @@ tracks/0/keys = {
 "values": [ 2, 3, 6, 5 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "left"
+[sub_resource type="Animation" id=5]
 length = 0.2
 step = 0.05
 tracks/0/type = "value"
@@ -59,8 +57,7 @@ tracks/0/keys = {
 "values": [ 26, 27, 30, 31 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "right"
+[sub_resource type="Animation" id=6]
 length = 0.2
 step = 0.05
 tracks/0/type = "value"
@@ -76,8 +73,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 10, 9 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "up"
+[sub_resource type="Animation" id=7]
 length = 0.2
 step = 0.05
 tracks/0/type = "value"
@@ -131,7 +127,7 @@ margin_bottom = 32.0
 margin_right = 170.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 7 )
+texture = SubResource( 2 )
 
 [node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background"]
 margin_right = 50.0
@@ -143,10 +139,10 @@ __meta__ = {
 }
 
 [node name="Number" type="Label" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background"]
-margin_left = 50.0
-margin_right = 75.0
+margin_left = 42.883
+margin_right = 67.883
 margin_bottom = 32.0
-text = "10"
+text = "100"
 align = 1
 valign = 1
 __meta__ = {
@@ -177,7 +173,7 @@ margin_bottom = 32.0
 margin_right = 170.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 7 )
+texture = SubResource( 2 )
 
 [node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsLeft/CarbonBar/Carbon/Background"]
 margin_right = 50.0
@@ -192,7 +188,7 @@ __meta__ = {
 margin_left = 50.0
 margin_right = 75.0
 margin_bottom = 32.0
-text = "10"
+text = "50"
 align = 1
 valign = 1
 __meta__ = {
@@ -228,7 +224,7 @@ margin_bottom = 32.0
 margin_right = 272.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 7 )
+texture = SubResource( 2 )
 
 [node name="Icon" type="TextureRect" parent="GUI/HUD/HBoxContainer/Currencys/CurrencyBar/Currency/Background"]
 anchor_top = 0.5
@@ -267,7 +263,7 @@ margin_bottom = 32.0
 margin_right = 272.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 7 )
+texture = SubResource( 2 )
 
 [node name="Level" type="Label" parent="GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background"]
 margin_top = 1.0
@@ -318,7 +314,7 @@ margin_bottom = 32.0
 margin_right = 170.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 7 )
+texture = SubResource( 2 )
 
 [node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsRight/PowerBar/Power/Background"]
 margin_right = 50.0
@@ -333,7 +329,7 @@ __meta__ = {
 margin_left = 50.0
 margin_right = 75.0
 margin_bottom = 32.0
-text = "10"
+text = "50"
 align = 1
 valign = 1
 __meta__ = {
@@ -364,7 +360,7 @@ margin_bottom = 32.0
 margin_right = 170.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 7 )
+texture = SubResource( 2 )
 
 [node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsRight/WaterBar/Water/Background"]
 margin_right = 50.0
@@ -379,7 +375,7 @@ __meta__ = {
 margin_left = 50.0
 margin_right = 75.0
 margin_bottom = 32.0
-text = "10"
+text = "50"
 align = 1
 valign = 1
 __meta__ = {
@@ -500,11 +496,12 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="GUI/Win"]
-margin_left = 128.0
+margin_left = 69.566
 margin_top = 40.0
-margin_right = 512.0
+margin_right = 555.566
 margin_bottom = 88.0
-text = "You Win!"
+text = "You've done excellent! Spend your currency at SAAN to go further next time.
+You Win!"
 align = 1
 valign = 1
 
@@ -513,7 +510,34 @@ margin_left = 216.0
 margin_top = 104.0
 margin_right = 432.0
 margin_bottom = 168.0
-text = "Restart"
+text = "Go To SAAN"
+
+[node name="Lose" type="ColorRect" parent="GUI"]
+visible = false
+margin_right = 640.0
+margin_bottom = 328.0
+color = Color( 0, 0, 0, 0.694118 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/Lose"]
+margin_left = 36.0
+margin_top = 41.0
+margin_right = 607.0
+margin_bottom = 100.0
+text = "You have made poor choices and it lead to your demise. Spend what currency you managed to find at SAAN.
+You Lose!"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="LoseRestart" type="Button" parent="GUI/Lose"]
+margin_left = 216.0
+margin_top = 104.0
+margin_right = 432.0
+margin_bottom = 168.0
+text = "Go To SAAN"
 
 [node name="Loot" type="ColorRect" parent="GUI"]
 visible = false
@@ -574,15 +598,15 @@ frame = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="MoveTween" type="Tween" parent="PlayerRoot/Player"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerRoot/Player"]
-anims/down = SubResource( 2 )
-anims/left = SubResource( 3 )
-anims/right = SubResource( 4 )
-anims/up = SubResource( 5 )
+anims/down = SubResource( 4 )
+anims/left = SubResource( 5 )
+anims/right = SubResource( 6 )
+anims/up = SubResource( 7 )
 
 [node name="RayCastLeft" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -619,6 +643,7 @@ current = true
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 [connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="GUI/Lose/LoseRestart" to="." method="_on_LoseRestart_pressed"]
 [connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
 [connection signal="collided" from="PlayerRoot/Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="PlayerRoot/Player/MoveTween" to="PlayerRoot/Player" method="_on_MoveTween_tween_completed"]
