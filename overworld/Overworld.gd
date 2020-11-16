@@ -98,7 +98,7 @@ func trigger_combat():
 	Global.goto_scene(Global.Scene.COMBAT)
 
 func update_floor_level(value):
-	Global.floor_level = value
+	Global.floor_level = value + 1
 
 func update_HUD_values():
 	var hud = $GUI/HUD
