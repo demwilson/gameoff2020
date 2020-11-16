@@ -37,6 +37,8 @@ func set_ticks(value):
 func add_ticks(value):
 	self._ticks += value * self._stats.speed
 # moves
+func get_moves():
+    return self._moves
 func get_move(position=null):
 	var move
 	if position:
@@ -44,6 +46,8 @@ func get_move(position=null):
 	else:
 		move = self._moves[randi() % self._moves.size()]
 	return move
+func choose_move():
+	self._moves[randi() % self._moves]
 
 func is_active():
 	return self._health > 0
@@ -53,9 +57,6 @@ func update_health_percentage():
 func update_ticks():
 	var current_ticks = self.get_ticks()
 	self.scene.ticks.value = current_ticks
-
-func choose_move():
-	self._moves[randi() % self._moves]
 
 func choose_target(move, target_list):
 	var target = null

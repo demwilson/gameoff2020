@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/Tony_Created_Assets/dog1.png" type="Texture" id=1]
+[ext_resource path="res://assets/Tony_Created_Assets/astro_idle.png" type="Texture" id=1]
 [ext_resource path="res://combat/enemies/CombatEnemy.gd" type="Script" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -11,9 +11,11 @@ bg_color = Color( 0, 1, 0, 1 )
 
 [node name="CombatEnemy" type="Sprite"]
 texture = ExtResource( 1 )
+hframes = 8
 script = ExtResource( 2 )
 
 [node name="Name" type="Label" parent="."]
+visible = false
 margin_left = -40.0
 margin_top = -40.0
 margin_right = 46.0
@@ -41,6 +43,7 @@ __meta__ = {
 }
 
 [node name="Ticks" type="ProgressBar" parent="."]
+visible = false
 margin_left = -16.0
 margin_top = 32.0
 margin_right = 16.0
