@@ -275,6 +275,8 @@ func place_doors(anchorSpotPosition):
 
 	var forcedDoorsToPlace = []
 	var doorsToAdd = []
+	var canPlaceObjDoorDirectionPosition = 0
+	var canPlaceObjDoorTilePosition = 1
 	
 	if anchorSpotPosition == MapCornerPoints.TopLeft:
 		get_required_and_free_doors_to_palce(doorsToAdd, forcedDoorsToPlace, currentBottomMidPoint, DirectionValue.Bottom)
@@ -318,8 +320,8 @@ func place_doors(anchorSpotPosition):
 	var pointsToAdd = []
 	for doorToAdd in numberOfDoorsToAdd:
 		var doorArr = doorsToAdd[randi() % numberOfDoorsToAdd]
-		var doorTile = doorArr[1]
-		var doorDirection = doorArr[0]
+		var doorTile = doorArr[canPlaceObjDoorTilePosition]
+		var doorDirection = doorArr[canPlaceObjDoorDirectionPosition]
 		
 		if doorDirection == DirectionValue.Bottom:
 			add_door_and_get_point_to_add(doorDirection, pointsToAdd, currentBottomMidPoint, anchorSpotPosition, doorTile)
@@ -334,8 +336,8 @@ func place_doors(anchorSpotPosition):
 			add_door_and_get_point_to_add(doorDirection, pointsToAdd, currentLeftMidPoint, anchorSpotPosition, doorTile)
 	
 	for forcedDoorToPlace in forcedDoorsToPlace:
-		var forcedDoorTile = forcedDoorToPlace[1]
-		var forcedDoorDirection = forcedDoorToPlace[0]
+		var forcedDoorTile = forcedDoorToPlace[canPlaceObjDoorTilePosition]
+		var forcedDoorDirection = forcedDoorToPlace[canPlaceObjDoorDirectionPosition]
 		if forcedDoorDirection == DirectionValue.Bottom:
 			add_door_and_get_point_to_add(forcedDoorToPlace, pointsToAdd, currentBottomMidPoint, anchorSpotPosition, forcedDoorTile)
 
