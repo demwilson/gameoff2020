@@ -1,7 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://combat/Combat.gd" type="Script" id=1]
 [ext_resource path="res://font/micross.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/Tony_Created_Assets/combat_background.png" type="Texture" id=3]
+[ext_resource path="res://assets/combat_arrow_right.png" type="Texture" id=4]
+[ext_resource path="res://assets/combat_arrow_down.png" type="Texture" id=5]
 
 [sub_resource type="Theme" id=1]
 
@@ -54,6 +57,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CombatArea" type="TextureRect" parent="CanvasLayer/Background"]
+margin_top = 40.0
+margin_right = 640.0
+margin_bottom = 256.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
 [node name="Title" type="Label" parent="CanvasLayer/Background"]
 margin_right = 640.0
 margin_bottom = 40.0
@@ -61,6 +74,7 @@ text = "Combat Screen"
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -71,18 +85,18 @@ margin_bottom = 40.0
 text = "Ticks:"
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="AnimationTicks" type="Label" parent="CanvasLayer"]
-margin_left = 192.0
-margin_top = 72.0
-margin_right = 392.0
-margin_bottom = 112.0
+margin_left = 224.0
+margin_top = 136.0
+margin_right = 424.0
+margin_bottom = 176.0
 text = "Animation Ticks:"
 valign = 1
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -103,14 +117,14 @@ __meta__ = {
 }
 
 [node name="Enemies" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
-margin_right = 160.0
+margin_right = 152.0
 margin_bottom = 104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Enemies"]
-margin_right = 160.0
+margin_right = 152.0
 margin_bottom = 104.0
 size_flags_horizontal = 3
 __meta__ = {
@@ -118,7 +132,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
-margin_right = 160.0
+margin_right = 152.0
 margin_bottom = 15.0
 custom_styles/normal = SubResource( 4 )
 custom_fonts/font = SubResource( 5 )
@@ -132,7 +146,7 @@ __meta__ = {
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 margin_top = 19.0
-margin_right = 160.0
+margin_right = 152.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 5 )
 
@@ -172,6 +186,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Instructions" type="Label" parent="CanvasLayer/CombatMenu"]
+visible = false
+margin_left = 160.0
+margin_top = -16.0
+margin_right = 416.0
+margin_bottom = 3.0
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Combat Menu"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Menu" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
 margin_left = 160.0
 margin_right = 416.0
@@ -188,24 +218,111 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
 margin_right = 256.0
-margin_bottom = 19.0
-custom_styles/normal = SubResource( 6 )
-custom_fonts/font = SubResource( 7 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "Combat Menu"
-align = 1
+margin_bottom = 101.0
+size_flags_vertical = 3
+color = Color( 0.2, 0.2, 0.2, 1 )
+
+[node name="MoveSelectionArrow" type="TextureRect" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 8.0
+margin_right = 40.0
+margin_bottom = 32.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveName0" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 48.0
+margin_right = 120.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Move 1"
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveName1" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 48.0
+margin_top = 32.0
+margin_right = 120.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Move 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveName2" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 48.0
+margin_top = 64.0
+margin_right = 120.0
+margin_bottom = 96.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Move 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveName3" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 168.0
+margin_right = 240.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Move 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveName4" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 168.0
+margin_top = 32.0
+margin_right = 240.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Move 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveName5" type="Label" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect"]
+visible = false
+margin_left = 168.0
+margin_top = 64.0
+margin_right = 240.0
+margin_bottom = 96.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Move 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
-margin_top = 23.0
+margin_top = 105.0
 margin_right = 256.0
-margin_bottom = 28.0
-rect_min_size = Vector2( 0, 5 )
+margin_bottom = 105.0
 
 [node name="Allies" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
-margin_left = 416.0
+margin_left = 424.0
 margin_right = 640.0
 margin_bottom = 104.0
 __meta__ = {
@@ -213,11 +330,11 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Allies"]
-margin_right = 224.0
+margin_right = 216.0
 margin_bottom = 104.0
 
 [node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
-margin_right = 224.0
+margin_right = 216.0
 margin_bottom = 15.0
 size_flags_vertical = 0
 custom_styles/normal = SubResource( 8 )
@@ -232,7 +349,7 @@ __meta__ = {
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
 margin_top = 19.0
-margin_right = 224.0
+margin_right = 216.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 5 )
 
@@ -318,3 +435,14 @@ margin_right = 224.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 max_value = 5.0
+
+[node name="TargetSelectionArrow" type="TextureRect" parent="CanvasLayer"]
+visible = false
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 56.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

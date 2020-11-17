@@ -7,85 +7,129 @@ var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
 
-const MAX_ANIMATION_TIMER = 2.0
-const ACTION_AVAILABLE_TICKS = 5.0
+onready var CombatInstructions = $CanvasLayer/CombatMenu/Instructions
+onready var MoveSelectionArrow = $CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveSelectionArrow
+onready var TargetSelectionArrow = $CanvasLayer/TargetSelectionArrow
+onready var MoveNameLabels = [
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName0,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName1,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName2,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName3,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName4,
+	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName5,
+]
+
+const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
+const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
+
+const MAX_ANIMATION_TIMER = 1.2
+const ACTION_AVAILABLE_TICKS = 6.0
 const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
+const PLAYER_POSITION = 0
 
 const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
 
+const MENU_ARROW_POSITION = 0
+const TARGET_ARROW_POSITION = 1
+const FIRST_POSITION = 0
+const STEP_AMOUNT = 1
+const MOVE_COLUMN_COUNT = 3
+const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
+
 var counter = 0
 var enemies = []
 var enemy_positions = [
-	Vector2(40, 72),
-	Vector2(96, 140),
-	Vector2(40, 208),
+	Vector2(48, 136),
+	Vector2(48, 216),
+	Vector2(136, 176),
 ]
 var allies = []
 var ally_positions = [
-	Vector2(600, 72),
-	Vector2(544, 140),
-	Vector2(600, 208),
+	Vector2(592, 136),
+	Vector2(592, 216),
+	Vector2(512, 176),
+]
+var menu_positions = [
+	[Vector2(8, 0), Vector2(48, 0)],
+	[Vector2(8, 32), Vector2(48, 32)],
+	[Vector2(8, 64), Vector2(48, 64)],
+	[Vector2(128, 0), Vector2(168, 0)],
+	[Vector2(128, 32), Vector2(168, 32)],
+	[Vector2(128, 64), Vector2(168, 64)],
 ]
 
 var action_queue = []
 var animation_wait = 0
 var animation_ticks = 0
 
+# Menuing
+enum MenuPhase {
+	NONE,
+	MOVE_SELECT,
+	TARGET_SELECT,
+}
+var _phase = MenuPhase.NONE
+var _menu_move = null
+var _menu_target = null
+var _menu_creature = null
+var _creature_moves = null
+var _hover = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
 	# Populate the combatants
-	#for i in range(1):
-	for i in range(MAX_ENEMIES):
+	var num_enemies = 1 + randi() % MAX_ENEMIES
+	for i in range(num_enemies):
 		var position = enemy_positions[i]
+		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
 		var creature = CombatCreature.new(
-			"Monster" + str(i),
+			enemy.get_tier(),
+			enemy.get_name(),
 			EnemyScene.instance(),
-			Creature.CreatureSize.MEDIUM,
+			enemy.size,
 			position,
-			50,
-			50,
-			[Global.moves.MoveList.BASIC_ATTACK],
-			CombatCreature.Stats.new(1, 2, (i + 1), 1, 1),
-			CombatCreature.Stats.new(CombatCreature.BASE_BONUSES)
+			enemy.get_max_health(),
+			enemy.get_health(),
+			enemy.get_moves(),
+			enemy.get_stats(),
+			enemy.get_bonuses(),
+			enemy.get_base_path(),
+			enemy.get_behavior()
 		)
 		enemies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
-	for i in range(MAX_ALLIES):
+	var ally_list = Global.player.get_allies()
+	ally_list.push_front(Global.player)
+	var num_allies = min(ally_list.size(), MAX_ALLIES)
+	for i in range(num_allies):
 		var position = ally_positions[i]
-		var creature_name = Global.PLAYER_NAME
-		var creature_size = Creature.CreatureSize.LARGE_TALL
 		var creature = null
-		if i == 0:
-			creature = CombatCreature.new(
-				Global.player.get_name(),
-				EnemyScene.instance(),
-				creature_size,
-				position,
-				Global.player.get_max_health(),
-				Global.player.get_health(),
-				Global.player.get_combat_moves(),
-				Global.player.get_combat_stats(),
-				Global.player.get_combat_bonuses()
-			)
+		var ally = ally_list[i]
+		if typeof(ally) != TYPE_INT:
+			ally = Global.player
 		else:
-			creature = CombatCreature.new(
-				creature_name,
-				EnemyScene.instance(),
-				creature_size,
-				position,
-				50,
-				50,
-				[Global.moves.MoveList.BASIC_ATTACK],
-				CombatCreature.Stats.new(3, 2, 1.5, 1, 4),
-				CombatCreature.Stats.new(CombatCreature.BASE_BONUSES)
-			)
+			ally = Global.enemies.get_enemy_by_id(ally)
+
+		creature = CombatCreature.new(
+			ally.get_tier(),
+			ally.get_name(),
+			EnemyScene.instance(),
+			ally.size,
+			position,
+			ally.get_max_health(),
+			ally.get_health(),
+			ally.get_moves(),
+			ally.get_stats(),
+			ally.get_bonuses(),
+			ally.get_base_path(),
+			ally.get_behavior()
+		)
 		allies.append(creature)
 		$CanvasLayer.add_child(creature.scene)
 
@@ -114,13 +158,10 @@ func _process(delta):
 		var creature = enemies[i]
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var target = null
-				while target == null:
-					var target_position = randi() % allies.size()
-					var potential_target = allies[target_position]
-					if potential_target.is_active():
-						target = potential_target
-				action_queue.append(CombatEvent.CombatEvent.new(Move.MoveType.DAMAGE, creature, target))
+				var move_id = creature.get_move()
+				var move = Global.moves.get_move_by_id(move_id)
+				var target = creature.choose_target(move, allies)
+				action_queue.append(CombatEvent.new(move.type, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -136,13 +177,13 @@ func _process(delta):
 		var creature = allies[i]
 		if creature.is_active():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var target = null
-				while target == null:
-					var target_position = randi() % enemies.size()
-					var potential_target = enemies[target_position]
-					if potential_target.is_active():
-						target = potential_target
-				action_queue.append(CombatEvent.CombatEvent.new(Move.MoveType.DAMAGE, creature, target))
+				if creature.get_behavior() == Creature.Behavior.PLAYER:
+					show_move_options(creature)
+				else:
+					var move_id = creature.get_move()
+					var move = Global.moves.get_move_by_id(move_id)
+					var target = creature.choose_target(move, enemies)
+					action_queue.append(CombatEvent.new(move.type, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -159,12 +200,102 @@ func _process(delta):
 		var ui_ticks = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
 
-
 func _input(event):
 	if !event.is_pressed():
 		return
 	if event.is_action("map_change_again"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
+	elif _phase != MenuPhase.NONE:
+		if event.is_action("up"):
+			update_hover(-STEP_AMOUNT)
+		elif event.is_action("down"):
+			update_hover(STEP_AMOUNT)
+		elif event.is_action("left"):
+			update_hover(-STEP_AMOUNT * MOVE_COLUMN_COUNT)
+		elif event.is_action("right"):
+			update_hover(STEP_AMOUNT * MOVE_COLUMN_COUNT)
+		elif event.is_action("ui_accept"):
+			if _phase == MenuPhase.MOVE_SELECT:
+				var move = _creature_moves[_hover]
+				_menu_move = move
+				_phase = MenuPhase.TARGET_SELECT
+				MoveSelectionArrow.visible = false
+				_hover = FIRST_POSITION
+				update_selection_arrow(_hover)
+				TargetSelectionArrow.visible = true
+			elif _phase == MenuPhase.TARGET_SELECT:
+				var targeted_list = get_target_list(_menu_move)
+				_menu_target = targeted_list[_hover]
+				add_selected_move_to_queue()
+				reset_menuing()
+
+func update_hover(amount):
+	_hover += amount
+	var list_size = null
+	match _phase:
+		MenuPhase.MOVE_SELECT:
+			list_size = _creature_moves.size()
+		MenuPhase.TARGET_SELECT:
+			var targeted_list = get_target_list(_menu_move)
+			list_size = targeted_list.size()
+	if _hover >= list_size:
+		_hover = FIRST_POSITION
+	elif _hover < FIRST_POSITION:
+		_hover = list_size - STEP_AMOUNT
+	update_selection_arrow(_hover)
+
+func get_target_list(move):
+	var targeted_list = null
+	match move.type:
+		Move.MoveType.DAMAGE:
+			targeted_list = enemies
+		Move.MoveType.HEAL:
+			targeted_list = allies
+	return targeted_list
+
+func add_selected_move_to_queue():
+	action_queue.append(CombatEvent.new(_menu_move.type, _menu_creature, _menu_target))
+
+func show_move_options(creature):
+	_phase = MenuPhase.MOVE_SELECT
+	_menu_creature = creature
+	CombatInstructions.text = "Select Attack"
+	# Get move ids
+	var move_ids = creature.get_moves()
+	# Get moves
+	var moves = []
+	for move_id in move_ids:
+		var move = Global.moves.get_move_by_id(move_id)
+		moves.append(move)
+	_creature_moves = moves
+	# Load moves
+	for i in range(moves.size()):
+		MoveNameLabels[i].text = moves[i].name
+		MoveNameLabels[i].visible = true
+	# Show menu
+	CombatInstructions.visible = true
+	update_selection_arrow(_hover)
+	MoveSelectionArrow.texture = COMBAT_ARROW_RIGHT
+	MoveSelectionArrow.visible = true
+
+func reset_menuing():
+	_menu_creature = null
+	_menu_move = null
+	_phase = MenuPhase.NONE
+	_hover = 0
+	CombatInstructions.visible = false
+	TargetSelectionArrow.visible = false
+	MoveSelectionArrow.visible = false
+
+func update_selection_arrow(position):
+	match _phase:
+		MenuPhase.MOVE_SELECT:
+			MoveSelectionArrow.rect_position = menu_positions[position][MENU_ARROW_POSITION]
+		MenuPhase.TARGET_SELECT:
+			var targeted_list = get_target_list(_menu_move)
+			var creature_location = targeted_list[position].scene.position
+			var altered_position = creature_location + COMBAT_ARROW_DOWN_OFFSET
+			TargetSelectionArrow.rect_position = altered_position
 
 func check_end_combat():
 	var dead_enemies = 0
@@ -178,8 +309,12 @@ func check_end_combat():
 		if !creature.is_active():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
+		save_player_changes(allies[PLAYER_POSITION])
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.COMBAT_WIN)
+
+func save_player_changes(combat_player):
+	Global.player.set_health(combat_player.get_health())
 
 func check_action_queue():
 	if action_queue.size() == 0 || animation_wait > 0:

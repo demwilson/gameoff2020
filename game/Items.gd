@@ -6,17 +6,19 @@ enum LootType {
 	OXYGEN,
 	CURRENCY
 }
-const LootTypeMap = [
-	"ITEM",
-	"OXYGEN",
-	"CURRENCY"
-]
 enum ItemList {
 	CROWBAR,
 	FLIMSY_SWORD,
 	CYBERNETIC_EYE,
 	FIREBOLT,
+	ROBOT_T1,
 }
+
+const LootTypeMap = [
+	"ITEM",
+	"OXYGEN",
+	"CURRENCY"
+]
 
 # List positions match LootType enum
 const LOOT_PROBABILITY_WEIGHTS = [60, 30, 10]
@@ -32,13 +34,13 @@ var _items = null
 func _init(items):
 	self._items = items
 
-func get_item_by_id(item_id):
-	if item_id < self._items.size():
-		return self._items[item_id]
+func get_item_by_id(id):
+	if id < self._items.size():
+		return self._items[id]
 	return null
 
 func generate_loot(tier_level, player=null):
-	var loot_type = get_random_type_by_weight(LOOT_PROBABILITY_WEIGHTS)
+	var loot_type = Global.get_random_type_by_weight(LOOT_PROBABILITY_WEIGHTS)
 	var loot = null
 	match loot_type:
 		LootType.ITEM:
@@ -72,7 +74,7 @@ func generate_items(tier_level, count):
 	var possible_loot = get_items_by_tier(tier_level)
 	for _i in range(count):
 		# determine item type looted
-		var item_type = get_random_type_by_weight(ITEM_PROBABILITY_WEIGHTS)
+		var item_type = Global.get_random_type_by_weight(ITEM_PROBABILITY_WEIGHTS)
 		var filtered_list = filter_item_list_by_type(possible_loot, item_type)
 		# add random item from filtered list
 		var filtered_list_size = filtered_list.size()
@@ -87,15 +89,6 @@ func get_items_by_tier(tier_level):
 		if item.tier == tier_level:
 			items.append(item)
 	return items
-
-func get_random_type_by_weight(weight_list):
-	var total_weight = Global.sum_array(weight_list)
-	var rand = 1 + (randi() % total_weight)
-	for position in range(weight_list.size()):
-		var chance = weight_list[position]
-		if rand <= chance:
-			return position
-		rand -= chance
 
 static func filter_item_list_by_type(list, type):
 	var filtered_list = []
