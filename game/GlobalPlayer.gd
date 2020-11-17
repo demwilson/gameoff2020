@@ -5,16 +5,21 @@ const Item = preload("res://game/Item.gd")
 const ITEM_MODIFIER_TYPE = 0
 const ITEM_MODIFIER_VALUE = 1
 
+var _tier = null
 var _items = null
 var _max_oxygen = null
 var _oxygen = null
 var _combat_count = 0
 
-func _init(name, size, max_health, health, max_oxygen, oxygen, stats, bonuses, items, base_path, behavior=Behavior.PLAYER, tier="").(tier, name, size, max_health, health, stats, bonuses, base_path, behavior):
+func _init(name, size, max_health, health, max_oxygen, oxygen, stats, bonuses, items, base_path, behavior=Behavior.PLAYER, tier="").(name, size, max_health, health, stats, bonuses, base_path, behavior):
 	self._max_oxygen = max_oxygen
 	self._oxygen = oxygen
 	self._items = items
+	self._tier = tier
 
+# tier
+func get_tier():
+	return self._tier
 # items
 func get_items():
 	return self._items
