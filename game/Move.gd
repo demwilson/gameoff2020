@@ -30,7 +30,6 @@ var name
 var type
 var level
 var animation_path
-var animation_offset
 var base
 var low
 var high

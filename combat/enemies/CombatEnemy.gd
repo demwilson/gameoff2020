@@ -1,12 +1,6 @@
 extends Sprite
 
-signal wilson_action_complete
-
-enum State {
-	MOVING_FORWARD,
-	ANIMATING,
-	MOVING_BACKWARD,
-}
+signal animation_step_complete
 
 const Creature = preload("res://game/Creature.gd")
 onready var name_label = get_node("Name")
@@ -14,7 +8,6 @@ onready var health = get_node("Health")
 onready var ticks = get_node("Ticks")
 onready var ani_player = get_node("AnimationPlayer")
 onready var tween = get_node("Tween")
-onready var timer = get_node("Timer")
 var CombatAnimation = preload("res://combat/CombatAnimation.tscn")
 
 const IDLE_ANIMATION_NAME = "idle"
@@ -28,6 +21,8 @@ const RIGHT_SIDE = 1
 const INITIAL_STATE = 0
 const STATE_STEP = 1
 const PIXEL_DISTANCE = 150
+const MOVE_TIME = 0.25
+
 
 var state = null
 var creature_name = null
@@ -84,23 +79,23 @@ func move_forward(side):
 	if side == RIGHT_SIDE:
 		amount = -amount
 	new_pos = original_pos + amount
-	tween.interpolate_property(self, 'position', Vector2(original_pos, position.y), Vector2(new_pos, position.y), 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.interpolate_property(self, 'position', Vector2(original_pos, position.y), Vector2(new_pos, position.y), MOVE_TIME, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.start()
 
 func move_backward():
-	tween.interpolate_property(self, 'position', Vector2(new_pos, position.y), Vector2(original_pos, position.y) , 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.interpolate_property(self, 'position', Vector2(new_pos, position.y), Vector2(original_pos, position.y) , MOVE_TIME, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.start()
 
 func _on_Tween_tween_completed(object, key):
-	emit_signal("wilson_action_complete")
+	emit_signal("animation_step_complete")
 
 func animation_completed():
-	emit_signal("wilson_action_complete")
+	emit_signal("animation_step_complete")
 
 func apply_animation(move):
 	# combat animation
 	var attack_anim = CombatAnimation.instance()
 	attack_anim.base_path = move.animation_path
 	attack_anim.combat_side = combat_side
-	attack_anim.connect("action_complete", self, "animation_completed")
+	attack_anim.connect("animation_action_complete", self, "animation_completed")
 	self.add_child(attack_anim)

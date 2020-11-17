@@ -1,5 +1,14 @@
 extends Node2D
 
+enum CombatAnimationState {
+	INITIAL_STATE = 0,
+	INACTIVE = 0,
+	MOVING_FORWARD = 1,
+	ANIMATING = 2,
+	MOVING_BACKWARD = 3,
+	COMPLETE = 4,
+}
+
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
@@ -66,7 +75,7 @@ var menu_positions = [
 ]
 
 var action_queue = []
-var animation_lock = 0
+var animation_lock = false
 var animation_ticks = 0
 var attack_animation_state = CombatAnimationState.INACTIVE
 var _current_combat_action = null
@@ -100,7 +109,7 @@ func _ready():
 		creature_scene.creature_size = enemy.size
 		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.TEXTURE_FILE_EXTENSION
 		creature_scene.idle_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.ANIMATION_FILE_EXTENSION
-		creature_scene.connect("wilson_action_complete", self, "next_animation_step")
+		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		var creature = CombatCreature.new(
 			CombatCreature.CombatantType.ENEMY,
 			enemy.get_name(),
@@ -136,7 +145,7 @@ func _ready():
 		creature_scene.creature_size = ally.size
 		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.TEXTURE_FILE_EXTENSION
 		creature_scene.idle_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.ANIMATION_FILE_EXTENSION
-		creature_scene.connect("wilson_action_complete", self, "next_animation_step")
+		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		creature = CombatCreature.new(
 			CombatCreature.CombatantType.ALLY,
 			ally.get_name(),
@@ -346,14 +355,6 @@ func check_action_queue():
 	attack_animation_state = CombatAnimationState.INITIAL_STATE
 	next_animation_step()
 
-enum CombatAnimationState {
-	INITIAL_STATE = 0,
-	INACTIVE = 0,
-	MOVING_FORWARD = 1,
-	ANIMATING = 2,
-	MOVING_BACKWARD = 3,
-	COMPLETE = 4,
-}
 func animation_process():
 	match attack_animation_state:
 		CombatAnimationState.MOVING_FORWARD:

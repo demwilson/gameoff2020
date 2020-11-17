@@ -1,6 +1,6 @@
 extends Sprite
 
-signal action_complete
+signal animation_action_complete
 
 const Move = preload("res://game/Move.gd")
 onready var ani_player = get_node("AnimationPlayer")
@@ -34,5 +34,5 @@ func _ready():
 	ani_player.play(animation_name)
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	emit_signal("action_complete")
+	emit_signal("animation_action_complete")
 	self.queue_free()
