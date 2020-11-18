@@ -57,6 +57,7 @@ func set_audio(value):
 func restart_overworld():
 	set_audio(false)
 	tile_map.levelNum = 0
+	Global.floor_level = 0
 	tile_map.isGeneratingNewLevel = true
 	player.stepsTaken = 0
 	player.generate_steps_to_trigger_combat()
@@ -112,7 +113,7 @@ func update_HUD_values():
 	healthHudValue.text = "Health: " + str(Global.player.get_health())
 	var combatsHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Combats
 	combatsHudValue.text = "Combats: " + str(Global.player.get_combat_count())
-	var currencyHudValue = $GUI/HUD/HBoxContainer/Currencys/CurrencyBar/Currency/Background/Number
+	var currencyHudValue = $GUI/HUD/HBoxContainer/BarsRight/CurrencyBar/Currency/Background/Number
 	currencyHudValue.text = str(Global.currency)
 
 func lose_event():
