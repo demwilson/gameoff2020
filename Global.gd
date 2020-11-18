@@ -26,6 +26,7 @@ enum Scene {
 var TEXT_COLOR = {
 	"DAMAGE": "ff3131",
 	"HEAL": "2eff27",
+	"TEXT": "000000",
 }
 
 const TEXTURE_FILE_EXTENSION = ".png"
