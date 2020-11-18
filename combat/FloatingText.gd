@@ -8,7 +8,7 @@ onready var label = get_node("Label")
 onready var tween = get_node("Tween")
 
 var amount = 0
-var type = Move.MoveType.DAMAGE
+var type = null
 
 var velocity = Vector2(0, 0)
 
@@ -26,6 +26,8 @@ func _ready():
 			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.HEAL))
 		Move.MoveType.DAMAGE:
 			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.DAMAGE))
+		_:
+			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.TEXT))
 	randomize()
 	# Generate a number between -20 and 20
 	var side_movement = (1 + randi() % MOVEMENT_RANGE) - (MOVEMENT_RANGE / 2)

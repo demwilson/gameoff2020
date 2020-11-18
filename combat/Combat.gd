@@ -51,6 +51,8 @@ const MOVE_COLUMN_COUNT = 3
 const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 
 const ATTACK_ANIMATION_STEP = 1
+const BLOCKED_TEXT = "BLOCKED"
+const EVADED_TEXT = "EVADED"
 
 var counter = 0
 var enemies = []
@@ -407,7 +409,7 @@ func execute_move(attacker, target, move):
 				if check_to_evade(target.get_stat("evade"), target.get_bonus("evade"), move.level):
 					target_evaded = true
 					log_arr.append("ATTACK EVADED!")
-					# TODO: Avoided text
+					apply_floating_text(target, EVADED_TEXT)
 			else:
 				log_arr.append("ATTACK MISSED!")
 			if target_hit && !target_evaded:
@@ -419,7 +421,7 @@ func execute_move(attacker, target, move):
 				if damage <= 0:
 					damaged_mitigated = true
 					log_arr.append("DAMAGE MITIGATED!")
-					# TODO: Mitigated text
+					apply_floating_text(target, BLOCKED_TEXT)
 				else:
 					# apply damage
 					target.add_health(-damage)
@@ -453,7 +455,7 @@ func get_damage(attacker, target, move):
 			damage = raw_damage - raw_defense
 		return damage
 
-func apply_floating_text(target, amount, type):
+func apply_floating_text(target, amount, type=null):
 	# Floating damage
 	var damage_text = FloatingText.instance()
 	damage_text.amount = amount
