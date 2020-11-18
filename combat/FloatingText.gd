@@ -28,9 +28,8 @@ func _ready():
 			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.DAMAGE))
 		_:
 			label.set("custom_colors/font_color", Color(Global.TEXT_COLOR.TEXT))
-	randomize()
 	# Generate a number between -20 and 20
-	var side_movement = (1 + randi() % MOVEMENT_RANGE) - (MOVEMENT_RANGE / 2)
+	var side_movement = (1 + Global.random.randi() % MOVEMENT_RANGE) - (MOVEMENT_RANGE / 2)
 	velocity = Vector2(side_movement, TEXT_MOVEMENT_SPEED)
 	tween.interpolate_property(self, 'scale', scale, full_size, end_scale_up_time, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.interpolate_property(self, 'scale', full_size, minimum_size, end_scale_down_time, Tween.TRANS_LINEAR, Tween.EASE_OUT, begin_scale_down_wait)

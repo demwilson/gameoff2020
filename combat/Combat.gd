@@ -97,9 +97,8 @@ var _hover = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
 	# Populate the combatants
-	var num_enemies = 1 + randi() % MAX_ENEMIES
+	var num_enemies = 1 + Global.random.randi() % MAX_ENEMIES
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
@@ -468,7 +467,7 @@ func check_to_hit(accuracy):
 		processed = ACCURACY_PROCESSED_MAX
 	elif accuracy < ACCURACY_PROCESSED_MIN:
 		processed = ACCURACY_PROCESSED_MIN
-	var rand = randf() * PERCENT_MULTIPLIER
+	var rand = Global.random.randf() * PERCENT_MULTIPLIER
 	var hit_target = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_hit] ACCURACY: " + str(accuracy) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return hit_target
@@ -477,13 +476,13 @@ func check_to_evade(evade, bonus_evade, move_level):
 	var processed = pow(evade, 2) + bonus_evade - pow(move_level, 2)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
-	var rand = randf() * PERCENT_MULTIPLIER
+	var rand = Global.random.randf() * PERCENT_MULTIPLIER
 	var evaded = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_evade] EVADE: " + str(evade) + " | BONUS: " + str(bonus_evade) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return evaded
 
 func calculate_damage(min_damage, max_damage):
-	var rand = 1 + randi() % int(max_damage - min_damage) + int(min_damage)
+	var rand = 1 + Global.random.randi() % int(max_damage - min_damage) + int(min_damage)
 	Global.log(Settings.LogLevel.TRACE, "[calculate_damage] MIN: " + str(min_damage) + " | MAX: " + str(max_damage) + " | RAND: " + str(rand))
 	return rand
 

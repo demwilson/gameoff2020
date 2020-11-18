@@ -640,7 +640,6 @@ script = ExtResource( 4 )
 
 [node name="Cam" type="Camera2D" parent="PlayerRoot/Anchor"]
 current = true
-zoom = Vector2( 7, 7 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 [connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
