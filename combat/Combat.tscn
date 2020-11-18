@@ -8,30 +8,30 @@
 
 [sub_resource type="Theme" id=1]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0.0778443, 1 )
 colors = PoolColorArray( 0.0196078, 0, 0.294118, 1, 0.0196078, 0, 0.294118, 1 )
 
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 12
 outline_color = Color( 0.933333, 0.933333, 0.933333, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=8]
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
 [node name="Combat" type="Node2D"]
@@ -111,7 +111,7 @@ __meta__ = {
 [node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/CombatMenu"]
 margin_right = 640.0
 margin_bottom = 104.0
-texture = SubResource( 3 )
+texture = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -134,8 +134,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 margin_right = 152.0
 margin_bottom = 15.0
-custom_styles/normal = SubResource( 4 )
-custom_fonts/font = SubResource( 5 )
+custom_styles/normal = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ENEMIES"
 align = 1
@@ -192,8 +192,8 @@ margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
 margin_bottom = 3.0
-custom_styles/normal = SubResource( 6 )
-custom_fonts/font = SubResource( 7 )
+custom_styles/normal = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
 align = 1
@@ -337,8 +337,8 @@ margin_bottom = 104.0
 margin_right = 216.0
 margin_bottom = 15.0
 size_flags_vertical = 0
-custom_styles/normal = SubResource( 8 )
-custom_fonts/font = SubResource( 5 )
+custom_styles/normal = SubResource( 9 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ALLIES"
 align = 1
@@ -435,6 +435,13 @@ margin_right = 224.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 max_value = 5.0
+
+[node name="CombatantBox" type="ReferenceRect" parent="CanvasLayer"]
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TargetSelectionArrow" type="TextureRect" parent="CanvasLayer"]
 visible = false

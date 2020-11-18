@@ -35,7 +35,6 @@ const file_paths = [
 	"res://", # NOT ADDED
 ]
 
-var _tier = null
 var _name = null
 var size = null
 var _max_health = null
@@ -45,8 +44,7 @@ var _bonuses = null
 var _base_path = null
 var _behavior = null
 
-func _init(tier, name, size, max_health, health, stats, bonuses, base_path, behavior):
-	self._tier = tier
+func _init(name, size, max_health, health, stats, bonuses, base_path, behavior):
 	self._name = name
 	self.size = size
 	self._max_health = max_health
@@ -56,9 +54,6 @@ func _init(tier, name, size, max_health, health, stats, bonuses, base_path, beha
 	self._base_path = base_path
 	self._behavior = behavior
 
-# tier
-func get_tier():
-	return self._tier
 # name
 func get_name():
 	return self._name
@@ -92,7 +87,7 @@ func get_bonus(type):
 # behavior
 func get_behavior():
 	return self._behavior
-# behavior
+# base path
 func get_base_path():
 	return self._base_path
 

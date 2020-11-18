@@ -79,7 +79,7 @@ func generate_items(tier_level, count):
 		# add random item from filtered list
 		var filtered_list_size = filtered_list.size()
 		if filtered_list_size > 0:
-			var item = filtered_list[randi() % filtered_list_size]
+			var item = filtered_list[Global.random.randi() % filtered_list_size]
 			item_list.append(item)
 	return item_list
 
@@ -98,4 +98,4 @@ static func filter_item_list_by_type(list, type):
 	return filtered_list
 
 static func get_random_count(base, multiplier):
-	return 1 + randi() % (base * multiplier)
+	return 1 + Global.random.randi() % (base * multiplier)

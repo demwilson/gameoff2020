@@ -21,12 +21,17 @@ enum Scene {
 	COMBAT_WIN,
 	GAME_OVER,
 	GROUND_CONTROL,
+	SETTINGS,
 }
 
 var TEXT_COLOR = {
 	"DAMAGE": "ff3131",
 	"HEAL": "2eff27",
+	"TEXT": "000000",
 }
+
+const TEXTURE_FILE_EXTENSION = ".png"
+const ANIMATION_FILE_EXTENSION = ".tres"
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -54,23 +59,43 @@ var Upgrades = {
 const PLAYER_NAME = "Astronaut"
 const BASE_HEALTH = 100
 const BASE_OXYGEN = 200
-const CURRENCY_TEXT = "Currency"
-const OXYGEN_TEXT = "Oxygen"
+const CURRENCY_TEXT = "Moon Rocks"
+const OXYGEN_TEXT = "Units of Oxygen"
 var player = null
 var moves = null
 var items = null
 var enemies = null
 var floor_level = 1
-var currency = 6000
+var currency = 0
+
+# Debugging purposes
+var random
+var current_seed
+var seed_value = null
 
 func _ready():
+	# Add debugging settings here
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		currency = 6000
+		# Uncomment to force a seed value
+		# seed_value = -7489110890573097118
+
+	# Set RNG value and get seed.
+	random = RandomNumberGenerator.new()
+	if seed_value:
+		random.set_seed(seed_value)
+	else:
+		random.randomize()
+	current_seed = random.get_seed()
+	self.log(Settings.LogLevel.DEBUG, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
+
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
-		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, 1, 2, [0, 2], [90, 1, 2]),
-		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, 1, 5, [0, 2], [95, 0, 1]),
-		Move.new("Fireball", 2, Move.MoveType.DAMAGE, 1, 2, [25, 2], [50, 4, 1.5], Moves.MoveList.FIREBOLT),
-		Move.new("Heal", 1, Move.MoveType.HEAL, 1, 2, [0, 2]),
+		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 2, [0, 2], [90, 1, 2]),
+		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 5, [0, 2], [95, 0, 1]),
+		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 2], [50, 4, 1.5], Moves.MoveList.FIREBOLT),
+		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 1, 2, [0, 2]),
 	]
 	var available_items = [
 		Item.new(0, "Basic Attack", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "This is a basic attack.", Moves.MoveList.BASIC_ATTACK),
@@ -98,8 +123,8 @@ func _ready():
 
 func build_player():
 	# TODO: Add upgrades
-	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
-#	var player_stats = Creature.Stats.new([5,5,5,5,5])
+#	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
+	var player_stats = Creature.Stats.new([2,2,10,2,2])
 	var player_bonuses = Creature.Stats.new()
 
 	var player_items = [
@@ -146,7 +171,9 @@ func goto_scene(target_scene, function_call = null):
 			call_deferred("_deferred_goto_scene", target_scene, "res://combat/CombatWin.tscn")
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
-
+		Scene.SETTINGS:
+			call_deferred("_deferred_goto_scene", target_scene, "res://settings/Settings.tscn")
+	
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing
 	var overworld_node = persisted_scenes[Scene.OVERWORLD]
@@ -215,7 +242,7 @@ static func sum_array(array):
 
 func get_random_type_by_weight(weight_list):
 	var total_weight = sum_array(weight_list)
-	var rand = 1 + (randi() % total_weight)
+	var rand = 1 + (Global.random.randi() % total_weight)
 	for position in range(weight_list.size()):
 		var chance = weight_list[position]
 		if rand <= chance:
