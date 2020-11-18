@@ -21,6 +21,7 @@ enum Scene {
 	COMBAT_WIN,
 	GAME_OVER,
 	GROUND_CONTROL,
+	SETTINGS,
 }
 
 var TEXT_COLOR = {
@@ -146,7 +147,9 @@ func goto_scene(target_scene, function_call = null):
 			call_deferred("_deferred_goto_scene", target_scene, "res://combat/CombatWin.tscn")
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
-
+		Scene.SETTINGS:
+			call_deferred("_deferred_goto_scene", target_scene, "res://settings/Settings.tscn")
+	
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing
 	var overworld_node = persisted_scenes[Scene.OVERWORLD]
