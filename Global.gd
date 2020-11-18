@@ -59,16 +59,36 @@ var Upgrades = {
 const PLAYER_NAME = "Astronaut"
 const BASE_HEALTH = 100
 const BASE_OXYGEN = 200
-const CURRENCY_TEXT = "Currency"
-const OXYGEN_TEXT = "Oxygen"
+const CURRENCY_TEXT = "Moon Rocks"
+const OXYGEN_TEXT = "Units of Oxygen"
 var player = null
 var moves = null
 var items = null
 var enemies = null
 var floor_level = 1
-var currency = 6000
+var currency = 0
+
+# Debugging purposes
+var random
+var current_seed
+var seed_value = null
 
 func _ready():
+	# Add debugging settings here
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		currency = 6000
+		# Uncomment to force a seed value
+		# seed_value = -7489110890573097118
+
+	# Set RNG value and get seed.
+	random = RandomNumberGenerator.new()
+	if seed_value:
+		random.set_seed(seed_value)
+	else:
+		random.randomize()
+	current_seed = random.get_seed()
+	self.log(Settings.LogLevel.DEBUG, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
+
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
@@ -222,7 +242,7 @@ static func sum_array(array):
 
 func get_random_type_by_weight(weight_list):
 	var total_weight = sum_array(weight_list)
-	var rand = 1 + (randi() % total_weight)
+	var rand = 1 + (Global.random.randi() % total_weight)
 	for position in range(weight_list.size()):
 		var chance = weight_list[position]
 		if rand <= chance:
