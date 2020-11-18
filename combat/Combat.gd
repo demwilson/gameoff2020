@@ -53,6 +53,7 @@ const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 const ATTACK_ANIMATION_STEP = 1
 const BLOCKED_TEXT = "BLOCKED"
 const EVADED_TEXT = "EVADED"
+const MISSED_TEXT = "MISSED"
 
 var counter = 0
 var enemies = []
@@ -411,6 +412,8 @@ func execute_move(attacker, target, move):
 					apply_floating_text(target, EVADED_TEXT)
 			else:
 				log_arr.append("ATTACK MISSED!")
+				apply_floating_text(target, MISSED_TEXT)
+
 			if target_hit && !target_evaded:
 				# get the damage range
 				var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
