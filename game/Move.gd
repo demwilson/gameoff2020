@@ -9,19 +9,38 @@ enum MoveFormula {
 	MULTIPLIER
 }
 
+enum AnimationPath {
+	BASIC_ATTACK,
+	FIREBOLT,
+}
+
+enum AnimationDetail {
+	BASE_NAME,
+	VECTOR_OFFSET,
+	HFRAMES,
+	VFRAMES,
+}
+
+const animation_details = [
+	["melee_attack",  Vector2(-16, 8), 34, 1],
+	["fireball_power_up", Vector2(-16, 8), 23, 1],
+]
+
 var name
 var type
 var level
+var animation_path
 var base
 var low
 var high
 var damage
 var accuracy
 
-func _init(name, level, type, low, high, damage, accuracy=null, base=null):
+func _init(name, level, type, animation_path, low, high, damage, accuracy=null, base=null):
 	self.name = name
 	self.type = type
 	self.level = level
+	self.animation_path = animation_path
 	self.base = base
 	self.low = low
 	self.high = high
