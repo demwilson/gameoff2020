@@ -40,10 +40,10 @@ func get_move(position=null):
 	if position:
 		move = self._moves[position]
 	else:
-		move = self._moves[randi() % self._moves.size()]
+		move = self._moves[Global.random.randi() % self._moves.size()]
 	return move
 func choose_move():
-	self._moves[randi() % self._moves]
+	self._moves[Global.random.randi() % self._moves]
 
 func is_active():
 	return self._health > 0
@@ -63,7 +63,7 @@ func choose_target(move, target_list):
 #            Behavior.STUPID:
 			_:
 				while target == null:
-					var target_position = randi() % target_list.size()
+					var target_position = Global.random.randi() % target_list.size()
 					var potential_target = target_list[target_position]
 					if potential_target.is_active():
 						target = potential_target
