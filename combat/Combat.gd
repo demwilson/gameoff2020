@@ -1,5 +1,14 @@
 extends Node2D
 
+enum CombatAnimationState {
+	INITIAL_STATE = 0,
+	INACTIVE = 0,
+	MOVING_FORWARD = 1,
+	ANIMATING = 2,
+	MOVING_BACKWARD = 3,
+	COMPLETE = 4,
+}
+
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
@@ -7,6 +16,7 @@ var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
 var FloatingText = preload("res://combat/FloatingText.tscn")
 
+onready var CombatantBox = $CanvasLayer/CombatantBox
 onready var CombatInstructions = $CanvasLayer/CombatMenu/Instructions
 onready var MoveSelectionArrow = $CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveSelectionArrow
 onready var TargetSelectionArrow = $CanvasLayer/TargetSelectionArrow
@@ -40,6 +50,8 @@ const STEP_AMOUNT = 1
 const MOVE_COLUMN_COUNT = 3
 const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 
+const ATTACK_ANIMATION_STEP = 1
+
 var counter = 0
 var enemies = []
 var enemy_positions = [
@@ -63,8 +75,10 @@ var menu_positions = [
 ]
 
 var action_queue = []
-var animation_wait = 0
+var animation_lock = false
 var animation_ticks = 0
+var attack_animation_state = CombatAnimationState.INACTIVE
+var _current_combat_action = null
 
 # Menuing
 enum MenuPhase {
@@ -87,12 +101,20 @@ func _ready():
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
+		# Setup Scene
+		var creature_scene = EnemyScene.instance()
+		creature_scene.set("position", position)
+		creature_scene.creature_name = enemy.get_name()
+		creature_scene.show_name = true
+		creature_scene.creature_size = enemy.size
+		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.TEXTURE_FILE_EXTENSION
+		creature_scene.idle_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.ANIMATION_FILE_EXTENSION
+		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		var creature = CombatCreature.new(
-			enemy.get_tier(),
+			CombatCreature.CombatantType.ENEMY,
 			enemy.get_name(),
-			EnemyScene.instance(),
+			creature_scene,
 			enemy.size,
-			position,
 			enemy.get_max_health(),
 			enemy.get_health(),
 			enemy.get_moves(),
@@ -102,7 +124,7 @@ func _ready():
 			enemy.get_behavior()
 		)
 		enemies.append(creature)
-		$CanvasLayer.add_child(creature.scene)
+		CombatantBox.add_child(creature.scene)
 
 	var ally_list = Global.player.get_allies()
 	ally_list.push_front(Global.player)
@@ -115,13 +137,20 @@ func _ready():
 			ally = Global.player
 		else:
 			ally = Global.enemies.get_enemy_by_id(ally)
-
+		# Setup Scene
+		var creature_scene = EnemyScene.instance()
+		creature_scene.set("position", position)
+		creature_scene.creature_name = ally.get_name()
+		creature_scene.show_name = true
+		creature_scene.creature_size = ally.size
+		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.TEXTURE_FILE_EXTENSION
+		creature_scene.idle_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.ANIMATION_FILE_EXTENSION
+		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		creature = CombatCreature.new(
-			ally.get_tier(),
+			CombatCreature.CombatantType.ALLY,
 			ally.get_name(),
-			EnemyScene.instance(),
+			creature_scene,
 			ally.size,
-			position,
 			ally.get_max_health(),
 			ally.get_health(),
 			ally.get_moves(),
@@ -131,8 +160,8 @@ func _ready():
 			ally.get_behavior()
 		)
 		allies.append(creature)
-		$CanvasLayer.add_child(creature.scene)
-
+		CombatantBox.add_child(creature.scene)
+	
 	OS.set_window_size(Vector2(1280, 720))
 	
 
@@ -142,13 +171,11 @@ func _process(delta):
 	counter += delta
 	$CanvasLayer/Background/Ticks.text = "Ticks: " + str(counter)
 
-	# animation ticks
-	if animation_wait > 0:
-		if animation_ticks < animation_wait:
-			animation_ticks += delta
-		else:
-			animation_wait = 0
-			animation_ticks = 0
+	# actual processing
+	if animation_lock:
+		animation_ticks += delta
+	else:
+		animation_ticks = 0
 	$CanvasLayer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
 
 	# actual processing
@@ -161,7 +188,7 @@ func _process(delta):
 				var move_id = creature.get_move()
 				var move = Global.moves.get_move_by_id(move_id)
 				var target = creature.choose_target(move, allies)
-				action_queue.append(CombatEvent.new(move.type, creature, target))
+				action_queue.append(CombatEvent.new(move, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
@@ -183,13 +210,13 @@ func _process(delta):
 					var move_id = creature.get_move()
 					var move = Global.moves.get_move_by_id(move_id)
 					var target = creature.choose_target(move, enemies)
-					action_queue.append(CombatEvent.new(move.type, creature, target))
+					action_queue.append(CombatEvent.new(move, creature, target))
 				creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
 		creature.update_health_percentage()
 		creature.update_ticks()
-		
+
 		# UI Updates
 		var ui_node = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i))
 		ui_node.visible = true
@@ -254,7 +281,7 @@ func get_target_list(move):
 	return targeted_list
 
 func add_selected_move_to_queue():
-	action_queue.append(CombatEvent.new(_menu_move.type, _menu_creature, _menu_target))
+	action_queue.append(CombatEvent.new(_menu_move, _menu_creature, _menu_target))
 
 func show_move_options(creature):
 	_phase = MenuPhase.MOVE_SELECT
@@ -279,6 +306,9 @@ func show_move_options(creature):
 	MoveSelectionArrow.visible = true
 
 func reset_menuing():
+	for i in range(MoveNameLabels.size()):
+		MoveNameLabels[i].text = ""
+		MoveNameLabels[i].visible = false
 	_menu_creature = null
 	_menu_move = null
 	_phase = MenuPhase.NONE
@@ -298,13 +328,14 @@ func update_selection_arrow(position):
 			TargetSelectionArrow.rect_position = altered_position
 
 func check_end_combat():
+	# Combat cannot end during animation
+	if animation_lock:
+		return
+
 	var dead_enemies = 0
-	var dead_allies = 0
-	for creature in allies:
-		if !creature.is_active():
-			dead_allies += 1
-	if dead_allies == allies.size():
+	if !allies[PLAYER_POSITION].is_active():
 		return Global.goto_scene(Global.Scene.GAME_OVER)
+
 	for creature in enemies:
 		if !creature.is_active():
 			dead_enemies += 1
@@ -317,58 +348,84 @@ func save_player_changes(combat_player):
 	Global.player.set_health(combat_player.get_health())
 
 func check_action_queue():
-	if action_queue.size() == 0 || animation_wait > 0:
+	if action_queue.size() == 0 || animation_lock:
 		return
-	animation_wait = MAX_ANIMATION_TIMER
-	var combat_action = action_queue.pop_front()
-	match combat_action.action_type:
-		Move.MoveType.DAMAGE:
-			attack(combat_action.creature, combat_action.target)
+	_current_combat_action = action_queue.pop_front()
+	animation_lock = true
+	attack_animation_state = CombatAnimationState.INITIAL_STATE
+	next_animation_step()
 
-func attack(attacker, target):
+func animation_process():
+	match attack_animation_state:
+		CombatAnimationState.MOVING_FORWARD:
+			# move forward
+			move_forward(_current_combat_action.creature)
+		CombatAnimationState.ANIMATING:
+			# run animation 1 time
+			_current_combat_action.creature.scene.apply_animation(_current_combat_action.move)
+		CombatAnimationState.MOVING_BACKWARD:
+			# do damage after animation
+			execute_move(_current_combat_action.creature, _current_combat_action.target, _current_combat_action.move)
+			# move back to original position
+			move_backward(_current_combat_action.creature)
+		CombatAnimationState.COMPLETE:
+			# clear animation_lock
+			animation_lock = false
+
+func move_forward(creature):
+	creature.scene.move_forward(creature.type)
+func move_backward(creature):
+	creature.scene.move_backward()
+func next_animation_step():
+	attack_animation_state += ATTACK_ANIMATION_STEP
+	animation_process()
+
+func execute_move(attacker, target, move):
 	var log_arr = []
 	log_arr.append("ATTACKER: " + attacker.get_name())
 	log_arr.append("TARGET: " + target.get_name())
 	# get move
-	var move_id = attacker.get_move()
-	var move = Global.moves.get_move_by_id(move_id)
 	log_arr.append("MOVE: " + move.name)
-	# check for a hit
-	var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
-	var target_hit = false
-	var target_evaded = false
-	var damaged_mitigated = false
-	if check_to_hit(accuracy):
-		target_hit = true
-		log_arr.append("ATTACK HIT!")
-		# check for a evade
-		if check_to_evade(target.get_stat("evade"), target.get_bonus("evade"), move.level):
-			target_evaded = true
-			log_arr.append("ATTACK EVADED!")
-			# TODO: Avoided text
-
-	if target_hit && !target_evaded:
-		# get the damage range
-		var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-		var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
-		# get raw damage
-		var raw_damage = calculate_damage(minimum, maximum)
-		var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
-		# mitigate damage
-		var damage = raw_damage - raw_defense
-		if damage <= 0:
-			damaged_mitigated = true
-			log_arr.append("DAMAGE MITIGATED!")
-			# TODO: Mitigated text
-		else:
-			# apply damage
-			target.add_health(-damage)
-			# Floating damage
-			var damage_text = FloatingText.instance()
-			damage_text.amount = damage
-			damage_text.type = Move.MoveType.DAMAGE
-			target.scene.add_child(damage_text)
-			log_arr.append("DAMAGE: " + str(damage))
+	match move.type:
+		Move.MoveType.HEAL:
+			var damage = get_damage(attacker, target, move)
+			# apply healing
+			target.add_health(damage)
+			# show damage
+			apply_floating_text(target, damage, move.type)
+			log_arr.append("HEAL: " + str(damage))
+		Move.MoveType.DAMAGE:
+			# check for a hit
+			var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
+			var target_hit = false
+			var target_evaded = false
+			var damaged_mitigated = false
+			if check_to_hit(accuracy):
+				target_hit = true
+				log_arr.append("ATTACK HIT!")
+				# check for a evade
+				if check_to_evade(target.get_stat("evade"), target.get_bonus("evade"), move.level):
+					target_evaded = true
+					log_arr.append("ATTACK EVADED!")
+					# TODO: Avoided text
+			else:
+				log_arr.append("ATTACK MISSED!")
+			if target_hit && !target_evaded:
+				# get the damage range
+				var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
+				var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
+				# get damage
+				var damage = get_damage(attacker, target, move)
+				if damage <= 0:
+					damaged_mitigated = true
+					log_arr.append("DAMAGE MITIGATED!")
+					# TODO: Mitigated text
+				else:
+					# apply damage
+					target.add_health(-damage)
+					# show damage
+					apply_floating_text(target, damage, move.type)
+					log_arr.append("DAMAGE: " + str(damage))
 
 	# TODO: target has died
 	if !target.is_active():
@@ -381,6 +438,27 @@ func attack(attacker, target):
 	# Logging stuff
 	var log_string = PoolStringArray(log_arr).join(" | ")
 	Global.log(Settings.LogLevel.INFO, log_string)
+
+func get_damage(attacker, target, move):
+		# get the damage range
+		var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
+		var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
+		# get raw damage
+		var raw_damage = calculate_damage(minimum, maximum)
+		var damage = raw_damage
+		if move.type == Move.MoveType.DAMAGE:
+			# calculate defense
+			var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
+			# mitigate damage
+			damage = raw_damage - raw_defense
+		return damage
+
+func apply_floating_text(target, amount, type):
+	# Floating damage
+	var damage_text = FloatingText.instance()
+	damage_text.amount = amount
+	damage_text.type = type
+	target.scene.add_child(damage_text)
 
 func check_to_hit(accuracy):
 	var processed = accuracy

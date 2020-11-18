@@ -28,6 +28,9 @@ var TEXT_COLOR = {
 	"HEAL": "2eff27",
 }
 
+const TEXTURE_FILE_EXTENSION = ".png"
+const ANIMATION_FILE_EXTENSION = ".tres"
+
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
 var current_scene_id = null
@@ -67,10 +70,10 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
-		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, 1, 2, [0, 2], [90, 1, 2]),
-		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, 1, 5, [0, 2], [95, 0, 1]),
-		Move.new("Fireball", 2, Move.MoveType.DAMAGE, 1, 2, [25, 2], [50, 4, 1.5], Moves.MoveList.FIREBOLT),
-		Move.new("Heal", 1, Move.MoveType.HEAL, 1, 2, [0, 2]),
+		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 2, [0, 2], [90, 1, 2]),
+		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 5, [0, 2], [95, 0, 1]),
+		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 2], [50, 4, 1.5], Moves.MoveList.FIREBOLT),
+		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 1, 2, [0, 2]),
 	]
 	var available_items = [
 		Item.new(0, "Basic Attack", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "This is a basic attack.", Moves.MoveList.BASIC_ATTACK),
@@ -98,8 +101,8 @@ func _ready():
 
 func build_player():
 	# TODO: Add upgrades
-	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
-#	var player_stats = Creature.Stats.new([5,5,5,5,5])
+#	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
+	var player_stats = Creature.Stats.new([2,2,10,2,2])
 	var player_bonuses = Creature.Stats.new()
 
 	var player_items = [
