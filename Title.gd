@@ -6,3 +6,9 @@ func _ready():
 
 func _on_Start_pressed():
 	Global.goto_scene(Global.Scene.OVERWORLD)
+
+func _input(event):
+	if !event.is_pressed():
+		return
+	elif event.is_action("settings"):
+		Global.goto_scene(Global.Scene.SETTINGS)
