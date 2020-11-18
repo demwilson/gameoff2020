@@ -355,7 +355,7 @@ func _on_StartGameMission_pressed():
 	Global.Upgrades.BasicDefense = Button_Click.Basic_Defense
 	Global.Upgrades.CombatTraining = Button_Click.Combat_Training
 	Global.Upgrades.AdvanceWeapon = Button_Click.Advance_Weapon
-	Global.Upgrades.AdvanceDefesne = Button_Click.Advance_Defense
+	Global.Upgrades.AdvanceDefense = Button_Click.Advance_Defense
 	Global.Upgrades.AdvanceTraining = Button_Click.Advance_Training
 	#update global currency 
 	Global.currency = actual_currency
