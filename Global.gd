@@ -226,8 +226,10 @@ func _deferred_goto_scene(scene, path, function_call = null):
 	var overworld_node = persisted_scenes[Scene.OVERWORLD]
 	if overworld_node != null:
 		if scene != Scene.OVERWORLD:
+			overworld_node.toggle_overworld_hud(false)
 			stop_processing(overworld_node)
 		else:
+			overworld_node.toggle_overworld_hud(true)
 			overworld_node.player.set_can_move(true)
 			start_processing(overworld_node)
 

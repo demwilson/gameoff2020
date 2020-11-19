@@ -77,6 +77,7 @@ func _on_Restart_pressed():
 	tile_map.gameOver = false
 	$GUI/Win.visible = false
 	$GUI/Win/Restart.disabled = false
+	toggle_overworld_hud(false)
 	Global.goto_scene(Global.Scene.GROUND_CONTROL)
 
 func get_loot_for_chest(floorLevel):
@@ -121,6 +122,10 @@ func lose_event():
 	tile_map.gameOver = true
 	$GUI/Lose.visible = true
 	set_audio(false)
+	
+func toggle_overworld_hud(show):
+	$GUI/HUD.visible = show
+	
 
 func _on_LoseRestart_pressed():
 	$GUI/Lose/LoseRestart.disabled = true
