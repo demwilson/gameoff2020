@@ -36,6 +36,7 @@ const ANIMATION_FILE_EXTENSION = ".tres"
 const BASE_STAT_VALUE = 1
 const STAT_STEP = 0.5
 const OXYGEN_STEP = 5
+const HEALTH_STEP = 5
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -46,6 +47,7 @@ var current_scene = null
 #Upgraded stats
 var Upgrades = {
 	"Oxygen": 0,
+	"Health": 0,
 	"Attack": 0,
 	"Accuracy": 0,
 	"Speed": 0,
@@ -138,7 +140,7 @@ func _ready():
 func build_player():
 	# Stats
 	# TODO: Add health upgrade
-	var max_health = BASE_HEALTH
+	var max_health = BASE_HEALTH + (HEALTH_STEP * Upgrades.Health)
 	var current_health = max_health
 	var max_oxygen = BASE_OXYGEN + (OXYGEN_STEP * Upgrades.Oxygen)
 	var current_oxygen = max_oxygen
