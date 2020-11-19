@@ -121,6 +121,10 @@ func lose_event():
 	tile_map.gameOver = true
 	$GUI/Lose.visible = true
 	set_audio(false)
+	
+func set_ui_visible(show):
+	$GUI/HUD.visible = show
+	
 
 func _on_LoseRestart_pressed():
 	$GUI/Lose/LoseRestart.disabled = true

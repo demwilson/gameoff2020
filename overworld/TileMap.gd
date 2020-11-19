@@ -187,8 +187,14 @@ func place_exit(startingSpot):
 	var offsetVariance = 2
 	var cellIndex
 	var ladderPlaced = false
+	var loops = 0
+	var maxLoops = 12
 	
-	while !ladderPlaced: 
+	while !ladderPlaced:
+		loops += 1
+		if loops >= maxLoops:
+			minExitDistanceInRoomCells -= 1
+			loops = 0
 		#select a random spot
 		var possiblePoint = possibleExitAnchorPoints[Global.random.randi() % possibleExitAnchorPoints.size()]
 		
@@ -199,6 +205,7 @@ func place_exit(startingSpot):
 		#if cellIndex -1 skip everything
 		cellIndex = self.get_cell(possiblePoint.x + exitOffset, possiblePoint.y + exitOffset)
 		if cellIndex == -1:
+			possibleExitAnchorPoints.erase(possiblePoint)
 			continue
 		else:
 			endRoom = possiblePoint
