@@ -32,9 +32,14 @@ onready var MoveNameLabels = [
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
 
+const MIN_ENEMIES = 1
+const ENEMY_COUNT_STEP = 1
+const ENEMY_COUNT_TIER_ONE = 10
+const ENEMY_COUNT_TIER_TWO = 15
+const MAX_ENEMIES = 3
+
 const MAX_ANIMATION_TIMER = 1.2
 const ACTION_AVAILABLE_TICKS = 6.0
-const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
 const PLAYER_POSITION = 0
 
@@ -99,7 +104,7 @@ var _hover = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Populate the combatants
-	var num_enemies = 1 + Global.random.randi() % MAX_ENEMIES
+	var num_enemies = get_combat_enemies(Global.player.get_combat_count())
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
@@ -165,7 +170,6 @@ func _ready():
 		CombatantBox.add_child(creature.scene)
 	
 	OS.set_window_size(Vector2(1280, 720))
-	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -519,3 +523,11 @@ func calculate_defense(defense, bonus_defense):
 	var processed = (defense * 2) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed
+
+func get_combat_enemies(total_combats):
+	var count = MIN_ENEMIES
+	if total_combats > ENEMY_COUNT_TIER_TWO:
+		count += 2 * ENEMY_COUNT_STEP
+	elif total_combats > ENEMY_COUNT_TIER_ONE:
+		count += ENEMY_COUNT_STEP
+	return min(MAX_ENEMIES, 1 + Global.random.randi() % count)

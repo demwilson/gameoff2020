@@ -101,7 +101,7 @@ func _ready():
 		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [4, 2], [90, 2]),
 		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
 		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [70, 5], Moves.MoveList.FIREBOLT),
-		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 0.75, 1.25, [0, 2]),
+		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [1, 3]),
 	]
 	var available_items = [
 		Item.new(0, "Crowbar", Item.ItemTier.GAME_START, Item.ItemType.MOVE, "You swing the crowbar.", Moves.MoveList.BASIC_ATTACK),
@@ -119,15 +119,16 @@ func _ready():
 		Item.new(12, "Fiber Mesh", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "Pretty resilient material.", [Creature.Stats.DEFENSE, 5]),
 		Item.new(13, "Proximity Sensor", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "You know when they are close.", [Creature.Stats.EVADE, 5]),
 		Item.new(14, "Fireball", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "This launches a large ball of fire at your enemy!", Moves.MoveList.FIREBALL),
+		Item.new(15, "Heal", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "This heals you. It's amazing!", Moves.MoveList.HEAL),
 	]
 	var available_enemies = [
 		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 0, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 75, 75, Creature.Stats.new([4, 4, 3, 1, 3]), Creature.Stats.new([10, 0, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(1, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 30, 30, Creature.Stats.new([1, 1, 2, 1, 2]), Creature.Stats.new([0, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(2, "Gargantuan Tardigrade", Creature.CreatureSize.LARGE_TALL, 150, 150, Creature.Stats.new([5, 2, 1, 5, 0]), Creature.Stats.new([4, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10, Creature.Stats.new([1, 1, 2, 0, 2]), Creature.Stats.new([0, 4, 0, 0, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 150, 150, Creature.Stats.new([5, 2, 1, 5, 0]), Creature.Stats.new([4, 4, 0, 1, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([5, 5, 5, 5, 5]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(0, "Boss", Creature.CreatureSize.LARGE_TALL, 300, 300, Creature.Stats.new([4, 4, 4, 4, 4]), Creature.Stats.new([3, 3, 3, 3, 3]), Creature.BasePath.BOSS, Creature.Behavior.BOSS, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(0, "Boss", Creature.CreatureSize.LARGE_TALL, 300, 300, Creature.Stats.new([4, 4, 4, 4, 4]), Creature.Stats.new([3, 3, 3, 3, 3]), Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS, [Moves.MoveList.BASIC_ATTACK]),
 	]
 
 	moves = Moves.new(available_moves)
