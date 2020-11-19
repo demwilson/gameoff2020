@@ -11,6 +11,7 @@ enum MoveFormula {
 enum AnimationPath {
 	BASIC_ATTACK,
 	FIREBOLT,
+	HEAL,
 }
 
 enum AnimationDetail {
@@ -23,6 +24,7 @@ enum AnimationDetail {
 const animation_details = [
 	["melee_attack",  Vector2(-16, 8), 34, 1],
 	["fireball_power_up", Vector2(-16, 8), 23, 1],
+	["healing", Vector2(0, 0), 51, 1],
 ]
 
 var name
