@@ -12,6 +12,8 @@ const BASE_ANIMATION_FILE_EXTENSION = ".tres"
 
 const LEFT_SIDE = 0
 const RIGHT_SIDE = 1
+const LEFT_SIDE_TEXT = "_left"
+const RIGHT_SIDE_TEXT = "_right"
 
 var combat_side = null
 var base_path = null
@@ -19,6 +21,9 @@ const NEGATIVE_VECTOR = Vector2(-1, -1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var side = LEFT_SIDE_TEXT
+	if combat_side == RIGHT_SIDE:
+		side = RIGHT_SIDE_TEXT
 	var animation_name = Move.animation_details[base_path][Move.AnimationDetail.BASE_NAME]
 	var position_offset = Move.animation_details[base_path][Move.AnimationDetail.VECTOR_OFFSET]
 	if combat_side == LEFT_SIDE:
@@ -26,7 +31,7 @@ func _ready():
 	self.hframes = Move.animation_details[base_path][Move.AnimationDetail.HFRAMES]
 	self.vframes = Move.animation_details[base_path][Move.AnimationDetail.VFRAMES]
 	self.position = position_offset
-	var texture_path = BASE_SPRITE_PATH + animation_name + BASE_SPRITE_FILE_EXTENSION
+	var texture_path = BASE_SPRITE_PATH + animation_name + side + BASE_SPRITE_FILE_EXTENSION
 	self.set("texture", load(texture_path))
 	var animation_path = BASE_SPRITE_PATH + BASE_ANIMATION_PREFIX + animation_name + BASE_ANIMATION_FILE_EXTENSION
 	var animation = load(animation_path)
