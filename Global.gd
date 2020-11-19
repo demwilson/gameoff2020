@@ -8,6 +8,7 @@ const Item = preload("res://game/Item.gd")
 const Items = preload("res://game/Items.gd")
 const Move = preload("res://game/Move.gd")
 const Moves = preload("res://game/Moves.gd")
+const Stats = preload("res://game/Stats.gd")
 
 # Persisted scenes must be first in the enum
 enum Scene {
@@ -32,6 +33,10 @@ var TEXT_COLOR = {
 
 const TEXTURE_FILE_EXTENSION = ".png"
 const ANIMATION_FILE_EXTENSION = ".tres"
+const BASE_STAT_VALUE = 1
+const STAT_STEP = 0.5
+const OXYGEN_STEP = 5
+const HEALTH_STEP = 5
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -42,6 +47,7 @@ var current_scene = null
 #Upgraded stats
 var Upgrades = {
 	"Oxygen": 0,
+	"Health": 0,
 	"Attack": 0,
 	"Accuracy": 0,
 	"Speed": 0,
@@ -59,35 +65,65 @@ var Upgrades = {
 const PLAYER_NAME = "Astronaut"
 const BASE_HEALTH = 100
 const BASE_OXYGEN = 200
-const CURRENCY_TEXT = "Currency"
-const OXYGEN_TEXT = "Oxygen"
+const CURRENCY_TEXT = "Moon Rocks"
+const OXYGEN_TEXT = "Units of Oxygen"
 var player = null
 var moves = null
 var items = null
 var enemies = null
 var floor_level = 1
-var currency = 6000
+var currency = 0
+
+# Debugging purposes
+var random
+var current_seed
+var seed_value = null
 
 func _ready():
+	# Add debugging settings here
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		currency = 6000
+		# Uncomment to force a seed value
+		# seed_value = -7489110890573097118
+
+	# Set RNG value and get seed.
+	random = RandomNumberGenerator.new()
+	if seed_value:
+		random.set_seed(seed_value)
+	else:
+		random.randomize()
+	current_seed = random.get_seed()
+	self.log(Settings.LogLevel.DEBUG, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
+
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
-		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 2, [0, 2], [90, 1, 2]),
-		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 5, [0, 2], [95, 0, 1]),
-		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 2], [50, 4, 1.5], Moves.MoveList.FIREBOLT),
-		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 1, 2, [0, 2]),
+		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [4, 2], [90, 2]),
+		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
+		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [70, 5], Moves.MoveList.FIREBOLT),
+		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 0.75, 1.25, [0, 2]),
 	]
 	var available_items = [
-		Item.new(0, "Basic Attack", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "This is a basic attack.", Moves.MoveList.BASIC_ATTACK),
+		Item.new(0, "Crowbar", Item.ItemTier.GAME_START, Item.ItemType.MOVE, "You swing the crowbar.", Moves.MoveList.BASIC_ATTACK),
 		Item.new(1, "Flimsy Sword", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1]),
-		Item.new(2, "Cybernetic Eye", Item.ItemTier.LEVEL_ONE, Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2]),
-		Item.new(3, "Firebolt", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "This launches a bolt of fire at your enemy!", Moves.MoveList.FIREBOLT),
-		Item.new(4, "Friendly Robot Servant", Item.ItemTier.LEVEL_ONE,Item.ItemType.ALLY, "This robot will fight for you.", Enemies.EnemyList.ROBOT_T1),
+		Item.new(2, "Ruler", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Helps with measurements.", [Creature.Stats.ACCURACY, 1]),
+		Item.new(3, "Sandals", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Better than walking barefoot.", [Creature.Stats.SPEED, 1]),
+		Item.new(4, "Flimsy Buckler", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Only a shield in the most technical sense.", [Creature.Stats.DEFENSE, 1]),
+		Item.new(5, "Tattered Cloak", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Kinda catches the wind.", [Creature.Stats.EVADE, 1]),
+		Item.new(6, "Cybernetic Eye", Item.ItemTier.LEVEL_ONE, Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2]),
+		Item.new(7, "Firebolt", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "This launches a bolt of fire at your enemy!", Moves.MoveList.FIREBOLT),
+		Item.new(8, "Friendly Robot Servant", Item.ItemTier.LEVEL_ONE, Item.ItemType.ALLY, "This robot will fight for you.", Enemies.EnemyList.ROBOT_T1),
+		Item.new(9, "Basic Phaser", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "Point and pull the trigger.", [Creature.Stats.ATTACK, 5]),
+		Item.new(10, "Aged Sight", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "It still helps.", [Creature.Stats.ACCURACY, 5]),
+		Item.new(11, "Boots", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "Comfortable boots help with movement.", [Creature.Stats.SPEED, 3]),
+		Item.new(12, "Fiber Mesh", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "Pretty resilient material.", [Creature.Stats.DEFENSE, 5]),
+		Item.new(13, "Proximity Sensor", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "You know when they are close.", [Creature.Stats.EVADE, 5]),
+		Item.new(14, "Fireball", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "This launches a large ball of fire at your enemy!", Moves.MoveList.FIREBALL),
 	]
 	var available_enemies = [
-		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 25, 25, Creature.Stats.new([1, 2, 2, 1, 1]), Creature.Stats.new([2, 0, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 75, 75, Creature.Stats.new([3, 4, 3, 1, 3]), Creature.Stats.new([10, 0, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(1, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 30, 30, Creature.Stats.new([1, 1, 4, 1, 4]), Creature.Stats.new([0, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 0, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 75, 75, Creature.Stats.new([4, 4, 3, 1, 3]), Creature.Stats.new([10, 0, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(1, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 30, 30, Creature.Stats.new([1, 1, 2, 1, 2]), Creature.Stats.new([0, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(2, "Gargantuan Tardigrade", Creature.CreatureSize.LARGE_TALL, 150, 150, Creature.Stats.new([5, 2, 1, 5, 0]), Creature.Stats.new([4, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([5, 5, 5, 5, 5]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
@@ -102,25 +138,55 @@ func _ready():
 	build_player()
 
 func build_player():
-	# TODO: Add upgrades
-#	var player_stats = Creature.Stats.new(Creature.BASE_STATS)
-	var player_stats = Creature.Stats.new([2,2,10,2,2])
+	# Stats
+	# TODO: Add health upgrade
+	var max_health = BASE_HEALTH + (HEALTH_STEP * Upgrades.Health)
+	var current_health = max_health
+	var max_oxygen = BASE_OXYGEN + (OXYGEN_STEP * Upgrades.Oxygen)
+	var current_oxygen = max_oxygen
+	var attack = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Attack)
+	var accuracy = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Accuracy)
+	var speed = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Speed)
+	var defense = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Defense)
+	var evade = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Evade)
+
+	var player_stats = Creature.Stats.new([attack, accuracy, speed, defense, evade])
 	var player_bonuses = Creature.Stats.new()
 
-	var player_items = [
-		Items.ItemList.CROWBAR,
-		Items.ItemList.FLIMSY_SWORD,
-		Items.ItemList.CYBERNETIC_EYE,
-		Items.ItemList.FIREBOLT,
-		Items.ItemList.ROBOT_T1,
-	]
+	# Items
+	var player_items = [Items.ItemList.CROWBAR]
+	# Add attack-based item (T1)
+	if Upgrades.BasicWeapon:
+		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)
+		player_items.append(item.id)
+	# Add defense-based item (T1)
+	if Upgrades.BasicDefense:
+		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.DEFENSE)
+		player_items.append(item.id)
+	# Add move-based item (T1)
+	if Upgrades.CombatTraining:
+		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE)
+		player_items.append(item.id)
+	# Add attack-based item (T2)
+	if Upgrades.AdvanceWeapon:
+		var item = items.get_random_item(Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, Stats.ATTACK)
+		player_items.append(item.id)
+	# Add defense-based item (T2)
+	if Upgrades.AdvanceDefense:
+		var item = items.get_random_item(Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, Stats.DEFENSE)
+		player_items.append(item.id)
+	# Add move-based item (T2)
+	if Upgrades.AdvanceTraining:
+		var item = items.get_random_item(Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE)
+		player_items.append(item.id)
+
 	player = GlobalPlayer.new(
 		PLAYER_NAME,
 		Creature.CreatureSize.LARGE_TALL,
-		BASE_HEALTH,
-		BASE_HEALTH,
-		BASE_OXYGEN,
-		BASE_OXYGEN,
+		max_health,
+		current_health,
+		max_oxygen,
+		current_oxygen,
 		player_stats,
 		player_bonuses,
 		player_items,
@@ -222,7 +288,7 @@ static func sum_array(array):
 
 func get_random_type_by_weight(weight_list):
 	var total_weight = sum_array(weight_list)
-	var rand = 1 + (randi() % total_weight)
+	var rand = 1 + (Global.random.randi() % total_weight)
 	for position in range(weight_list.size()):
 		var chance = weight_list[position]
 		if rand <= chance:

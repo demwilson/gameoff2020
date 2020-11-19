@@ -22,7 +22,7 @@ func _init(type, name, scene, size, max_health, health, moves, stats, bonuses, b
 # name
 func get_name():
 	var processed_name = .get_name()
-	if !self.is_active():
+	if !self.is_alive():
 		processed_name += " (Dead)"
 	return processed_name
 # ticks
@@ -40,12 +40,12 @@ func get_move(position=null):
 	if position:
 		move = self._moves[position]
 	else:
-		move = self._moves[randi() % self._moves.size()]
+		move = self._moves[Global.random.randi() % self._moves.size()]
 	return move
 func choose_move():
-	self._moves[randi() % self._moves]
+	self._moves[Global.random.randi() % self._moves]
 
-func is_active():
+func is_alive():
 	return self._health > 0
 func update_health_percentage():
 	var percentage = self.get_health_percentage()
@@ -63,8 +63,8 @@ func choose_target(move, target_list):
 #            Behavior.STUPID:
 			_:
 				while target == null:
-					var target_position = randi() % target_list.size()
+					var target_position = Global.random.randi() % target_list.size()
 					var potential_target = target_list[target_position]
-					if potential_target.is_active():
+					if potential_target.is_alive():
 						target = potential_target
 	return target

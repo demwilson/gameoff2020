@@ -78,7 +78,6 @@ enum RoomCellType {
 
 func _ready():
 	overworld = get_parent()
-	randomize()
 	build_level()
 
 func _on_Player_collided(collisionPoint, direction):
@@ -107,7 +106,6 @@ func _on_Player_collided(collisionPoint, direction):
 		overworld.score += 20
 		if levelNum < LEVEL_SIZES.size():
 			isGeneratingNewLevel = true
-			randomize()
 			build_level()
 			overworld.place_player()
 			overworld.update_floor_level(levelNum)
@@ -130,7 +128,7 @@ func build_level():
 	
 	#Max number of rooms based on roomCellSizes and level size
 	var numberOfCells = (levelSize.x / roomCellSize.x) * (levelSize.y / roomCellSize.y)
-	var startingSpot = possibleStartPoints[randi() % possibleStartPoints.size()]
+	var startingSpot = possibleStartPoints[Global.random.randi() % possibleStartPoints.size()]
 	var firstSpot = true
 	var needsCorridor = false
 	var numberOfCellsPlaced = 0
@@ -177,8 +175,8 @@ func place_player_start(startingSpot):
 	var startRoom = startingSpot
 	var roomOffset = 4
 	var offsetVariance = 2
-	var playerX = startRoom.x + roomOffset - randi() % offsetVariance
-	var playerY = startRoom.y + roomOffset - randi() % offsetVariance
+	var playerX = startRoom.x + roomOffset - Global.random.randi() % offsetVariance
+	var playerY = startRoom.y + roomOffset - Global.random.randi() % offsetVariance
 	playerStartPosition = map_to_world(Vector2(playerX, playerY))
 	
 func place_exit(startingSpot):
@@ -192,7 +190,7 @@ func place_exit(startingSpot):
 	
 	while !ladderPlaced: 
 		#select a random spot
-		var possiblePoint = possibleExitAnchorPoints[randi() % possibleExitAnchorPoints.size()]
+		var possiblePoint = possibleExitAnchorPoints[Global.random.randi() % possibleExitAnchorPoints.size()]
 		
 		if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
 			continue
@@ -207,8 +205,8 @@ func place_exit(startingSpot):
 			ladderPlaced = true
 		
 			
-	var exitX = endRoom.x + exitOffset - randi() % offsetVariance
-	var exitY = endRoom.y + exitOffset - randi() % offsetVariance
+	var exitX = endRoom.x + exitOffset - Global.random.randi() % offsetVariance
+	var exitY = endRoom.y + exitOffset - Global.random.randi() % offsetVariance
 	set_tile(exitX, exitY, Tile.LADDER)
 
 func generate_Anchor_Points():
@@ -315,11 +313,11 @@ func place_doors(anchorSpotPosition):
 	#of the possible spots check if they can actually be placed there
 	var numberOfDoorsToAdd = 0
 	if doorsToAdd.size() > 0:
-		numberOfDoorsToAdd = 1 + randi() % doorsToAdd.size()
+		numberOfDoorsToAdd = 1 + Global.random.randi() % doorsToAdd.size()
 	#finally paint the doors lucky enough to pass filtering
 	var pointsToAdd = []
 	for doorToAdd in numberOfDoorsToAdd:
-		var doorArr = doorsToAdd[randi() % numberOfDoorsToAdd]
+		var doorArr = doorsToAdd[Global.random.randi() % numberOfDoorsToAdd]
 		var doorTile = doorArr[canPlaceObjDoorTilePosition]
 		var doorDirection = doorArr[canPlaceObjDoorDirectionPosition]
 		
@@ -569,7 +567,7 @@ func place_treasure_chest(anchorPosition):
 		for possibleSpawnPointY in range(roomCellSize.y - wallAndDoorOffset * 2):
 			possibleSpawnPoints.append(anchorPosition + Vector2(possibleSpawnPointX + wallAndDoorOffset, possibleSpawnPointY + wallAndDoorOffset))
 	#randomly pic a position where the chest should be
-	var spawnPoint = possibleSpawnPoints[randi() % possibleSpawnPoints.size()]
+	var spawnPoint = possibleSpawnPoints[Global.random.randi() % possibleSpawnPoints.size()]
 	#set the tile at the position to closed chest
 	set_tile(spawnPoint.x, spawnPoint.y, Tile.CLOSED_CHEST)
 

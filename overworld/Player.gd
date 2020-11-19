@@ -17,7 +17,7 @@ var Raycasts = {
 
 var stepsTaken = 0
 var stepsToTriggerCombat = 20
-var encounterStep = 20
+var encounterStep = 25
 var oxygenStepCost = 1
 
 signal collided
@@ -71,7 +71,7 @@ func _on_MoveTween_tween_completed(object, key):
 	canMove = true
 
 func generate_steps_to_trigger_combat():
-	stepsToTriggerCombat = randi() % encounterStep + (1 + randi() % encounterStep)
+	stepsToTriggerCombat = Global.random.randi() % encounterStep + (1 + Global.random.randi() % encounterStep)
 	
 func combat_triggered():
 	if stepsTaken >= stepsToTriggerCombat:

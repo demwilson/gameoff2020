@@ -2,9 +2,6 @@ extends "res://game/Creature.gd"
 
 const Item = preload("res://game/Item.gd")
 
-const ITEM_MODIFIER_TYPE = 0
-const ITEM_MODIFIER_VALUE = 1
-
 var _tier = null
 var _items = null
 var _max_oxygen = null
@@ -58,16 +55,16 @@ func get_stat(type):
 	var bonus = .get_stat(type)
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
-		if item.type == Item.ItemType.STAT && item.modifier[ITEM_MODIFIER_TYPE] == type:
-				bonus += item.modifier[ITEM_MODIFIER_VALUE]
+		if item.type == Item.ItemType.STAT && item.modifier[Item.ITEM_MODIFIER_TYPE] == type:
+				bonus += item.modifier[Item.ITEM_MODIFIER_VALUE]
 	return bonus
 
 func get_bonus(type):
 	var bonus = .get_bonus(type)
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
-		if item.type == Item.ItemType.BONUS && item.modifier[ITEM_MODIFIER_TYPE] == type:
-				bonus += item.modifier[ITEM_MODIFIER_VALUE]
+		if item.type == Item.ItemType.BONUS && item.modifier[Item.ITEM_MODIFIER_TYPE] == type:
+				bonus += item.modifier[Item.ITEM_MODIFIER_VALUE]
 	return bonus
 
 func get_stats():

@@ -10,6 +10,9 @@ enum ItemTier {
 	LEVEL_TWO,
 }
 
+const ITEM_MODIFIER_TYPE = 0
+const ITEM_MODIFIER_VALUE = 1
+
 var id
 var name
 var tier

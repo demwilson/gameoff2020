@@ -79,7 +79,7 @@ func generate_items(tier_level, count):
 		# add random item from filtered list
 		var filtered_list_size = filtered_list.size()
 		if filtered_list_size > 0:
-			var item = filtered_list[randi() % filtered_list_size]
+			var item = filtered_list[Global.random.randi() % filtered_list_size]
 			item_list.append(item)
 	return item_list
 
@@ -90,6 +90,19 @@ func get_items_by_tier(tier_level):
 			items.append(item)
 	return items
 
+func get_random_item(tier, item_type, modifier_type=null):
+	var items_by_tier = get_items_by_tier(tier)
+	var filtered_list = filter_item_list_by_type(items_by_tier, item_type)
+	var items = filtered_list
+	var item = null
+	
+	# modifier_type is only available on ItemType of BONUS and STAT
+	if modifier_type:
+		items = filter_item_list_by_modifier_type(items, modifier_type)
+	if items.size() > 0:
+		item = items[randi() % items.size()]
+	return item
+
 static func filter_item_list_by_type(list, type):
 	var filtered_list = []
 	for item in list:
@@ -97,5 +110,13 @@ static func filter_item_list_by_type(list, type):
 			filtered_list.append(item)
 	return filtered_list
 
+static func filter_item_list_by_modifier_type(list, modifier_type):
+	var filtered_list = []
+	for item in list:
+		if item.modifier[Item.ITEM_MODIFIER_TYPE] == modifier_type:
+			filtered_list.append(item)
+	return filtered_list
+
+
 static func get_random_count(base, multiplier):
-	return 1 + randi() % (base * multiplier)
+	return 1 + Global.random.randi() % (base * multiplier)

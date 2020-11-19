@@ -53,6 +53,7 @@ const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 const ATTACK_ANIMATION_STEP = 1
 const BLOCKED_TEXT = "BLOCKED"
 const EVADED_TEXT = "EVADED"
+const MISSED_TEXT = "MISSED"
 
 var counter = 0
 var enemies = []
@@ -97,9 +98,8 @@ var _hover = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
 	# Populate the combatants
-	var num_enemies = 1 + randi() % MAX_ENEMIES
+	var num_enemies = 1 + Global.random.randi() % MAX_ENEMIES
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
@@ -185,7 +185,7 @@ func _process(delta):
 	check_action_queue()
 	for i in range(enemies.size()):
 		var creature = enemies[i]
-		if creature.is_active():
+		if creature.is_alive():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				var move_id = creature.get_move()
 				var move = Global.moves.get_move_by_id(move_id)
@@ -204,7 +204,7 @@ func _process(delta):
 
 	for i in range(allies.size()):
 		var creature = allies[i]
-		if creature.is_active():
+		if creature.is_alive():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				if creature.get_behavior() == Creature.Behavior.PLAYER:
 					show_move_options(creature)
@@ -335,11 +335,11 @@ func check_end_combat():
 		return
 
 	var dead_enemies = 0
-	if !allies[PLAYER_POSITION].is_active():
+	if !allies[PLAYER_POSITION].is_alive():
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:
-		if !creature.is_active():
+		if !creature.is_alive():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		save_player_changes(allies[PLAYER_POSITION])
@@ -353,9 +353,35 @@ func check_action_queue():
 	if action_queue.size() == 0 || animation_lock:
 		return
 	_current_combat_action = action_queue.pop_front()
+	_current_combat_action = confirm_combat_action(_current_combat_action)
+	if _current_combat_action == null:
+		return
 	animation_lock = true
 	attack_animation_state = CombatAnimationState.INITIAL_STATE
 	next_animation_step()
+
+func confirm_combat_action(combat_action):
+	if !combat_action.creature.is_alive():
+		return null
+	if !_current_combat_action.target.is_alive():
+		match combat_action.move.type:
+			Move.MoveType.HEAL:
+				return null
+			Move.MoveType.DAMAGE:
+				var target = null
+				if combat_action.creature.type == CombatCreature.CombatantType.ENEMY:
+					target = get_first_living_creature(allies)
+				else:
+					target = get_first_living_creature(enemies)
+				if target:
+						combat_action.target = target
+	return combat_action
+
+func get_first_living_creature(creature_list):
+	for creature in creature_list:
+		if creature.is_alive():
+			return creature
+	return null
 
 func animation_process():
 	match attack_animation_state:
@@ -412,6 +438,8 @@ func execute_move(attacker, target, move):
 					apply_floating_text(target, EVADED_TEXT)
 			else:
 				log_arr.append("ATTACK MISSED!")
+				apply_floating_text(target, MISSED_TEXT)
+
 			if target_hit && !target_evaded:
 				# get the damage range
 				var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
@@ -429,8 +457,8 @@ func execute_move(attacker, target, move):
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))
 
-	# TODO: target has died
-	if !target.is_active():
+	# TODO: target has died animation
+	if !target.is_alive():
 		target.scene.stop_animation()
 
 	# reset ticks
@@ -468,26 +496,26 @@ func check_to_hit(accuracy):
 		processed = ACCURACY_PROCESSED_MAX
 	elif accuracy < ACCURACY_PROCESSED_MIN:
 		processed = ACCURACY_PROCESSED_MIN
-	var rand = randf() * PERCENT_MULTIPLIER
+	var rand = Global.random.randf() * PERCENT_MULTIPLIER
 	var hit_target = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_hit] ACCURACY: " + str(accuracy) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
-	var processed = pow(evade, 2) + bonus_evade - pow(move_level, 2)
+	var processed = (evade * 2) + bonus_evade - (move_level * 2)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
-	var rand = randf() * PERCENT_MULTIPLIER
+	var rand = Global.random.randf() * PERCENT_MULTIPLIER
 	var evaded = rand <= processed
 	Global.log(Settings.LogLevel.TRACE, "[check_to_evade] EVADE: " + str(evade) + " | BONUS: " + str(bonus_evade) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return evaded
 
 func calculate_damage(min_damage, max_damage):
-	var rand = 1 + randi() % int(max_damage - min_damage) + int(min_damage)
+	var rand = 1 + Global.random.randi() % int(max_damage - min_damage) + int(min_damage)
 	Global.log(Settings.LogLevel.TRACE, "[calculate_damage] MIN: " + str(min_damage) + " | MAX: " + str(max_damage) + " | RAND: " + str(rand))
 	return rand
 
 func calculate_defense(defense, bonus_defense):
-	var processed = pow(2, defense) + bonus_defense
+	var processed = (defense * 2) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed

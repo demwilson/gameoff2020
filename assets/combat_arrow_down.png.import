@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/saan.png-ac322d577a7358c779edf5668acb40c0.stex"
+path="res://.import/combat_arrow_down.png-892a965a34ca5ccf1957658aacd058b3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/saan.png"
-dest_files=[ "res://.import/saan.png-ac322d577a7358c779edf5668acb40c0.stex" ]
+source_file="res://assets/combat_arrow_down.png"
+dest_files=[ "res://.import/combat_arrow_down.png-892a965a34ca5ccf1957658aacd058b3.stex" ]
 
 [params]
 

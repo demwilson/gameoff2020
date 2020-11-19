@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/saan.png-ac322d577a7358c779edf5668acb40c0.stex"
+path="res://.import/astro_walking_overland.png-298d6b604c29962ac536c2eab64ea9c7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/saan.png"
-dest_files=[ "res://.import/saan.png-ac322d577a7358c779edf5668acb40c0.stex" ]
+source_file="res://assets/Tony_Created_Assets/astro_walking_overland.png"
+dest_files=[ "res://.import/astro_walking_overland.png-298d6b604c29962ac536c2eab64ea9c7.stex" ]
 
 [params]
 

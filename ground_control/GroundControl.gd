@@ -2,22 +2,24 @@ extends Node2D
 
 #Count on button clicks
 var Button_Click = {
-	"Oxygen": 0,
-	"Attack": 0,
-	"Accuracy": 0,
-	"Speed": 0,
-	"Defense": 0,
-	"Evade": 0,
-	"Basic_Weapon": 0,
-	"Basic_Defense": 0,
-	"Combat_Training": 0,
-	"Advance_Weapon": 0,
-	"Advance_Defense": 0,
-	"Advance_Training": 0
+	"Oxygen": Global.Upgrades.Oxygen,
+	"Health": Global.Upgrades.Health,
+	"Attack": Global.Upgrades.Attack,
+	"Accuracy": Global.Upgrades.Accuracy,
+	"Speed": Global.Upgrades.Speed,
+	"Defense": Global.Upgrades.Defense,
+	"Evade": Global.Upgrades.Evade,
+	"Basic_Weapon": Global.Upgrades.BasicWeapon,
+	"Basic_Defense": Global.Upgrades.BasicDefense,
+	"Combat_Training": Global.Upgrades.CombatTraining,
+	"Advance_Weapon": Global.Upgrades.AdvanceWeapon,
+	"Advance_Defense": Global.Upgrades.AdvanceDefense,
+	"Advance_Training": Global.Upgrades.AdvanceTraining
 }
 #Max Clicks / Upgrades
 var Max_Click = {
 	"Oxygen": 5,
+	"Health": 5,
 	"Attack": 4,
 	"Accuracy": 4,
 	"Defense": 4,
@@ -40,6 +42,7 @@ var Upgrades_Needed = {
 #Upgrade
 enum UpgradeType {
 	OXYGEN,
+	HEALTH,
 	ATTACK,
 	ACCURACY,
 	SPEED,
@@ -54,6 +57,7 @@ enum UpgradeType {
 }
 #cost of upgrades
 var oxygen_cost
+var health_cost
 var attack_cost
 var accuracy_cost
 var defense_cost 
@@ -67,6 +71,7 @@ var advance_defense_cost
 var advance_combat_cost
 var currency
 var actual_currency
+var tier0_total
 var tier1_total
 var tier2_total
 
@@ -76,9 +81,73 @@ func _ready():
 	initialize_cost()
 	$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 	OS.set_window_size(Vector2(1280, 720))
+	upgraded_skills()
 	
+func upgraded_skills():
+	tier_list()
+	#Oxygen
+	$CanvasLayer/Tier0/OxygenButton/OxygenCount.text = str(Button_Click.Oxygen) + "/" + str(Max_Click.Oxygen)
+	$CanvasLayer/Tier0/OxygenButton.text = "Oxygen: " + str(get_cost(UpgradeType.OXYGEN, Button_Click.Oxygen))
+	if Button_Click.Oxygen == Max_Click.Oxygen:
+		$CanvasLayer/Tier0/OxygenButton.text = "Oxygen"
+	#Health
+	$CanvasLayer/Tier0/HealthButton/HealthCount.text = str(Button_Click.Health) + "/" + str(Max_Click.Health)
+	$CanvasLayer/Tier0/HealthButton.text = "Health: " + str(get_cost(UpgradeType.HEALTH, Button_Click.Health))
+	if Button_Click.Health == Max_Click.Health:
+		$CanvasLayer/Tier0/HealthButton.text = "Health"
+	#Attack
+	$CanvasLayer/Tier1/AttackButton/AttackCount.text = str(Button_Click.Attack) + "/" + str(Max_Click.Attack)
+	$CanvasLayer/Tier1/AttackButton.text = "Attack: " + str(get_cost(UpgradeType.ATTACK, Button_Click.Attack))
+	if Button_Click.Attack == Max_Click.Attack:
+		$CanvasLayer/Tier1/AttackButton.text = "Attack"
+	#Accuracy
+	$CanvasLayer/Tier1/AccuracyButton/AccuracyCount.text = str(Button_Click.Accuracy) + "/" + str(Max_Click.Accuracy)
+	$CanvasLayer/Tier1/AccuracyButton.text = "Accuracy: " + str(get_cost(UpgradeType.ACCURACY, Button_Click.Accuracy))
+	if Button_Click.Accuracy == Max_Click.Accuracy:
+		$CanvasLayer/Tier1/AccuracyButton.text = "Accuracy"
+	#Speed
+	$CanvasLayer/Tier2/SpeedButton/SpeedCount.text = str(Button_Click.Speed) + "/" + str(Max_Click.Speed)
+	$CanvasLayer/Tier2/SpeedButton.text = "Speed: " + str(get_cost(UpgradeType.SPEED, Button_Click.Speed))
+	if Button_Click.Speed == Max_Click.Speed:
+		$CanvasLayer/Tier2/SpeedButton.text = "Speed"
+	#Defense
+	$CanvasLayer/Tier1/DefenseButton/DefenseCount.text = str(Button_Click.Defense) + "/" + str(Max_Click.Defense)
+	$CanvasLayer/Tier1/DefenseButton.text = "Defense: " + str(get_cost(UpgradeType.DEFENSE, Button_Click.Defense))
+	if Button_Click.Defense == Max_Click.Defense:
+		$CanvasLayer/Tier1/DefenseButton.text = "Defense"
+	#Evade
+	$CanvasLayer/Tier2/EvadeButton/EvadeCount.text = str(Button_Click.Evade) + "/" + str(Max_Click.Evade)
+	$CanvasLayer/Tier2/EvadeButton.text = "Evade: " + str(get_cost(UpgradeType.EVADE, Button_Click.Evade))
+	if Button_Click.Evade == Max_Click.Evade:
+		$CanvasLayer/Tier2/EvadeButton.text = "Evade"
+	#Basic Weapon
+	$CanvasLayer/Tier3/BasicWpnButton/BasicWpnCount.text = str(Button_Click.Basic_Weapon) + "/" + str(Max_Click.BasicWeapon)
+	if Button_Click.Basic_Weapon == Max_Click.BasicWeapon:
+		$CanvasLayer/Tier3/BasicWpnButton.text = "Basic Wpns"
+	#Basic Defense
+	$CanvasLayer/Tier3/BasicDefButton/BasicDefenseCount.text = str(Button_Click.Basic_Defense) + "/" + str(Max_Click.BasicDefense)
+	if Button_Click.Basic_Defense == Max_Click.BasicDefense:
+		$CanvasLayer/Tier3/BasicDefButton.text = "Basic Def"
+	#Combat Training
+	$CanvasLayer/Tier3/CombatTrnButton/CombatTrnCount.text = str(Button_Click.Combat_Training) + "/" + str(Max_Click.CombatTraining)
+	if Button_Click.Combat_Training == Max_Click.CombatTraining:
+		$CanvasLayer/Tier3/CombatTrnButton.text = "Cbt Training"
+	#Advance Weapon
+	$CanvasLayer/Tier4/AdvWpnButton/AdvWpnCount.text = str(Button_Click.Advance_Weapon) + "/" + str(Max_Click.AdvanceWeapon)
+	if Button_Click.Advance_Weapon == Max_Click.AdvanceWeapon:
+		$CanvasLayer/Tier4/AdvWpnButton.text = "Adv Wpns"
+	#Advance Defense
+	$CanvasLayer/Tier4/AdvDefButton/AdvDefCount.text = str(Button_Click.Advance_Defense) + "/" + str(Max_Click.AdvanceDefense)
+	if Button_Click.Advance_Defense == Max_Click.AdvanceDefense:
+		$CanvasLayer/Tier4/AdvDefButton.text = "Adv Def"
+	#Advance Training
+	$CanvasLayer/Tier4/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
+	if Button_Click.Advance_Training == Max_Click.AdvanceTraining:
+		$CanvasLayer/Tier4/AdvTrnButton.text = "Adv Training"
+		
 func initialize_cost():
 	oxygen_cost = get_cost(UpgradeType.OXYGEN, Button_Click.Oxygen)
+	health_cost = get_cost(UpgradeType.HEALTH, Button_Click.Health)
 	attack_cost = get_cost(UpgradeType.ATTACK, Button_Click.Attack)
 	accuracy_cost = get_cost(UpgradeType.ACCURACY, Button_Click.Accuracy)
 	defense_cost = get_cost(UpgradeType.DEFENSE, Button_Click.Defense)
@@ -94,6 +163,8 @@ func initialize_cost():
 func get_cost(type, level):
 	match type:
 		UpgradeType.OXYGEN:
+			return (level + 1) * 5
+		UpgradeType.HEALTH:
 			return (level + 1) * 5
 		UpgradeType.ATTACK:
 			return (level + 1) * 12
@@ -139,10 +210,30 @@ func oxygen_upgrade():
 			spend_currency(get_cost(UpgradeType.OXYGEN, Button_Click.Oxygen))
 			Button_Click.Oxygen += 1
 			get_cost(UpgradeType.OXYGEN, Button_Click.Oxygen)
-			$CanvasLayer/OxygenButton/OxygenCount.text = str(Button_Click.Oxygen) + "/" + str(Max_Click.Oxygen)
+			$CanvasLayer/Tier0/OxygenButton/OxygenCount.text = str(Button_Click.Oxygen) + "/" + str(Max_Click.Oxygen)
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
-			$CanvasLayer/OxygenButton.text = "Oxygen: " + str(get_cost(UpgradeType.OXYGEN, Button_Click.Oxygen))
+			$CanvasLayer/Tier0/OxygenButton.text = "Oxygen: " + str(get_cost(UpgradeType.OXYGEN, Button_Click.Oxygen))
+			if Button_Click.Oxygen == Max_Click.Oxygen:
+				$CanvasLayer/Tier0/OxygenButton.text = "Oxygen"
+		else:
+			#if false shows an alert 
+			$CanvasLayer/Alert.visible = true
+func health_upgrade():
+	# Checks to see if player has enough currency to spend
+	# if true spends currency and upgrades 1
+	# Subtracts amount spent from currency and increases cost
+	if Button_Click.Health < Max_Click.Health:
+		if can_spend(get_cost(UpgradeType.HEALTH, Button_Click.Health)):
+			spend_currency(get_cost(UpgradeType.HEALTH, Button_Click.Health))
+			Button_Click.Health += 1
+			get_cost(UpgradeType.HEALTH, Button_Click.Health)
+			$CanvasLayer/Tier0/HealthButton/HealthCount.text = str(Button_Click.Health) + "/" + str(Max_Click.Health)
+			tier_list()
+			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			$CanvasLayer/Tier0/HealthButton.text = "Health: " + str(get_cost(UpgradeType.HEALTH, Button_Click.Health))
+			if Button_Click.Health == Max_Click.Health:
+				$CanvasLayer/Tier0/HealthButton.text = "Health"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -158,6 +249,8 @@ func attack_upgrade():
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 			$CanvasLayer/Tier1/AttackButton.text = "Attack: " + str(get_cost(UpgradeType.ATTACK, Button_Click.Attack))
+			if Button_Click.Attack == Max_Click.Attack:
+				$CanvasLayer/Tier1/AttackButton.text = "Attack"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -173,6 +266,8 @@ func accuracy_upgrade():
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 			$CanvasLayer/Tier1/AccuracyButton.text = "Accuracy: " + str(get_cost(UpgradeType.ACCURACY, Button_Click.Accuracy))
+			if Button_Click.Accuracy == Max_Click.Accuracy:
+				$CanvasLayer/Tier1/AccuracyButton.text = "Accuracy"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -188,6 +283,8 @@ func defense_upgrade():
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 			$CanvasLayer/Tier1/DefenseButton.text = "Defense: " + str(get_cost(UpgradeType.DEFENSE, Button_Click.Defense))
+			if Button_Click.Defense == Max_Click.Defense:
+				$CanvasLayer/Tier1/DefenseButton.text = "Defense"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -202,6 +299,8 @@ func speed_upgrade():
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 			$CanvasLayer/Tier2/SpeedButton.text = "Speed: " + str(get_cost(UpgradeType.SPEED, Button_Click.Speed))
+			if Button_Click.Speed == Max_Click.Speed:
+				$CanvasLayer/Tier2/SpeedButton.text = "Speed"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -216,6 +315,8 @@ func evade_upgrade():
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
 			$CanvasLayer/Tier2/EvadeButton.text = "Evade: " + str(get_cost(UpgradeType.EVADE, Button_Click.Evade))
+			if Button_Click.Evade == Max_Click.Evade:
+				$CanvasLayer/Tier2/EvadeButton.text = "Evade"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -227,8 +328,10 @@ func basic_weapon_upgrade():
 			Button_Click.Basic_Weapon += 1
 			get_cost(UpgradeType.BASICWEAPONS, Button_Click.Basic_Weapon)
 			$CanvasLayer/Tier3/BasicWpnButton/BasicWpnCount.text = str(Button_Click.Basic_Weapon) + "/" + str(Max_Click.BasicWeapon)
-			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			tier_list()
+			if Button_Click.Basic_Weapon == Max_Click.BasicWeapon:
+				$CanvasLayer/Tier3/BasicWpnButton.text = "Basic Wpns"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -242,6 +345,8 @@ func basic_defense_upgrade():
 			$CanvasLayer/Tier3/BasicDefButton/BasicDefenseCount.text = str(Button_Click.Basic_Defense) + "/" + str(Max_Click.BasicDefense)
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			if Button_Click.Basic_Defense == Max_Click.BasicDefense:
+				$CanvasLayer/Tier3/BasicDefButton.text = "Basic Def"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -254,6 +359,8 @@ func combat_training_upgrade():
 			$CanvasLayer/Tier3/CombatTrnButton/CombatTrnCount.text = str(Button_Click.Combat_Training) + "/" + str(Max_Click.CombatTraining)
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			if Button_Click.Combat_Training == Max_Click.CombatTraining:
+				$CanvasLayer/Tier3/CombatTrnButton.text = "Cbt Training"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -267,6 +374,8 @@ func advanced_weapon():
 			$CanvasLayer/Tier4/AdvWpnButton/AdvWpnCount.text = str(Button_Click.Advance_Weapon) + "/" + str(Max_Click.AdvanceWeapon)
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			if Button_Click.Advance_Weapon == Max_Click.AdvanceWeapon:
+				$CanvasLayer/Tier4/AdvWpnButton.text = "Adv Wpns"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -280,6 +389,8 @@ func advance_defense():
 			$CanvasLayer/Tier4/AdvDefButton/AdvDefCount.text = str(Button_Click.Advance_Defense) + "/" + str(Max_Click.AdvanceDefense)
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			if Button_Click.Advance_Defense == Max_Click.AdvanceDefense:
+				$CanvasLayer/Tier4/AdvDefButton.text = "Adv Def"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -293,6 +404,8 @@ func advance_training():
 			$CanvasLayer/Tier4/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
 			tier_list()
 			$CanvasLayer/Currency.text = "Currency: " + str(actual_currency)
+			if Button_Click.Advance_Training == Max_Click.AdvanceTraining:
+				$CanvasLayer/Tier4/AdvTrnButton.text = "Adv Training"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -300,9 +413,10 @@ func advance_training():
 func tier_list():
 	#Checks to see if requirements are met to go on to next tier
 	#Either one of each or 3 of one tier 1 and tier 2
+	tier0_total = Button_Click.Oxygen + Button_Click.Health
 	tier1_total = Button_Click.Attack + Button_Click.Accuracy + Button_Click.Defense
 	tier2_total = Button_Click.Speed + Button_Click.Evade
-	if Button_Click.Oxygen >= Upgrades_Needed.Tier0_to_Tier1:
+	if tier0_total >= Upgrades_Needed.Tier0_to_Tier1:
 		$CanvasLayer/Tier1.visible = true
 	if tier1_total >= Upgrades_Needed.Tier1_to_Tier2:
 		$CanvasLayer/Tier2.visible = true
@@ -318,6 +432,8 @@ func tier_list():
 ##### Button_Click
 func _on_OxygenButton_pressed():
 	oxygen_upgrade()
+func _on_HealthButton_pressed():
+	health_upgrade()
 func _on_AttackButton_pressed():
 	attack_upgrade()
 func _on_AccuracyButton_pressed():
@@ -346,6 +462,7 @@ func _on_AlertButton_pressed():
 func _on_StartGameMission_pressed():
 	#Update upgrades in global
 	Global.Upgrades.Oxygen = Button_Click.Oxygen
+	Global.Upgrades.Health = Button_Click.Health
 	Global.Upgrades.Attack = Button_Click.Attack
 	Global.Upgrades.Accuracy = Button_Click.Accuracy
 	Global.Upgrades.Defense = Button_Click.Defense
@@ -355,7 +472,7 @@ func _on_StartGameMission_pressed():
 	Global.Upgrades.BasicDefense = Button_Click.Basic_Defense
 	Global.Upgrades.CombatTraining = Button_Click.Combat_Training
 	Global.Upgrades.AdvanceWeapon = Button_Click.Advance_Weapon
-	Global.Upgrades.AdvanceDefesne = Button_Click.Advance_Defense
+	Global.Upgrades.AdvanceDefense = Button_Click.Advance_Defense
 	Global.Upgrades.AdvanceTraining = Button_Click.Advance_Training
 	#update global currency 
 	Global.currency = actual_currency
