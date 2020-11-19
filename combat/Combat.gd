@@ -364,24 +364,24 @@ func confirm_combat_action(combat_action):
 	if !combat_action.creature.is_alive():
 		return null
 	if !_current_combat_action.target.is_alive():
-	    match combat_action.move.type:
-	        Move.MoveType.HEAL:
-	            return null
-            Move.MoveType.DAMAGE:
-                var target = null
-                if creature.type === CombatCreature.CombatantType.ENEMY:
-                    target = get_first_living_creature(allies)
-                else:
-                    target = get_first_living_creature(enemies)
-                if target:
-                        combat_action.target = target
-    return combat_action
+		match combat_action.move.type:
+			Move.MoveType.HEAL:
+				return null
+			Move.MoveType.DAMAGE:
+				var target = null
+				if combat_action.creature.type == CombatCreature.CombatantType.ENEMY:
+					target = get_first_living_creature(allies)
+				else:
+					target = get_first_living_creature(enemies)
+				if target:
+						combat_action.target = target
+	return combat_action
 
 func get_first_living_creature(creature_list):
-    for creature in creature_list:
-        if creature.is_alive():
-            return creature
-    return null
+	for creature in creature_list:
+		if creature.is_alive():
+			return creature
+	return null
 
 func animation_process():
 	match attack_animation_state:
