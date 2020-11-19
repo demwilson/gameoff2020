@@ -138,8 +138,10 @@ func _ready():
 func build_player():
 	# Stats
 	# TODO: Add health upgrade
-	var health = BASE_HEALTH
-	var oxygen = BASE_OXYGEN + (OXYGEN_STEP * Upgrades.Oxygen)
+	var max_health = BASE_HEALTH
+	var current_health = max_health
+	var max_oxygen = BASE_OXYGEN + (OXYGEN_STEP * Upgrades.Oxygen)
+	var current_oxygen = max_oxygen
 	var attack = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Attack)
 	var accuracy = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Accuracy)
 	var speed = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Speed)
@@ -179,10 +181,10 @@ func build_player():
 	player = GlobalPlayer.new(
 		PLAYER_NAME,
 		Creature.CreatureSize.LARGE_TALL,
-		health,
-		health,
-		oxygen,
-		oxygen,
+		max_health,
+		current_health,
+		max_oxygen,
+		current_oxygen,
 		player_stats,
 		player_bonuses,
 		player_items,
