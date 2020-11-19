@@ -188,10 +188,11 @@ func place_exit(startingSpot):
 	var cellIndex
 	var ladderPlaced = false
 	var loops = 0
+	var maxLoops = 12
 	
 	while !ladderPlaced:
 		loops += 1
-		if loops >= 12:
+		if loops >= maxLoops:
 			minExitDistanceInRoomCells -= 1
 			loops = 0
 		#select a random spot
