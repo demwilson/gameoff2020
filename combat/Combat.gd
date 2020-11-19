@@ -185,27 +185,6 @@ func _process(delta):
 	$CanvasLayer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
 
 	# actual processing
-	check_end_combat()
-	check_action_queue()
-	for i in range(enemies.size()):
-		var creature = enemies[i]
-		if creature.is_alive():
-			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var move_id = creature.get_move()
-				var move = Global.moves.get_move_by_id(move_id)
-				var target = creature.choose_target(move, allies)
-				action_queue.append(CombatEvent.new(move, creature, target))
-				creature.is_queued = true
-			else:
-				creature.add_ticks(delta)
-		creature.update_health_percentage()
-		creature.update_ticks()
-
-		# UI Updates
-		var ui_text = get_node("CanvasLayer/CombatMenu/Enemies/VBoxContainer/Enemy" + str(i))
-		ui_text.text = creature.get_name()
-		ui_text.visible = true
-
 	for i in range(allies.size()):
 		var creature = allies[i]
 		if creature.is_alive():
@@ -232,6 +211,26 @@ func _process(delta):
 		ui_health.text = str(creature.get_health()) + " / " + str(creature.get_max_health())
 		var ui_ticks = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
+	for i in range(enemies.size()):
+		var creature = enemies[i]
+		if creature.is_alive():
+			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
+				var move_id = creature.get_move()
+				var move = Global.moves.get_move_by_id(move_id)
+				var target = creature.choose_target(move, allies)
+				action_queue.append(CombatEvent.new(move, creature, target))
+				creature.is_queued = true
+			else:
+				creature.add_ticks(delta)
+		creature.update_health_percentage()
+		creature.update_ticks()
+
+		# UI Updates
+		var ui_text = get_node("CanvasLayer/CombatMenu/Enemies/VBoxContainer/Enemy" + str(i))
+		ui_text.text = creature.get_name()
+		ui_text.visible = true
+	check_end_combat()
+	check_action_queue()
 
 func _input(event):
 	if !event.is_pressed():
