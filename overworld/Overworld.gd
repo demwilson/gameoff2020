@@ -2,6 +2,7 @@ extends Node2D
 
 const PERSIST = true
 const PLAYER_START_HP = 5
+const FIRST_FLOOR = 1
 
 var counter = 0
 
@@ -57,7 +58,7 @@ func set_audio(value):
 func restart_overworld():
 	set_audio(false)
 	tile_map.levelNum = 0
-	Global.floor_level = 0
+	Global.floor_level = FIRST_FLOOR
 	tile_map.isGeneratingNewLevel = true
 	player.stepsTaken = 0
 	player.generate_steps_to_trigger_combat()

@@ -502,7 +502,7 @@ func check_to_hit(accuracy):
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
-	var processed = pow(evade, 2) + bonus_evade - pow(move_level, 2)
+	var processed = (evade * 2) + bonus_evade - (move_level * 2)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER
@@ -516,6 +516,6 @@ func calculate_damage(min_damage, max_damage):
 	return rand
 
 func calculate_defense(defense, bonus_defense):
-	var processed = pow(2, defense) + bonus_defense
+	var processed = (defense * 2) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed

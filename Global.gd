@@ -96,10 +96,10 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
-		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 2, [0, 2], [90, 1, 2]),
-		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 5, [0, 2], [95, 0, 1]),
-		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 2], [50, 4, 1.5], Moves.MoveList.FIREBOLT),
-		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 1, 2, [0, 2]),
+		Move.new("Basic Attack", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [4, 2], [90, 2]),
+		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
+		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [70, 5], Moves.MoveList.FIREBOLT),
+		Move.new("Heal", 1, Move.MoveType.HEAL, Move.AnimationPath.FIREBOLT, 0.75, 1.25, [0, 2]),
 	]
 	var available_items = [
 		Item.new(0, "Crowbar", Item.ItemTier.GAME_START, Item.ItemType.MOVE, "You swing the crowbar.", Moves.MoveList.BASIC_ATTACK),
@@ -119,9 +119,9 @@ func _ready():
 		Item.new(14, "Fireball", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "This launches a large ball of fire at your enemy!", Moves.MoveList.FIREBALL),
 	]
 	var available_enemies = [
-		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 25, 25, Creature.Stats.new([1, 2, 2, 1, 1]), Creature.Stats.new([2, 0, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 75, 75, Creature.Stats.new([3, 4, 3, 1, 3]), Creature.Stats.new([10, 0, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
-		Enemy.new(1, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 30, 30, Creature.Stats.new([1, 1, 4, 1, 4]), Creature.Stats.new([0, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 0, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 75, 75, Creature.Stats.new([4, 4, 3, 1, 3]), Creature.Stats.new([10, 0, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
+		Enemy.new(1, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 30, 30, Creature.Stats.new([1, 1, 2, 1, 2]), Creature.Stats.new([0, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(2, "Gargantuan Tardigrade", Creature.CreatureSize.LARGE_TALL, 150, 150, Creature.Stats.new([5, 2, 1, 5, 0]), Creature.Stats.new([4, 4, 0, 1, 4]), Creature.BasePath.TARDIGRADE, Creature.Behavior.REVENGE, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.BASIC_ATTACK]),
 		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([5, 5, 5, 5, 5]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.BASIC_ATTACK]),
