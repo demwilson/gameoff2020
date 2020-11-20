@@ -408,8 +408,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Level" type="Label" parent="GUI"]
+[node name="Debug" type="ColorRect" parent="GUI"]
 visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level" type="Label" parent="GUI/Debug"]
 margin_top = 80.0
 margin_right = 64.0
 margin_bottom = 120.0
@@ -419,8 +427,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HP" type="Label" parent="GUI"]
-visible = false
+[node name="HP" type="Label" parent="GUI/Debug"]
 margin_left = 88.0
 margin_top = 80.0
 margin_right = 136.0
@@ -431,8 +438,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Counter" type="Label" parent="GUI"]
-visible = false
+[node name="Counter" type="Label" parent="GUI/Debug"]
 margin_left = 152.0
 margin_top = 80.0
 margin_right = 240.0
@@ -443,8 +449,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TilePos" type="Label" parent="GUI"]
-visible = false
+[node name="TilePos" type="Label" parent="GUI/Debug"]
 margin_left = 320.0
 margin_top = 80.0
 margin_right = 352.0
@@ -455,8 +460,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MousePos" type="Label" parent="GUI"]
-visible = false
+[node name="MousePos" type="Label" parent="GUI/Debug"]
 margin_left = 264.0
 margin_top = 80.0
 margin_right = 304.0
@@ -467,8 +471,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StepCount" type="Label" parent="GUI"]
-visible = false
+[node name="StepCount" type="Label" parent="GUI/Debug"]
 margin_left = 520.0
 margin_top = 88.0
 margin_right = 640.0
@@ -479,8 +482,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StepToFight" type="Label" parent="GUI"]
-visible = false
+[node name="StepToFight" type="Label" parent="GUI/Debug"]
 margin_left = 400.0
 margin_top = 88.0
 margin_right = 513.0
@@ -574,6 +576,9 @@ margin_right = 194.0
 margin_bottom = 290.0
 shortcut = SubResource( 4 )
 text = "Take All"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="LootList" type="ItemList" parent="GUI/Loot"]
 margin_left = 22.0

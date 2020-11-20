@@ -24,6 +24,9 @@ func _ready():
 	var side = LEFT_SIDE_TEXT
 	if combat_side == RIGHT_SIDE:
 		side = RIGHT_SIDE_TEXT
+	var self_target = Move.animation_details[base_path][Move.AnimationDetail.SELF_TARGET]
+	if self_target:
+		side = ""
 	var animation_name = Move.animation_details[base_path][Move.AnimationDetail.BASE_NAME]
 	var position_offset = Move.animation_details[base_path][Move.AnimationDetail.VECTOR_OFFSET]
 	if combat_side == LEFT_SIDE:

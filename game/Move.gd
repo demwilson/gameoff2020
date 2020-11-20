@@ -19,12 +19,13 @@ enum AnimationDetail {
 	VECTOR_OFFSET,
 	HFRAMES,
 	VFRAMES,
+	SELF_TARGET,
 }
 
 const animation_details = [
-	["melee_attack",  Vector2(-16, 8), 34, 1],
-	["fireball_power_up", Vector2(-16, 8), 23, 1],
-	["healing", Vector2(0, 0), 51, 1],
+	["melee_attack",  Vector2(-16, 8), 34, 1, false],
+	["fireball_power_up", Vector2(-16, 8), 23, 1, false],
+	["healing", Vector2(0, -32), 51, 1, true],
 ]
 
 var name

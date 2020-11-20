@@ -10,6 +10,7 @@ var counter = 0
 onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
 onready var loot_list = $GUI/Loot/LootList
+onready var debug_ui = $GUI/Debug
 
 # game state
 var player_tile
@@ -27,20 +28,16 @@ func place_player():
 
 func _process(delta):
 	update_HUD_values()
-	if Settings.debug:
-		$GUI/TilePos.visible = true
-		$GUI/MousePos.visible = true
-		$GUI/Counter.visible = true
-		$GUI/StepCount.visible = true
-		$GUI/StepToFight.visible = true
+	if Settings.debug >= Settings.LogLevel.INFO:
+		debug_ui.visible = true
 		var cpos = $TileMap.world_to_map(player.position)
-		$GUI/TilePos.text = str(cpos)
+		$GUI/Debug/TilePos.text = str(cpos)
 		var mpos = $TileMap.world_to_map(get_global_mouse_position())
-		$GUI/MousePos.text = str(mpos)
+		$GUI/Debug/MousePos.text = str(mpos)
 		counter += delta
-		$GUI/Counter.text = "Counter: " + str(counter)
-		$GUI/StepCount.text = "Steps Taken: " + str(player.stepsTaken)
-		$GUI/StepToFight.text = "StepsToFight: " + str(player.stepsToTriggerCombat)
+		$GUI/Debug/Counter.text = "Counter: " + str(counter)
+		$GUI/Debug/StepCount.text = "Steps Taken: " + str(player.stepsTaken)
+		$GUI/Debug/StepToFight.text = "StepsToFight: " + str(player.stepsToTriggerCombat)
 
 func _input(event):
 	if !event.is_pressed():
@@ -124,6 +121,8 @@ func lose_event():
 	
 func set_ui_visible(show):
 	$GUI/HUD.visible = show
+	if Settings.debug > Settings.LogLevel.INFO:
+		debug_ui.visible = show
 	
 
 func _on_LoseRestart_pressed():
