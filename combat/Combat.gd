@@ -9,6 +9,7 @@ enum CombatAnimationState {
 	COMPLETE = 4,
 }
 
+const PauseOverlay = preload("res://PauseOverlay.tscn")
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
@@ -96,6 +97,7 @@ enum MenuPhase {
 	MOVE_SELECT,
 	TARGET_SELECT,
 }
+var pause_overlay = null
 var _phase = MenuPhase.NONE
 var _menu_move = null
 var _menu_target = null
@@ -239,6 +241,11 @@ func _input(event):
 		return
 	if event.is_action("map_change_again"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
+	elif event.is_action("pause"):
+		if !pause_overlay:
+			pause_overlay = PauseOverlay.instance()
+			self.add_child(pause_overlay)
+			get_tree().paused = true
 	elif _phase != MenuPhase.NONE:
 		if event.is_action("up"):
 			update_hover(-STEP_AMOUNT)
@@ -459,6 +466,7 @@ func execute_move(attacker, target, move):
 				else:
 					# apply damage
 					target.add_health(-damage)
+	                # TODO: target is hit animation
 					# show damage
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))
