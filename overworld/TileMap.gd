@@ -193,7 +193,8 @@ func place_exit(startingSpot):
 	while !ladderPlaced:
 		loops += 1
 		if loops >= maxLoops:
-			minExitDistanceInRoomCells -= 1
+			if minExitDistanceInRoomCells > 0:
+				minExitDistanceInRoomCells -= 1
 			loops = 0
 		#select a random spot
 		var possiblePoint = possibleExitAnchorPoints[Global.random.randi() % possibleExitAnchorPoints.size()]

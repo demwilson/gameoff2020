@@ -101,17 +101,17 @@ func update_floor_level(value):
 
 func update_HUD_values():
 	var hud = $GUI/HUD
-	var oxygenHudValue = $GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background/Number
-	var oxygenHudGauge = $GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background/Gauge
+	var oxygenHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenAmount/Number
+	var oxygenHudGauge = $GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenGauge/Gauge
 	oxygenHudValue.text = str(Global.player.get_oxygen())
 	oxygenHudGauge.value = int(Global.player.get_oxygen_percentage())
-	var levelHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Level
+	var levelHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerLevel/Level
 	levelHudValue.text = "Level: " + str(Global.floor_level)
-	var healthHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Health
+	var healthHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerHealth/Health
 	healthHudValue.text = "Health: " + str(Global.player.get_health())
-	var combatsHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Combats
+	var combatsHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerCombat/Combats
 	combatsHudValue.text = "Combats: " + str(Global.player.get_combat_count())
-	var currencyHudValue = $GUI/HUD/HBoxContainer/BarsRight/CurrencyBar/Currency/Background/Number
+	var currencyHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar/CurrencyAmount/Number
 	currencyHudValue.text = str(Global.currency)
 
 func lose_event():
