@@ -8,6 +8,7 @@ enum ItemTier {
 	GAME_START,
 	LEVEL_ONE,
 	LEVEL_TWO,
+	LEVEL_THREE,
 }
 
 const ITEM_MODIFIER_TYPE = 0
