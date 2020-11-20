@@ -17,7 +17,7 @@ var Raycasts = {
 
 var stepsTaken = 0
 var stepsToTriggerCombat = 20
-var encounterStep = 25
+var encounterStep = 20
 var oxygenStepCost = 1
 
 signal collided
