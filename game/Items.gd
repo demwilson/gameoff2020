@@ -8,10 +8,6 @@ enum LootType {
 }
 enum ItemList {
 	CROWBAR,
-	FLIMSY_SWORD,
-	CYBERNETIC_EYE,
-	FIREBOLT,
-	ROBOT_T1,
 }
 
 const LootTypeMap = [
