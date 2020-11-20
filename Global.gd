@@ -33,8 +33,11 @@ var TEXT_COLOR = {
 
 const TEXTURE_FILE_EXTENSION = ".png"
 const ANIMATION_FILE_EXTENSION = ".tres"
-const BASE_STAT_VALUE = 1
-const STAT_STEP = 0.5
+const BASE_STAT_VALUE = 0
+const BASE_ATTACK_VALUE = 3
+const BASE_ACCURACY_VALUE = 1
+const BASE_SPEED_VALUE = 2
+const STAT_STEP = 1
 const OXYGEN_STEP = 5
 const HEALTH_STEP = 5
 
@@ -71,6 +74,7 @@ var player = null
 var moves = null
 var items = null
 var enemies = null
+var last_combat_enemies = 0
 var floor_level = 1
 var currency = 0
 
@@ -169,13 +173,13 @@ func _ready():
 		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "These guys repair damage now for more action now!", Moves.MoveList.HEAL_T3),
 	]
 	var available_enemies = [
-		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 0, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.MELEE_T0]),
-		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60, Creature.Stats.new([3, 3, 3, 1, 3]), Creature.Stats.new([5, 0, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T0]),
-		Enemy.new(1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10, Creature.Stats.new([1, 1, 2, 0, 2]), Creature.Stats.new([0, 4, 0, 0, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T0]),
-		Enemy.new(2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35, Creature.Stats.new([2, 2, 3, 1, 3]), Creature.Stats.new([2, 4, 0, 1, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T0]),
-		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T0]),
-		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([4, 4, 0, 4, 4]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T0]),
-		Enemy.new(0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200, Creature.Stats.new([5, 5, 5, 5, 5]), Creature.Stats.new([5, 5, 0, 5, 5]), Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS, [Moves.MoveList.MELEE_T0]),
+		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 3, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.MELEE_T1]),
+		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60, Creature.Stats.new([3, 3, 3, 1, 3]), Creature.Stats.new([5, 6, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T2]),
+		Enemy.new(1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10, Creature.Stats.new([1, 1, 2, 0, 2]), Creature.Stats.new([0, 4, 0, 0, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T1]),
+		Enemy.new(2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35, Creature.Stats.new([2, 2, 3, 1, 3]), Creature.Stats.new([2, 4, 0, 1, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T2]),
+		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T2]),
+		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([4, 4, 0, 4, 4]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T3]),
+		Enemy.new(0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200, Creature.Stats.new([5, 5, 5, 5, 5]), Creature.Stats.new([5, 5, 0, 5, 5]), Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS, [Moves.MoveList.MELEE_T3]),
 	]
 
 	moves = Moves.new(available_moves)
@@ -191,9 +195,9 @@ func build_player():
 	var current_health = max_health
 	var max_oxygen = BASE_OXYGEN + (OXYGEN_STEP * Upgrades.Oxygen)
 	var current_oxygen = max_oxygen
-	var attack = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Attack)
-	var accuracy = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Accuracy)
-	var speed = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Speed)
+	var attack = BASE_ATTACK_VALUE + (STAT_STEP * Upgrades.Attack)
+	var accuracy = BASE_ACCURACY_VALUE + (STAT_STEP * Upgrades.Accuracy)
+	var speed = BASE_SPEED_VALUE + (STAT_STEP * Upgrades.Speed)
 	var defense = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Defense)
 	var evade = BASE_STAT_VALUE + (STAT_STEP * Upgrades.Evade)
 
@@ -344,15 +348,15 @@ func get_random_type_by_weight(weight_list):
 			return position
 		rand -= chance
 
-func populate_loot_list(loot_list, loot):
+func populate_loot_list(loot_list, loot_bag):
 	var entries = []
-	match loot.type:
-		Items.LootType.ITEM:
-			for item in loot.items:
-				entries.append(item.name)
-		Items.LootType.CURRENCY:
-			entries.append(str(loot.items) + " " + Global.CURRENCY_TEXT)
-		Items.LootType.OXYGEN:
-			entries.append(str(loot.items) + " " + Global.OXYGEN_TEXT)
+	for loot in loot_bag:
+		match loot.type:
+			Items.LootType.GEAR:
+				entries.append(loot.item.name)
+			Items.LootType.CURRENCY:
+				entries.append(str(loot.item) + " " + Global.CURRENCY_TEXT)
+			Items.LootType.OXYGEN:
+				entries.append(str(loot.item) + " " + Global.OXYGEN_TEXT)
 	for entry in entries:
 		loot_list.add_item(entry, null, false)

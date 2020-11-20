@@ -11,8 +11,8 @@ enum ItemTier {
 	LEVEL_THREE,
 }
 
-const ITEM_MODIFIER_TYPE = 0
-const ITEM_MODIFIER_VALUE = 1
+const GEAR_MODIFIER_TYPE = 0
+const GEAR_MODIFIER_VALUE = 1
 
 var id
 var name

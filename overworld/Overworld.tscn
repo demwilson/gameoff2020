@@ -13,16 +13,16 @@
 [ext_resource path="res://assets/Tony_Created_Assets/moon_stone.png" type="Texture" id=14]
 [ext_resource path="res://assets/Tony_Created_Assets/top_bar.png" type="Texture" id=15]
 
-[sub_resource type="InputEventKey" id=2]
+[sub_resource type="InputEventKey" id=1]
 scancode = 32
 
-[sub_resource type="ShortCut" id=3]
-shortcut = SubResource( 2 )
+[sub_resource type="ShortCut" id=2]
+shortcut = SubResource( 1 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 16, 16 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 length = 0.16
 step = 0.01
 tracks/0/type = "value"
@@ -38,7 +38,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 0.16
 step = 0.01
 tracks/0/type = "value"
@@ -54,7 +54,7 @@ tracks/0/keys = {
 "values": [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 length = 0.16
 step = 0.01
 tracks/0/type = "value"
@@ -70,7 +70,7 @@ tracks/0/keys = {
 "values": [ 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 length = 0.16
 step = 0.01
 tracks/0/type = "value"
@@ -100,12 +100,12 @@ __meta__ = {
 
 [node name="Background" type="TextureRect" parent="GUI/HUD"]
 margin_right = 640.0
-margin_bottom = 82.0
+margin_bottom = 65.0
 texture = ExtResource( 15 )
 
 [node name="HUDSpacer" type="MarginContainer" parent="GUI/HUD"]
 margin_right = 640.0
-margin_bottom = 82.0
+margin_bottom = 65.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
@@ -115,11 +115,11 @@ custom_constants/margin_bottom = 10
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 630.0
-margin_bottom = 72.0
+margin_bottom = 55.0
 
 [node name="BarsLeft" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_right = 190.0
-margin_bottom = 62.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 190, 0 )
 
 [node name="OxygenBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft"]
@@ -180,7 +180,7 @@ __meta__ = {
 [node name="BarsMiddle" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_left = 194.0
 margin_right = 474.0
-margin_bottom = 62.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 280, 0 )
 
 [node name="PlayerInfoBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle"]
@@ -244,7 +244,7 @@ __meta__ = {
 [node name="BarsRight" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_left = 478.0
 margin_right = 554.0
-margin_bottom = 62.0
+margin_bottom = 45.0
 
 [node name="CurrencyBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight"]
 margin_right = 76.0
@@ -456,7 +456,7 @@ margin_left = 58.0
 margin_top = 255.0
 margin_right = 194.0
 margin_bottom = 290.0
-shortcut = SubResource( 3 )
+shortcut = SubResource( 2 )
 text = "Take All"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -492,15 +492,15 @@ frame = 63
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="MoveTween" type="Tween" parent="PlayerRoot/Player"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerRoot/Player"]
-anims/down = SubResource( 5 )
-anims/left = SubResource( 6 )
-anims/right = SubResource( 7 )
-anims/up = SubResource( 8 )
+anims/down = SubResource( 4 )
+anims/left = SubResource( 5 )
+anims/right = SubResource( 6 )
+anims/up = SubResource( 7 )
 
 [node name="RayCastLeft" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -526,7 +526,6 @@ cast_to = Vector2( 0, 32 )
 position = Vector2( 16, 16 )
 stream = ExtResource( 3 )
 volume_db = -10.097
-autoplay = true
 
 [node name="Anchor" type="Position2D" parent="PlayerRoot"]
 position = Vector2( 16, 16 )
