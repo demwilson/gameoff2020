@@ -408,14 +408,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Debug" type="ColorRect" parent="GUI"]
+[node name="Debug" type="Control" parent="GUI"]
 visible = false
 margin_right = 640.0
 margin_bottom = 360.0
-color = Color( 1, 1, 1, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Level" type="Label" parent="GUI/Debug"]
 margin_top = 80.0
