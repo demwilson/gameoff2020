@@ -208,10 +208,11 @@ func place_exit(startingSpot):
 		#select a random spot
 		var possiblePoint = possibleExitAnchorPoints[Global.random.randi() % possibleExitAnchorPoints.size()]
 		
-		if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
-			continue
-		if abs(startingSpot.y - possiblePoint.y) <= (minExitDistanceInRoomCells * roomCellSize.x):
-			continue
+		if minExitDistanceInRoomCells != 0:
+			if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
+			if abs(startingSpot.y - possiblePoint.y) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
 		#if cellIndex -1 skip everything
 		cellIndex = self.get_cell(possiblePoint.x + exitOffset, possiblePoint.y + exitOffset)
 		if cellIndex == -1:
