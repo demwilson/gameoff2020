@@ -526,7 +526,6 @@ cast_to = Vector2( 0, 32 )
 position = Vector2( 16, 16 )
 stream = ExtResource( 3 )
 volume_db = -10.097
-autoplay = true
 
 [node name="Anchor" type="Position2D" parent="PlayerRoot"]
 position = Vector2( 16, 16 )

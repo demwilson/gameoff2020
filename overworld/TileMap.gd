@@ -162,8 +162,7 @@ func build_level():
 			#place doors
 			place_doors(currentSpot)
 			#place chest
-			if possibleStartPoints.find(currentSpot) == -1:
-				place_treasure_chest(currentSpot)
+			place_treasure_chest(currentSpot)
 		
 		numberOfCellsPlaced += 1
 		

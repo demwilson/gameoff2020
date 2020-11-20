@@ -32,10 +32,12 @@ onready var MoveNameLabels = [
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
 
+const MAX_PERCENTAGE = 100.0
+const MIN_DAMAGE = 0
 const MIN_ENEMIES = 1
 const ENEMY_COUNT_STEP = 1
-const ENEMY_COUNT_TIER_ONE = 10
-const ENEMY_COUNT_TIER_TWO = 15
+const ENEMY_COUNT_TIER_ONE = 5
+const ENEMY_COUNT_TIER_TWO = 10
 const MAX_ENEMIES = 3
 
 const MAX_ANIMATION_TIMER = 1.2
@@ -346,6 +348,7 @@ func check_end_combat():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		save_player_changes(allies[PLAYER_POSITION])
+		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.COMBAT_WIN)
 
@@ -482,8 +485,10 @@ func get_damage(attacker, target, move):
 		if move.type == Move.MoveType.DAMAGE:
 			# calculate defense
 			var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
+			var damage_percentage = (MAX_PERCENTAGE - raw_defense)
+			var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
 			# mitigate damage
-			damage = raw_damage - raw_defense
+			damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
 		return damage
 
 func apply_floating_text(target, amount, type=null):
