@@ -1,10 +1,16 @@
 const Move = preload("res://game/Move.gd")
 
 enum MoveList {
-	BASIC_ATTACK,
-	FIREBOLT,
-	FIREBALL,
-	HEAL,
+	MELEE_T0,
+	MELEE_T1,
+	MELEE_T2,
+	MELEE_T3,
+	PSY_T1,
+	PSY_T2,
+	PSY_T3,
+	HEAL_T1,
+	HEAL_T2,
+	HEAL_T3,
 }
 
 var _moves = null

@@ -2,6 +2,7 @@ extends Node2D
 
 const PERSIST = true
 const PLAYER_START_HP = 5
+const FIRST_FLOOR = 1
 
 var counter = 0
 
@@ -9,6 +10,7 @@ var counter = 0
 onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
 onready var loot_list = $GUI/Loot/LootList
+onready var debug_ui = $GUI/Debug
 
 # game state
 var player_tile
@@ -26,20 +28,16 @@ func place_player():
 
 func _process(delta):
 	update_HUD_values()
-	if Settings.debug:
-		$GUI/TilePos.visible = true
-		$GUI/MousePos.visible = true
-		$GUI/Counter.visible = true
-		$GUI/StepCount.visible = true
-		$GUI/StepToFight.visible = true
+	if Settings.debug >= Settings.LogLevel.INFO:
+		debug_ui.visible = true
 		var cpos = $TileMap.world_to_map(player.position)
-		$GUI/TilePos.text = str(cpos)
+		$GUI/Debug/TilePos.text = str(cpos)
 		var mpos = $TileMap.world_to_map(get_global_mouse_position())
-		$GUI/MousePos.text = str(mpos)
+		$GUI/Debug/MousePos.text = str(mpos)
 		counter += delta
-		$GUI/Counter.text = "Counter: " + str(counter)
-		$GUI/StepCount.text = "Steps Taken: " + str(player.stepsTaken)
-		$GUI/StepToFight.text = "StepsToFight: " + str(player.stepsToTriggerCombat)
+		$GUI/Debug/Counter.text = "Counter: " + str(counter)
+		$GUI/Debug/StepCount.text = "Steps Taken: " + str(player.stepsTaken)
+		$GUI/Debug/StepToFight.text = "StepsToFight: " + str(player.stepsToTriggerCombat)
 
 func _input(event):
 	if !event.is_pressed():
@@ -57,7 +55,7 @@ func set_audio(value):
 func restart_overworld():
 	set_audio(false)
 	tile_map.levelNum = 0
-	Global.floor_level = 0
+	Global.floor_level = FIRST_FLOOR
 	tile_map.isGeneratingNewLevel = true
 	player.stepsTaken = 0
 	player.generate_steps_to_trigger_combat()
@@ -81,9 +79,11 @@ func _on_Restart_pressed():
 func get_loot_for_chest(floorLevel):
 	loot_list.clear()
 	# generate list of items
-	var loot = Global.items.generate_loot(Global.floor_level, Global.player)
+	var loot_bag = Global.items.generate_loot(Global.floor_level)
+	# Add loot to player
+	Global.items.apply_loot_bag(loot_bag, Global.player)
 	# Add to UI
-	Global.populate_loot_list(loot_list, loot)
+	Global.populate_loot_list(loot_list, loot_bag)
 	#show Loot Screen
 	$GUI/Loot.visible = true
 
@@ -103,23 +103,29 @@ func update_floor_level(value):
 
 func update_HUD_values():
 	var hud = $GUI/HUD
-	var oxygenHudValue = $GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background/Number
-	var oxygenHudGauge = $GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background/Gauge
+	var oxygenHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenAmount/Number
+	var oxygenHudGauge = $GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenGauge/Gauge
 	oxygenHudValue.text = str(Global.player.get_oxygen())
 	oxygenHudGauge.value = int(Global.player.get_oxygen_percentage())
-	var levelHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Level
+	var levelHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerLevel/Level
 	levelHudValue.text = "Level: " + str(Global.floor_level)
-	var healthHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Health
+	var healthHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerHealth/Health
 	healthHudValue.text = "Health: " + str(Global.player.get_health())
-	var combatsHudValue = $GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background/Combats
+	var combatsHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerCombat/Combats
 	combatsHudValue.text = "Combats: " + str(Global.player.get_combat_count())
-	var currencyHudValue = $GUI/HUD/HBoxContainer/BarsRight/CurrencyBar/Currency/Background/Number
+	var currencyHudValue = $GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar/CurrencyAmount/Number
 	currencyHudValue.text = str(Global.currency)
 
 func lose_event():
 	tile_map.gameOver = true
 	$GUI/Lose.visible = true
 	set_audio(false)
+	
+func set_ui_visible(show):
+	$GUI/HUD.visible = show
+	if Settings.debug > Settings.LogLevel.INFO:
+		debug_ui.visible = show
+	
 
 func _on_LoseRestart_pressed():
 	$GUI/Lose/LoseRestart.disabled = true

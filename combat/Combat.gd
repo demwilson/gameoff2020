@@ -32,9 +32,16 @@ onready var MoveNameLabels = [
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
 
+const MAX_PERCENTAGE = 100.0
+const MIN_DAMAGE = 0
+const MIN_ENEMIES = 1
+const ENEMY_COUNT_STEP = 1
+const ENEMY_COUNT_TIER_ONE = 5
+const ENEMY_COUNT_TIER_TWO = 10
+const MAX_ENEMIES = 3
+
 const MAX_ANIMATION_TIMER = 1.2
 const ACTION_AVAILABLE_TICKS = 6.0
-const MAX_ENEMIES = 3
 const MAX_ALLIES = 3
 const PLAYER_POSITION = 0
 
@@ -99,7 +106,7 @@ var _hover = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Populate the combatants
-	var num_enemies = 1 + Global.random.randi() % MAX_ENEMIES
+	var num_enemies = get_combat_enemies(Global.player.get_combat_count())
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
@@ -165,7 +172,6 @@ func _ready():
 		CombatantBox.add_child(creature.scene)
 	
 	OS.set_window_size(Vector2(1280, 720))
-	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -181,30 +187,9 @@ func _process(delta):
 	$CanvasLayer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
 
 	# actual processing
-	check_end_combat()
-	check_action_queue()
-	for i in range(enemies.size()):
-		var creature = enemies[i]
-		if creature.is_active():
-			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
-				var move_id = creature.get_move()
-				var move = Global.moves.get_move_by_id(move_id)
-				var target = creature.choose_target(move, allies)
-				action_queue.append(CombatEvent.new(move, creature, target))
-				creature.is_queued = true
-			else:
-				creature.add_ticks(delta)
-		creature.update_health_percentage()
-		creature.update_ticks()
-
-		# UI Updates
-		var ui_text = get_node("CanvasLayer/CombatMenu/Enemies/VBoxContainer/Enemy" + str(i))
-		ui_text.text = creature.get_name()
-		ui_text.visible = true
-
 	for i in range(allies.size()):
 		var creature = allies[i]
-		if creature.is_active():
+		if creature.is_alive():
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				if creature.get_behavior() == Creature.Behavior.PLAYER:
 					show_move_options(creature)
@@ -228,6 +213,26 @@ func _process(delta):
 		ui_health.text = str(creature.get_health()) + " / " + str(creature.get_max_health())
 		var ui_ticks = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
+	for i in range(enemies.size()):
+		var creature = enemies[i]
+		if creature.is_alive():
+			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
+				var move_id = creature.get_move()
+				var move = Global.moves.get_move_by_id(move_id)
+				var target = creature.choose_target(move, allies)
+				action_queue.append(CombatEvent.new(move, creature, target))
+				creature.is_queued = true
+			else:
+				creature.add_ticks(delta)
+		creature.update_health_percentage()
+		creature.update_ticks()
+
+		# UI Updates
+		var ui_text = get_node("CanvasLayer/CombatMenu/Enemies/VBoxContainer/Enemy" + str(i))
+		ui_text.text = creature.get_name()
+		ui_text.visible = true
+	check_end_combat()
+	check_action_queue()
 
 func _input(event):
 	if !event.is_pressed():
@@ -335,14 +340,15 @@ func check_end_combat():
 		return
 
 	var dead_enemies = 0
-	if !allies[PLAYER_POSITION].is_active():
+	if !allies[PLAYER_POSITION].is_alive():
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:
-		if !creature.is_active():
+		if !creature.is_alive():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		save_player_changes(allies[PLAYER_POSITION])
+		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.COMBAT_WIN)
 
@@ -353,9 +359,35 @@ func check_action_queue():
 	if action_queue.size() == 0 || animation_lock:
 		return
 	_current_combat_action = action_queue.pop_front()
+	_current_combat_action = confirm_combat_action(_current_combat_action)
+	if _current_combat_action == null:
+		return
 	animation_lock = true
 	attack_animation_state = CombatAnimationState.INITIAL_STATE
 	next_animation_step()
+
+func confirm_combat_action(combat_action):
+	if !combat_action.creature.is_alive():
+		return null
+	if !_current_combat_action.target.is_alive():
+		match combat_action.move.type:
+			Move.MoveType.HEAL:
+				return null
+			Move.MoveType.DAMAGE:
+				var target = null
+				if combat_action.creature.type == CombatCreature.CombatantType.ENEMY:
+					target = get_first_living_creature(allies)
+				else:
+					target = get_first_living_creature(enemies)
+				if target:
+						combat_action.target = target
+	return combat_action
+
+func get_first_living_creature(creature_list):
+	for creature in creature_list:
+		if creature.is_alive():
+			return creature
+	return null
 
 func animation_process():
 	match attack_animation_state:
@@ -431,8 +463,8 @@ func execute_move(attacker, target, move):
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))
 
-	# TODO: target has died
-	if !target.is_active():
+	# TODO: target has died animation
+	if !target.is_alive():
 		target.scene.stop_animation()
 
 	# reset ticks
@@ -453,8 +485,10 @@ func get_damage(attacker, target, move):
 		if move.type == Move.MoveType.DAMAGE:
 			# calculate defense
 			var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
+			var damage_percentage = (MAX_PERCENTAGE - raw_defense)
+			var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
 			# mitigate damage
-			damage = raw_damage - raw_defense
+			damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
 		return damage
 
 func apply_floating_text(target, amount, type=null):
@@ -476,7 +510,7 @@ func check_to_hit(accuracy):
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
-	var processed = pow(evade, 2) + bonus_evade - pow(move_level, 2)
+	var processed = (evade * 2) + bonus_evade - (move_level * 2)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER
@@ -490,6 +524,14 @@ func calculate_damage(min_damage, max_damage):
 	return rand
 
 func calculate_defense(defense, bonus_defense):
-	var processed = pow(2, defense) + bonus_defense
+	var processed = (defense * 2) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed
+
+func get_combat_enemies(total_combats):
+	var count = MIN_ENEMIES
+	if total_combats > ENEMY_COUNT_TIER_TWO:
+		count += 2 * ENEMY_COUNT_STEP
+	elif total_combats > ENEMY_COUNT_TIER_ONE:
+		count += ENEMY_COUNT_STEP
+	return min(MAX_ENEMIES, 1 + Global.random.randi() % count)

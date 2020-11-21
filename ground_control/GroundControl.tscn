@@ -27,28 +27,45 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StatusArea" type="ColorRect" parent="CanvasLayer"]
-margin_right = 640.0
-margin_bottom = 64.0
-color = Color( 0, 0, 0, 1 )
+[node name="Tier0" type="Control" parent="CanvasLayer"]
+margin_left = 192.0
+margin_top = 288.0
+margin_right = 448.0
+margin_bottom = 328.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OxygenButton" type="Button" parent="CanvasLayer"]
-margin_left = 264.0
-margin_top = 296.0
-margin_right = 360.0
-margin_bottom = 316.0
-text = "Oxygen: 5"
+[node name="OxygenButton" type="Button" parent="CanvasLayer/Tier0"]
+margin_left = 24.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 28.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OxygenCount" type="Label" parent="CanvasLayer/OxygenButton"]
+[node name="OxygenCount" type="Label" parent="CanvasLayer/Tier0/OxygenButton"]
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 80.0
+margin_bottom = 38.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthButton" type="Button" parent="CanvasLayer/Tier0"]
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 232.0
+margin_bottom = 28.0
+
+[node name="HealthCount" type="Label" parent="CanvasLayer/Tier0/HealthButton"]
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 72.0
 margin_bottom = 38.0
 align = 1
 valign = 1
@@ -130,17 +147,18 @@ __meta__ = {
 
 [node name="Tier2" type="Control" parent="CanvasLayer"]
 visible = false
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 128.0
+margin_top = 192.0
+margin_right = 512.0
+margin_bottom = 232.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SpeedButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 208.0
-margin_top = 200.0
-margin_right = 283.0
-margin_bottom = 220.0
+margin_left = 88.0
+margin_right = 163.0
+margin_bottom = 20.0
 text = "Speed: 20"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -158,10 +176,9 @@ __meta__ = {
 }
 
 [node name="EvadeButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 344.0
-margin_top = 200.0
-margin_right = 417.0
-margin_bottom = 220.0
+margin_left = 224.0
+margin_right = 297.0
+margin_bottom = 20.0
 text = "Evade: 24"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -180,17 +197,19 @@ __meta__ = {
 
 [node name="Tier3" type="Control" parent="CanvasLayer"]
 visible = false
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 128.0
+margin_top = 136.0
+margin_right = 512.0
+margin_bottom = 176.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BasicWpnButton" type="Button" parent="CanvasLayer/Tier3"]
-margin_left = 136.0
-margin_top = 152.0
-margin_right = 246.0
-margin_bottom = 172.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 118.0
+margin_bottom = 28.0
 text = "Basic Wpns: 50"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -205,10 +224,10 @@ align = 1
 valign = 1
 
 [node name="BasicDefButton" type="Button" parent="CanvasLayer/Tier3"]
-margin_left = 264.0
-margin_top = 152.0
-margin_right = 376.0
-margin_bottom = 172.0
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 248.0
+margin_bottom = 28.0
 text = "Basic Def: 30"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -223,10 +242,10 @@ align = 1
 valign = 1
 
 [node name="CombatTrnButton" type="Button" parent="CanvasLayer/Tier3"]
-margin_left = 392.0
-margin_top = 152.0
-margin_right = 503.0
-margin_bottom = 172.0
+margin_left = 264.0
+margin_top = 8.0
+margin_right = 375.0
+margin_bottom = 28.0
 text = "Cbt Training: 60"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -241,18 +260,20 @@ align = 1
 valign = 1
 
 [node name="Tier4" type="Control" parent="CanvasLayer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 128.0
+margin_top = 88.0
+margin_right = 512.0
+margin_bottom = 128.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AdvWpnButton" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
-margin_left = 136.0
-margin_top = 104.0
-margin_right = 248.0
-margin_bottom = 124.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 28.0
 text = "Adv. Wpns: 75"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -268,10 +289,10 @@ valign = 1
 
 [node name="AdvDefButton" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
-margin_left = 264.0
-margin_top = 104.0
-margin_right = 369.0
-margin_bottom = 124.0
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 241.0
+margin_bottom = 28.0
 text = "Adv. Def: 50"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -287,10 +308,10 @@ valign = 1
 
 [node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
-margin_left = 384.0
-margin_top = 104.0
-margin_right = 510.0
-margin_bottom = 124.0
+margin_left = 256.0
+margin_top = 8.0
+margin_right = 382.0
+margin_bottom = 28.0
 text = "Adv. Training: 60"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -342,7 +363,8 @@ text = "Start Mission"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="CanvasLayer/OxygenButton" to="." method="_on_OxygenButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier0/OxygenButton" to="." method="_on_OxygenButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_HealthButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_AttackButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_AccuracyButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/DefenseButton" to="." method="_on_DefenseButton_pressed"]
