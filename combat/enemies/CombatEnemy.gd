@@ -21,7 +21,7 @@ const RIGHT_SIDE = 1
 const INITIAL_STATE = 0
 const STATE_STEP = 1
 const PIXEL_DISTANCE = 150
-const MOVE_TIME = 0.25
+const MOVE_TIME = 0.20
 
 
 var state = null

@@ -9,6 +9,7 @@ enum CombatAnimationState {
 	COMPLETE = 4,
 }
 
+const PauseOverlay = preload("res://PauseOverlay.tscn")
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
@@ -32,10 +33,12 @@ onready var MoveNameLabels = [
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
 
+const MAX_PERCENTAGE = 100.0
+const MIN_DAMAGE = 0
 const MIN_ENEMIES = 1
 const ENEMY_COUNT_STEP = 1
-const ENEMY_COUNT_TIER_ONE = 10
-const ENEMY_COUNT_TIER_TWO = 15
+const ENEMY_COUNT_TIER_ONE = 5
+const ENEMY_COUNT_TIER_TWO = 10
 const MAX_ENEMIES = 3
 
 const MAX_ANIMATION_TIMER = 1.2
@@ -94,6 +97,7 @@ enum MenuPhase {
 	MOVE_SELECT,
 	TARGET_SELECT,
 }
+var pause_overlay = null
 var _phase = MenuPhase.NONE
 var _menu_move = null
 var _menu_target = null
@@ -237,6 +241,11 @@ func _input(event):
 		return
 	if event.is_action("map_change_again"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
+	elif event.is_action("pause"):
+		if !pause_overlay:
+			pause_overlay = PauseOverlay.instance()
+			self.add_child(pause_overlay)
+			get_tree().paused = true
 	elif _phase != MenuPhase.NONE:
 		if event.is_action("up"):
 			update_hover(-STEP_AMOUNT)
@@ -346,6 +355,7 @@ func check_end_combat():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
 		save_player_changes(allies[PLAYER_POSITION])
+		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.COMBAT_WIN)
 
@@ -456,6 +466,7 @@ func execute_move(attacker, target, move):
 				else:
 					# apply damage
 					target.add_health(-damage)
+	                # TODO: target is hit animation
 					# show damage
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))
@@ -482,8 +493,10 @@ func get_damage(attacker, target, move):
 		if move.type == Move.MoveType.DAMAGE:
 			# calculate defense
 			var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
+			var damage_percentage = (MAX_PERCENTAGE - raw_defense)
+			var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
 			# mitigate damage
-			damage = raw_damage - raw_defense
+			damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
 		return damage
 
 func apply_floating_text(target, amount, type=null):
