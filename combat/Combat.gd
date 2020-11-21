@@ -118,7 +118,7 @@ func _ready():
 		creature_scene.creature_name = enemy.get_name()
 		creature_scene.show_name = true
 		creature_scene.creature_size = enemy.size
-		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.TEXTURE_FILE_EXTENSION
+		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier())
 		creature_scene.idle_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.ANIMATION_FILE_EXTENSION
 		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		var creature = CombatCreature.new(
@@ -154,7 +154,7 @@ func _ready():
 		creature_scene.creature_name = ally.get_name()
 		creature_scene.show_name = true
 		creature_scene.creature_size = ally.size
-		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.TEXTURE_FILE_EXTENSION
+		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier())
 		creature_scene.idle_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.ANIMATION_FILE_EXTENSION
 		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		creature = CombatCreature.new(
@@ -404,9 +404,9 @@ func animation_process():
 		CombatAnimationState.ANIMATING:
 			# run animation 1 time
 			_current_combat_action.creature.scene.apply_animation(_current_combat_action.move)
-		CombatAnimationState.MOVING_BACKWARD:
 			# do damage after animation
 			execute_move(_current_combat_action.creature, _current_combat_action.target, _current_combat_action.move)
+		CombatAnimationState.MOVING_BACKWARD:
 			# move back to original position
 			move_backward(_current_combat_action.creature)
 		CombatAnimationState.COMPLETE:
@@ -466,7 +466,8 @@ func execute_move(attacker, target, move):
 				else:
 					# apply damage
 					target.add_health(-damage)
-	                # TODO: target is hit animation
+					# damaged animation
+					target.scene.damage_creature()
 					# show damage
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/guard_dog_2.png-3d8d1d83ce1672da17680f71445ca6b4.stex"
+path="res://.import/tardigrade0.png-354cabc926febd053a7be39d990fe509.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/guard_dog_2.png"
-dest_files=[ "res://.import/guard_dog_2.png-3d8d1d83ce1672da17680f71445ca6b4.stex" ]
+source_file="res://assets/Tony_Created_Assets/tardigrade0.png"
+dest_files=[ "res://.import/tardigrade0.png-354cabc926febd053a7be39d990fe509.stex" ]
 
 [params]
 
