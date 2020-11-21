@@ -468,6 +468,40 @@ margin_top = 71.0
 margin_right = 239.0
 margin_bottom = 247.0
 
+[node name="NeedKey" type="ColorRect" parent="GUI"]
+visible = false
+margin_left = 184.0
+margin_top = 152.0
+margin_right = 441.0
+margin_bottom = 312.0
+color = Color( 0, 0, 0, 0.694118 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NeedKeyText" type="Label" parent="GUI/NeedKey"]
+margin_left = 24.0
+margin_top = 32.0
+margin_right = 238.0
+margin_bottom = 72.0
+text = "You must defeat the floor boss and obtain the key to exit!"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NeedKeyAccept" type="Button" parent="GUI/NeedKey"]
+margin_left = 56.0
+margin_top = 96.0
+margin_right = 192.0
+margin_bottom = 131.0
+shortcut = SubResource( 2 )
+text = "Ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
@@ -488,7 +522,7 @@ texture = ExtResource( 8 )
 centered = false
 vframes = 4
 hframes = 16
-frame = 63
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -506,21 +540,25 @@ anims/up = SubResource( 7 )
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( -32, 0 )
+collide_with_areas = true
 
 [node name="RayCastRight" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 32, 0 )
+collide_with_areas = true
 
 [node name="RayCastUp" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, -32 )
+collide_with_areas = true
 
 [node name="RayCastDown" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, 32 )
+collide_with_areas = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -533,11 +571,12 @@ script = ExtResource( 4 )
 
 [node name="Cam" type="Camera2D" parent="PlayerRoot/Anchor"]
 current = true
-zoom = Vector2( 0.75, 0.75 )
+zoom = Vector2( 6, 6 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 [connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="pressed" from="GUI/Lose/LoseRestart" to="." method="_on_LoseRestart_pressed"]
 [connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
+[connection signal="pressed" from="GUI/NeedKey/NeedKeyAccept" to="." method="_on_NeedKeyAccept_pressed"]
 [connection signal="collided" from="PlayerRoot/Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="PlayerRoot/Player/MoveTween" to="PlayerRoot/Player" method="_on_MoveTween_tween_completed"]

@@ -7,6 +7,7 @@ var _items = null
 var _max_oxygen = null
 var _oxygen = null
 var _combat_count = 0
+var _floor_key = false
 
 func _init(name, size, max_health, health, max_oxygen, oxygen, stats, bonuses, items, base_path, behavior=Behavior.PLAYER, tier="").(name, size, max_health, health, stats, bonuses, base_path, behavior):
 	self._max_oxygen = max_oxygen
@@ -50,6 +51,12 @@ func add_combat_count(value):
 	self.set_combat_count(self._combat_count + value)
 func set_combat_count(value):
 	self._combat_count = value
+	
+func set_floor_key(value):
+	self._floor_key = value
+
+func get_floor_key():
+	return self._floor_key
 
 func get_stat(type):
 	var bonus = .get_stat(type)
