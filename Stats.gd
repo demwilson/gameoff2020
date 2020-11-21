@@ -1,60 +1,78 @@
 extends Node2D
 
+const Creature = preload("res://game/Creature.gd")
+const GlobalPlayer = preload("res://game/GlobalPlayer.gd")
+const Item = preload("res://game/Item.gd")
+const Items = preload("res://game/Items.gd")
+const Move = preload("res://game/Move.gd")
+const Moves = preload("res://game/Moves.gd")
+const Stats = preload("res://game/Stats.gd")
+
 #Character main stats
-var hp = 100
-var player_name = "Roger Mcfly"
-var oxygen = 80
+var current_hp = Global.player.get_health()
+var max_hp = Global.player.get_max_health()
+var player_name = Global.player.get_name()
+var current_oxygen = Global.player.get_oxygen()
+var max_oxygen = Global.player.get_max_oxygen()
 
 # Secondary stats
-var attack = 25
-var accuracy = 75
-var speed = 20
-var defense = 45
-var evade = 30
+var attack = Global.player.get_stat(Stats.ATTACK)
+var accuracy = Global.player.get_stat(Stats.ACCURACY)
+var speed = Global.player.get_stat(Stats.SPEED)
+var defense = Global.player.get_stat(Stats.DEFENSE)
+var evade = Global.player.get_stat(Stats.EVADE)
 
 #Moves
-var move_1 = "Active"
-var move_2 = "Deactived"
-var move_3 = "Active once per encounter"
+func obtain_move_list():
+	var total_moves = []
+	var commands = []
+	
+	total_moves = Global.player.get_moves()
+	for move in total_moves:
+		var command = Global.moves.get_move_by_id(move)
+		commands.append(command)
+	return commands
 
-#Tier upgrades
-var tier_0 = "Oxygen Capacity"
-var tier_1 = "Offensive Amplifications"
-var tier_2 = "Detection Systems"
-var tier_3 = "Combat Training"
-var tier_4 = "Advanced Weapons"
-
+func populate_move_list():
+	var moves = obtain_move_list()
+	for move in moves:
+		var move_name = move.name
+		$CanvasLayer/NinePatchRect/Character/Commands/MoveList.add_item(move_name, null, true)
+		
 #Equipment 
-var equipment_1 = "Helmet of SAAN provides +10 to defense"
-var equipment_2 = "Blaster of SAAN provides +5 to attack and accuracy"
-
-func set_dummy_data():
+func obtain_equipment_list():
+	var equip_id = []
+	var equip_list = []
+	
+	equip_id = Global.player.get_items()
+	for id in equip_id:
+		var item = Global.items.get_item_by_id(id)
+		equip_list.append(item)
+	return equip_list
+	
+func populate_equipment_list():
+	var equips = obtain_equipment_list()
+	for item in equips:
+		var item_name = item.name
+		$CanvasLayer/NinePatchRect/Equipment/EquipList.add_item(item_name, null, true)
+		
+func set_data():
 	
 	$CanvasLayer/NinePatchRect/Character/Name.text = "Name: " + str(player_name)
-	$CanvasLayer/NinePatchRect/Character/HP.text = "HP: " + str(hp)
-	$CanvasLayer/NinePatchRect/Character/Oxygen.text = "Oxygen: " + str(oxygen) + "%"
+	$CanvasLayer/NinePatchRect/Character/HP.text = "HP: " + str(current_hp) + "/" + str(max_hp)
+	$CanvasLayer/NinePatchRect/Character/Oxygen.text = "Oxygen: " + str(current_oxygen) + "/" + str(max_oxygen)
 	
 	$CanvasLayer/NinePatchRect/Character/Abilities/Attack.text = "Attack: " + str(attack)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Accuracy.text = "Accuracy: " + str(accuracy) + "%"
+	$CanvasLayer/NinePatchRect/Character/Abilities/Accuracy.text = "Accuracy: " + str(accuracy)
 	$CanvasLayer/NinePatchRect/Character/Abilities/Speed.text = "Speed: " + str(speed)
 	$CanvasLayer/NinePatchRect/Character/Abilities/Defense.text = "Defense: " + str(defense)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Evade.text = "Evade: " + str(evade) + "%"
+	$CanvasLayer/NinePatchRect/Character/Abilities/Evade.text = "Evade: " + str(evade)
 	
-	$CanvasLayer/NinePatchRect/Character/Commands/Blaster.text = "Blaster: " + str(move_1)
-	$CanvasLayer/NinePatchRect/Character/Commands/Flamethrower.text = "Flamethrower: " + str(move_2)
-	$CanvasLayer/NinePatchRect/Character/Commands/Activeshield.text = "Active shield: " + str(move_3)
-	
-	$CanvasLayer/NinePatchRect/Upgrades/Tier0.text = "Tier 0: " + str(tier_0)
-	$CanvasLayer/NinePatchRect/Upgrades/Tier1.text = "Tier 1: " + str(tier_1)
-	$CanvasLayer/NinePatchRect/Upgrades/Tier2.text = "Tier 2: " + str(tier_2)
-	$CanvasLayer/NinePatchRect/Upgrades/Tier3.text = "Tier 3: " + str(tier_3)
-	$CanvasLayer/NinePatchRect/Upgrades/Tier4.text = "Tier 4: " + str(tier_4)
-	
-	$CanvasLayer/NinePatchRect/Equipment/Equip1.text = "Equipment 1: " + str(equipment_1)
-	$CanvasLayer/NinePatchRect/Equipment/Equip2.text = "Equipment 2: " + str(equipment_2)
+	populate_move_list()
+	populate_equipment_list()
 	
 func _ready():
-		 set_dummy_data()
+	set_data()
 		
 func _input(event):
 	if !event.is_pressed():
