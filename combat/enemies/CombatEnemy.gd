@@ -1,6 +1,7 @@
 extends Sprite
 
 signal animation_step_complete
+signal damaged_animation_complete
 
 const Creature = preload("res://game/Creature.gd")
 onready var name_label = get_node("Name")
@@ -11,6 +12,7 @@ onready var tween = get_node("Tween")
 var CombatAnimation = preload("res://combat/CombatAnimation.tscn")
 
 const IDLE_ANIMATION_NAME = "idle"
+const DAMAGED_PATH = "_damaged"
 const PLAYER_H_FRAMES = 8
 const BASE_H_FRAMES = 1
 const BASE_V_FRAMES = 1
@@ -21,7 +23,7 @@ const RIGHT_SIDE = 1
 const INITIAL_STATE = 0
 const STATE_STEP = 1
 const PIXEL_DISTANCE = 150
-const MOVE_TIME = 0.25
+const MOVE_TIME = 0.20
 
 
 var state = null
@@ -31,6 +33,8 @@ var show_health = false
 var show_ticks = false
 var parent = false
 var creature_size = Creature.CreatureSize.MEDIUM
+var base_texture = null
+var damaged_texture = null
 var texture_path = null
 var idle_path = null
 
@@ -39,6 +43,8 @@ var original_pos = null
 var new_pos = null
 var move_details = null
 var combat_creature = null
+
+var is_being_hit = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -50,8 +56,10 @@ func _ready():
 		health.visible = true
 	if show_ticks:
 		ticks.visible = true
-
-	self.set("texture", load(texture_path))
+	
+	base_texture = load(texture_path + Global.TEXTURE_FILE_EXTENSION)
+	damaged_texture = load(texture_path + DAMAGED_PATH + Global.TEXTURE_FILE_EXTENSION)
+	self.set("texture", base_texture)
 	var idle = load(idle_path)
 	ani_player.add_animation(IDLE_ANIMATION_NAME, idle)
 	ani_player.play(IDLE_ANIMATION_NAME)
@@ -86,8 +94,16 @@ func move_backward():
 	tween.interpolate_property(self, 'position', Vector2(new_pos, position.y), Vector2(original_pos, position.y) , MOVE_TIME, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.start()
 
-func _on_Tween_tween_completed(object, key):
-	emit_signal("animation_step_complete")
+func damage_creature():
+	self.set("texture", damaged_texture)
+	var original_x = position.x
+	var right_sway = position.x + 5
+	var left_sway = position.x - 10
+	is_being_hit = true
+	tween.interpolate_property(self, 'position', position, Vector2(right_sway, position.y) , 0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.interpolate_property(self, 'position', position, Vector2(left_sway, position.y) , 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.1)
+	tween.interpolate_property(self, 'position', position, Vector2(original_x, position.y) , 0.3, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.2)
+	tween.start()
 
 func animation_completed():
 	emit_signal("animation_step_complete")
@@ -99,3 +115,11 @@ func apply_animation(move):
 	attack_anim.combat_side = combat_side
 	attack_anim.connect("animation_action_complete", self, "animation_completed")
 	self.add_child(attack_anim)
+
+func _on_Tween_tween_all_completed():
+	if is_being_hit:
+		is_being_hit = false
+		self.set("texture", base_texture)
+		emit_signal("damaged_animation_complete")
+	else:
+		emit_signal("animation_step_complete")

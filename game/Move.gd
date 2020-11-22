@@ -5,13 +5,13 @@ enum MoveType {
 
 enum MoveFormula {
 	BASE,
-	POW,
-	MULTIPLIER
+	MULTIPLIER,
 }
 
 enum AnimationPath {
 	BASIC_ATTACK,
 	FIREBOLT,
+	HEAL,
 }
 
 enum AnimationDetail {
@@ -19,11 +19,13 @@ enum AnimationDetail {
 	VECTOR_OFFSET,
 	HFRAMES,
 	VFRAMES,
+	SELF_TARGET,
 }
 
 const animation_details = [
-	["melee_attack",  Vector2(-16, 8), 34, 1],
-	["fireball_power_up", Vector2(-16, 8), 23, 1],
+	["melee_attack",  Vector2(-16, 8), 34, 1, false],
+	["fireball_power_up", Vector2(-16, 8), 23, 1, false],
+	["healing", Vector2(0, -32), 51, 1, true],
 ]
 
 var name
@@ -48,8 +50,8 @@ func _init(name, level, type, animation_path, low, high, damage, accuracy=null, 
 	self.accuracy = accuracy
 
 
-static func calculate_damage(formula, stat, bonus, value):
-	return formula[MoveFormula.BASE] + pow((formula[MoveFormula.POW] * stat), value) + (bonus * value)
+static func calculate_damage(formula, stat, bonus, variance):
+	return (formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus) * variance
 
 static func calculate_accuracy(formula, stat, bonus):
-	return formula[MoveFormula.BASE] + pow(formula[MoveFormula.POW], stat) + (formula[MoveFormula.MULTIPLIER] * bonus)
+	return formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/Tony_Created_Assets/astro_idle.png" type="Texture" id=1]
 [ext_resource path="res://combat/enemies/CombatEnemy.gd" type="Script" id=2]
@@ -9,10 +9,29 @@ bg_color = Color( 1, 0, 0, 1 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 1, 0, 1 )
 
+[sub_resource type="Animation" id=3]
+resource_name = "damaged"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 5, 0 ), Vector2( -10, 0 ), Vector2( 0, 0 ) ]
+}
+
 [node name="CombatEnemy" type="Sprite"]
 texture = ExtResource( 1 )
 hframes = 8
 script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Name" type="Label" parent="."]
 visible = false
@@ -60,7 +79,8 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/damaged = SubResource( 3 )
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

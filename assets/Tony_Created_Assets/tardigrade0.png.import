@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/small_bug.png-1f4faf26a297b61086379ecaa0f4dc32.stex"
+path="res://.import/tardigrade0.png-354cabc926febd053a7be39d990fe509.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/small_bug.png"
-dest_files=[ "res://.import/small_bug.png-1f4faf26a297b61086379ecaa0f4dc32.stex" ]
+source_file="res://assets/Tony_Created_Assets/tardigrade0.png"
+dest_files=[ "res://.import/tardigrade0.png-354cabc926febd053a7be39d990fe509.stex" ]
 
 [params]
 

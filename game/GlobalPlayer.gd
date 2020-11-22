@@ -55,16 +55,16 @@ func get_stat(type):
 	var bonus = .get_stat(type)
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
-		if item.type == Item.ItemType.STAT && item.modifier[Item.ITEM_MODIFIER_TYPE] == type:
-				bonus += item.modifier[Item.ITEM_MODIFIER_VALUE]
+		if item.type == Item.ItemType.STAT && item.modifier[Item.GEAR_MODIFIER_TYPE] == type:
+				bonus += item.modifier[Item.GEAR_MODIFIER_VALUE]
 	return bonus
 
 func get_bonus(type):
 	var bonus = .get_bonus(type)
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
-		if item.type == Item.ItemType.BONUS && item.modifier[Item.ITEM_MODIFIER_TYPE] == type:
-				bonus += item.modifier[Item.ITEM_MODIFIER_VALUE]
+		if item.type == Item.ItemType.BONUS && item.modifier[Item.GEAR_MODIFIER_TYPE] == type:
+				bonus += item.modifier[Item.GEAR_MODIFIER_VALUE]
 	return bonus
 
 func get_stats():

@@ -3,7 +3,7 @@ enum BasePath {
 	TARDIGRADE,
 	ROBOT,
 	PLAYER,
-	BOSS,
+	BUG,
 }
 
 enum CreatureSize {
@@ -32,7 +32,7 @@ const file_paths = [
 	"res://assets/Tony_Created_Assets/tardigrade",
 	"res://assets/Tony_Created_Assets/robot",
 	"res://assets/Tony_Created_Assets/astro_idle",
-	"res://", # NOT ADDED
+	"res://assets/Tony_Created_Assets/bug",
 ]
 
 var _name = null
