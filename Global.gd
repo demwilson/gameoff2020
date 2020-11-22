@@ -251,7 +251,7 @@ func build_player():
 	var player_bonuses = Creature.Stats.new()
 
 	# Items
-	var player_items = [Items.ItemList.CROWBAR]
+	var player_items = [Items.ItemList.MELEE_T0]
 	# Add attack-based item (T1)
 	if Upgrades.BasicWeapon:
 		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)
@@ -262,7 +262,7 @@ func build_player():
 		player_items.append(item.id)
 	# Add move-based item (T1)
 	if Upgrades.CombatTraining:
-		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE)
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T1)
 		player_items.append(item.id)
 	# Add attack-based item (T2)
 	if Upgrades.AdvanceWeapon:
@@ -274,7 +274,7 @@ func build_player():
 		player_items.append(item.id)
 	# Add move-based item (T2)
 	if Upgrades.AdvanceTraining:
-		var item = items.get_random_item(Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE)
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T2)
 		player_items.append(item.id)
 
 	player = GlobalPlayer.new(
