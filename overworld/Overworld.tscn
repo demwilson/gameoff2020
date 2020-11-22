@@ -377,99 +377,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Win" type="ColorRect" parent="GUI"]
-visible = false
-margin_right = 640.0
-margin_bottom = 328.0
-color = Color( 0, 0, 0, 0.694118 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="GUI/Win"]
-margin_left = 69.566
-margin_top = 40.0
-margin_right = 555.566
-margin_bottom = 88.0
-text = "You've done excellent! Spend your currency at SAAN to go further next time.
-You Win!"
-align = 1
-valign = 1
-
-[node name="Restart" type="Button" parent="GUI/Win"]
-margin_left = 216.0
-margin_top = 104.0
-margin_right = 432.0
-margin_bottom = 168.0
-text = "Go To SAAN"
-
-[node name="Lose" type="ColorRect" parent="GUI"]
-visible = false
-margin_right = 640.0
-margin_bottom = 328.0
-color = Color( 0, 0, 0, 0.694118 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="GUI/Lose"]
-margin_left = 36.0
-margin_top = 41.0
-margin_right = 607.0
-margin_bottom = 100.0
-text = "You have made poor choices and it lead to your demise. Spend what currency you managed to find at SAAN.
-You Lose!"
-align = 1
-valign = 1
-autowrap = true
-
-[node name="LoseRestart" type="Button" parent="GUI/Lose"]
-margin_left = 216.0
-margin_top = 104.0
-margin_right = 432.0
-margin_bottom = 168.0
-text = "Go To SAAN"
-
-[node name="Loot" type="ColorRect" parent="GUI"]
-visible = false
-margin_left = 184.0
-margin_top = 48.0
-margin_right = 441.0
-margin_bottom = 363.0
-color = Color( 0, 0, 0, 0.694118 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LootText" type="Label" parent="GUI/Loot"]
-margin_left = 26.0
-margin_top = 20.0
-margin_right = 240.0
-margin_bottom = 60.0
-text = "After fighting with the lock mechanism you pry open the chest and find:"
-align = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LootAccept" type="Button" parent="GUI/Loot"]
-margin_left = 58.0
-margin_top = 255.0
-margin_right = 194.0
-margin_bottom = 290.0
-shortcut = SubResource( 2 )
-text = "Take All"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LootList" type="ItemList" parent="GUI/Loot"]
-margin_left = 22.0
-margin_top = 71.0
-margin_right = 239.0
-margin_bottom = 247.0
-
 [node name="NeedKey" type="ColorRect" parent="GUI"]
 visible = false
 margin_left = 184.0
@@ -576,9 +483,6 @@ script = ExtResource( 4 )
 current = true
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
-[connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
-[connection signal="pressed" from="GUI/Lose/LoseRestart" to="." method="_on_LoseRestart_pressed"]
-[connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
 [connection signal="pressed" from="GUI/NeedKey/NeedKeyAccept" to="." method="_on_NeedKeyAccept_pressed"]
 [connection signal="collided" from="PlayerRoot/Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="PlayerRoot/Player/MoveTween" to="PlayerRoot/Player" method="_on_MoveTween_tween_completed"]
