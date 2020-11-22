@@ -29,7 +29,7 @@ func _ready():
 func place_player():
 	player.position = tile_map.playerStartPosition
 	anchor.set_start_position(player.position)
-	Global.log(Settings.Trace, "The player starts at: " + str(player.position))
+	Global.log(Settings.LogLevel.TRACE, "The player starts at: " + str(player.position))
 	tile_map.isGeneratingNewLevel = false
 
 func place_boss():
@@ -38,7 +38,7 @@ func place_boss():
 	add_child(bossInstance)
 	boss = bossInstance.get_node("Boss")
 	boss.position = tile_map.bossStartPosition
-	Global.log(Settings.Trace, "The Boss starts at: " + str(tile_map.bossStartPosition))
+	Global.log(Settings.LogLevel.TRACE, "The Boss starts at: " + str(tile_map.bossStartPosition))
 
 func set_boss_movement(active):
 	boss.set_can_move(active)
