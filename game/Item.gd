@@ -36,12 +36,12 @@ func get_description():
 	var modifier_text = ""
 	match self.type:
 		ItemType.BONUS:
-			var modifier_amount = str(self.modifier[ITEM_MODIFIER_VALUE])
-			var modifier_type = self.modifier[ITEM_MODIFIER_TYPE]
+			var modifier_amount = str(self.modifier[GEAR_MODIFIER_VALUE])
+			var modifier_type = self.modifier[GEAR_MODIFIER_TYPE]
 			modifier_text =  "+" + modifier_amount +" bonus to " + modifier_type + "."
 		ItemType.STAT:
-			var modifier_amount = str(self.modifier[ITEM_MODIFIER_VALUE])
-			var modifier_type = self.modifier[ITEM_MODIFIER_TYPE]
+			var modifier_amount = str(self.modifier[GEAR_MODIFIER_VALUE])
+			var modifier_type = self.modifier[GEAR_MODIFIER_TYPE]
 			modifier_text =  "+" + modifier_amount +" to " + modifier_type + "."
 		ItemType.MOVE:
 			modifier_text =  "This gives you the ability " + self.name + "."

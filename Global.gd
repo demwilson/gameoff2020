@@ -352,8 +352,8 @@ func get_random_type_by_weight(weight_list):
 			return position
 		rand -= chance
 
-func populate_loot_list(loot_list, loot):
-	for loot in loot_list:
+func populate_loot_list(loot_list, loot_bag):
+	for loot in loot_bag:
 		match loot.type:
 			Items.LootType.GEAR:
 				loot_list.add_item(loot.item.name, null, false)
