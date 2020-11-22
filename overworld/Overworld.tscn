@@ -2,7 +2,7 @@
 
 [ext_resource path="res://overworld/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://assets/Music/overworld_loop.tres" type="AudioStream" id=3]
+[ext_resource path="res://assets/Music/overworld_simple.wav" type="AudioStream" id=3]
 [ext_resource path="res://overworld/Anchor.gd" type="Script" id=4]
 [ext_resource path="res://assets/Tony_Created_Assets/icons.png" type="Texture" id=5]
 [ext_resource path="res://overworld/Player.gd" type="Script" id=6]
@@ -565,7 +565,8 @@ collide_with_areas = true
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 stream = ExtResource( 3 )
-volume_db = -10.097
+autoplay = true
+attenuation = 0.34151
 
 [node name="Anchor" type="Position2D" parent="PlayerRoot"]
 position = Vector2( 16, 16 )

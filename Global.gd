@@ -92,7 +92,7 @@ func _ready():
 	if Settings.debug >= Settings.LogLevel.TRACE:
 		currency = 6000
 		# Uncomment to force a seed value
-		# seed_value = -7489110890573097118
+		seed_value = -4628785356089636443
 
 	# Set RNG value and get seed.
 	random = RandomNumberGenerator.new()

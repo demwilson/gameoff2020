@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://combat/Combat.gd" type="Script" id=1]
 [ext_resource path="res://font/micross.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/Tony_Created_Assets/combat_background.png" type="Texture" id=3]
 [ext_resource path="res://assets/combat_arrow_right.png" type="Texture" id=4]
 [ext_resource path="res://assets/combat_arrow_down.png" type="Texture" id=5]
+[ext_resource path="res://assets/Music/combat.wav" type="AudioStream" id=6]
 
 [sub_resource type="Theme" id=1]
 
@@ -453,3 +454,8 @@ texture = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 320, 180 )
+stream = ExtResource( 6 )
+autoplay = true

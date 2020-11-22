@@ -204,8 +204,17 @@ func place_player_start(startingSpot):
 	var startRoom = startingSpot
 	var roomOffset = 4
 	var offsetVariance = 2
-	var playerX = startRoom.x + roomOffset - Global.random.randi() % offsetVariance
-	var playerY = startRoom.y + roomOffset - Global.random.randi() % offsetVariance
+	var spotFound = false
+	var playerX
+	var playerY
+	
+	while !spotFound:
+		playerX = startRoom.x + roomOffset - Global.random.randi() % offsetVariance
+		playerY = startRoom.y + roomOffset - Global.random.randi() % offsetVariance
+		var cellIndex = get_cell(playerX, playerY)
+		if cellIndex != Tile.CLOSED_CHEST:
+			spotFound = true
+
 	playerStartPosition = map_to_world(Vector2(playerX, playerY))
 
 func place_boss(startingSpot, exitSpot):
@@ -237,7 +246,7 @@ func place_boss(startingSpot, exitSpot):
 				continue
 		#if cellIndex -1 skip everything
 		cellIndex = self.get_cell(possiblePoint.x + exitOffset, possiblePoint.y + exitOffset)
-		if cellIndex == -1:
+		if cellIndex == -1 || cellIndex == Tile.CLOSED_CHEST:
 			possibleBossAnchorPoints.erase(possiblePoint)
 			continue
 		else:

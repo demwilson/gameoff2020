@@ -46,8 +46,6 @@ func possible_roll_up(loot_bag):
 				Global.roll_up_percentage = DEFAULT_ROLL_UP_PERCENTAGE
 			else:
 				Global.roll_up_percentage += ROLL_UP_STEP
-#
-#item.description
 
 func _on_ok_button_pressed():
 	Global.goto_scene(Global.Scene.OVERWORLD)
