@@ -274,6 +274,8 @@ func _input(event):
 				TargetSelectionArrow.visible = true
 			elif _phase == MenuPhase.TARGET_SELECT:
 				var targeted_list = get_target_list(_menu_move)
+				if _hover < 0 || _hover >= targeted_list.size():
+					_hover = 0
 				_menu_target = targeted_list[_hover]
 				add_selected_move_to_queue()
 				reset_menuing()
@@ -347,6 +349,8 @@ func update_selection_arrow(position):
 			MoveSelectionArrow.rect_position = menu_positions[position][MENU_ARROW_POSITION]
 		MenuPhase.TARGET_SELECT:
 			var targeted_list = get_target_list(_menu_move)
+			if position < 0 || position >= targeted_list.size():
+				position = 0
 			var creature_location = targeted_list[position].scene.position
 			var altered_position = creature_location + COMBAT_ARROW_DOWN_OFFSET
 			TargetSelectionArrow.rect_position = altered_position
