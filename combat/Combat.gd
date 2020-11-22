@@ -194,12 +194,14 @@ func _process(delta):
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				if creature.get_behavior() == Creature.Behavior.PLAYER:
 					show_move_options(creature)
+				    creature.is_queued = true
 				else:
 					var move_id = creature.get_move()
 					var move = Global.moves.get_move_by_id(move_id)
 					var target = creature.choose_target(move, enemies)
-					action_queue.append(CombatEvent.new(move, creature, target))
-				creature.is_queued = true
+					if target:
+					    action_queue.append(CombatEvent.new(move, creature, target))
+				        creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
 		creature.update_health_percentage()
@@ -346,14 +348,14 @@ func check_end_combat():
 		return
 
 	var dead_enemies = 0
-	if !allies[Global.PLAYER_POSITION].is_alive():
+	if !allies[Global.PLAYER_POSITION_COMBAT].is_alive():
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:
 		if !creature.is_alive():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
-		save_player_changes(allies[Global.PLAYER_POSITION])
+		save_player_changes(allies[Global.PLAYER_POSITION_COMBAT])
 		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.LOOT_WINDOW)

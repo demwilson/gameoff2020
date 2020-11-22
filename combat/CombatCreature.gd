@@ -73,8 +73,8 @@ func choose_target(move, target_list):
 			Behavior.BOSS:
 				if _current_target && _current_target.is_alive():
 					target = _current_target
-				elif target_list[Global.PLAYER_POSITION].is_alive():
-					target = target_list[Global.PLAYER_POSITION]
+				elif target_list[Global.PLAYER_POSITION_COMBAT].is_alive():
+					target = target_list[Global.PLAYER_POSITION_COMBAT]
 				else:
 					target = get_target_by_random(target_list)
 			_: # Behavior.STUPID
@@ -94,8 +94,8 @@ func get_target_by_random(target_list):
 		if target.is_alive():
 			return target
 		target_list_size -= 1
-	# If everything failed, just return the player character
-	return target_list[Global.PLAYER_POSITION]
+	# If everything failed, target no one
+	return null
 	
 func get_target_by_lowest_health(target_list):
 	var target_list_size = target_list.size()
