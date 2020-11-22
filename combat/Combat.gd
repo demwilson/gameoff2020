@@ -29,6 +29,7 @@ onready var MoveNameLabels = [
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName4,
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName5,
 ]
+onready var audio = get_node("AudioStreamPlayer2D")
 
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
@@ -357,6 +358,7 @@ func check_end_combat():
 
 	var dead_enemies = 0
 	if !allies[Global.PLAYER_POSITION_COMBAT].is_alive():
+		audio.stop()
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:
@@ -366,6 +368,7 @@ func check_end_combat():
 		save_player_changes(allies[Global.PLAYER_POSITION_COMBAT])
 		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
+		audio.stop()
 		return Global.goto_scene(Global.Scene.LOOT_WINDOW)
 
 func save_player_changes(combat_player):

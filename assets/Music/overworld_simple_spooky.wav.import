@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/overworld_simple_spooky.wav-c3068347624f768cd70ca2b75e36c275.sample"
+
+[deps]
+
+source_file="res://assets/Music/overworld_simple_spooky.wav"
+dest_files=[ "res://.import/overworld_simple_spooky.wav-c3068347624f768cd70ca2b75e36c275.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0
