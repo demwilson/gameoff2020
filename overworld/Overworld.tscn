@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://assets/Music/overworld_loop.tres" type="AudioStream" id=3]
 [ext_resource path="res://overworld/Anchor.gd" type="Script" id=4]
-[ext_resource path="res://assets/Label_O2.png" type="Texture" id=5]
+[ext_resource path="res://assets/Tony_Created_Assets/icons.png" type="Texture" id=5]
 [ext_resource path="res://overworld/Player.gd" type="Script" id=6]
 [ext_resource path="res://overworld/TileMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/Tony_Created_Assets/astro_walking_overland.png" type="Texture" id=8]
@@ -127,25 +127,22 @@ margin_right = 190.0
 margin_bottom = 37.0
 
 [node name="Oxygen" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
-margin_right = 42.0
+margin_right = 32.0
 margin_bottom = 37.0
+rect_min_size = Vector2( 32, 32 )
 custom_constants/margin_top = 8
 custom_constants/margin_left = 10
 
-[node name="Title" type="TextureRect" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/Oxygen"]
-margin_left = 10.0
-margin_top = 8.0
-margin_right = 42.0
-margin_bottom = 37.0
+[node name="Sprite" type="Sprite" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/Oxygen"]
+position = Vector2( 10, 4 )
 texture = ExtResource( 5 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
+centered = false
+hframes = 16
+frame = 7
 
 [node name="OxygenAmount" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
-margin_left = 46.0
-margin_right = 70.0
+margin_left = 36.0
+margin_right = 60.0
 margin_bottom = 37.0
 custom_constants/margin_top = 10
 
@@ -153,6 +150,7 @@ custom_constants/margin_top = 10
 margin_top = 16.0
 margin_right = 24.0
 margin_bottom = 30.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "100"
 align = 1
 valign = 1
@@ -161,8 +159,8 @@ __meta__ = {
 }
 
 [node name="OxygenGauge" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
-margin_left = 74.0
-margin_right = 170.0
+margin_left = 64.0
+margin_right = 160.0
 margin_bottom = 37.0
 custom_constants/margin_top = 5
 
@@ -197,6 +195,7 @@ custom_constants/margin_bottom = 2
 margin_top = 7.0
 margin_right = 58.0
 margin_bottom = 21.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Level: 10"
 valign = 1
 __meta__ = {
@@ -216,6 +215,7 @@ margin_left = 10.0
 margin_top = 7.0
 margin_right = 92.0
 margin_bottom = 21.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Health: 2000"
 valign = 1
 __meta__ = {
@@ -235,6 +235,7 @@ margin_left = 10.0
 margin_top = 7.0
 margin_right = 98.0
 margin_bottom = 21.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Combats: 400"
 valign = 1
 __meta__ = {
@@ -277,6 +278,7 @@ custom_constants/margin_top = 5
 margin_top = 18.0
 margin_right = 40.0
 margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "10000"
 align = 1
 valign = 1
@@ -468,6 +470,40 @@ margin_top = 71.0
 margin_right = 239.0
 margin_bottom = 247.0
 
+[node name="NeedKey" type="ColorRect" parent="GUI"]
+visible = false
+margin_left = 184.0
+margin_top = 152.0
+margin_right = 441.0
+margin_bottom = 312.0
+color = Color( 0, 0, 0, 0.694118 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NeedKeyText" type="Label" parent="GUI/NeedKey"]
+margin_left = 24.0
+margin_top = 32.0
+margin_right = 238.0
+margin_bottom = 72.0
+text = "You must defeat the floor boss and obtain the key to exit!"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NeedKeyAccept" type="Button" parent="GUI/NeedKey"]
+margin_left = 56.0
+margin_top = 96.0
+margin_right = 192.0
+margin_bottom = 131.0
+shortcut = SubResource( 2 )
+text = "Ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
@@ -477,7 +513,7 @@ script = ExtResource( 7 )
 [node name="PlayerRoot" type="Node2D" parent="."]
 
 [node name="Player" type="Area2D" parent="PlayerRoot"]
-position = Vector2( 314.684, 192.783 )
+position = Vector2( 344.684, 192.783 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
@@ -488,7 +524,7 @@ texture = ExtResource( 8 )
 centered = false
 vframes = 4
 hframes = 16
-frame = 63
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -506,21 +542,25 @@ anims/up = SubResource( 7 )
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( -32, 0 )
+collide_with_areas = true
 
 [node name="RayCastRight" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 32, 0 )
+collide_with_areas = true
 
 [node name="RayCastUp" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, -32 )
+collide_with_areas = true
 
 [node name="RayCastDown" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, 32 )
+collide_with_areas = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -533,11 +573,11 @@ script = ExtResource( 4 )
 
 [node name="Cam" type="Camera2D" parent="PlayerRoot/Anchor"]
 current = true
-zoom = Vector2( 0.75, 0.75 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 [connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="pressed" from="GUI/Lose/LoseRestart" to="." method="_on_LoseRestart_pressed"]
 [connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
+[connection signal="pressed" from="GUI/NeedKey/NeedKeyAccept" to="." method="_on_NeedKeyAccept_pressed"]
 [connection signal="collided" from="PlayerRoot/Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="PlayerRoot/Player/MoveTween" to="PlayerRoot/Player" method="_on_MoveTween_tween_completed"]

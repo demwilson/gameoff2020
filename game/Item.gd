@@ -14,6 +14,7 @@ enum ItemTier {
 const GEAR_MODIFIER_TYPE = 0
 const GEAR_MODIFIER_VALUE = 1
 
+
 var id
 var name
 var tier
@@ -30,3 +31,19 @@ func _init(id, name, tier, type, description, modifier, image=null):
 	self.description = description
 	self.modifier = modifier
 	self.image = image
+
+func get_description():
+	var modifier_text = ""
+	match self.type:
+		ItemType.BONUS:
+			var modifier_amount = str(self.modifier[GEAR_MODIFIER_VALUE])
+			var modifier_type = self.modifier[GEAR_MODIFIER_TYPE]
+			modifier_text =  "+" + modifier_amount +" bonus to " + modifier_type + "."
+		ItemType.STAT:
+			var modifier_amount = str(self.modifier[GEAR_MODIFIER_VALUE])
+			var modifier_type = self.modifier[GEAR_MODIFIER_TYPE]
+			modifier_text =  "+" + modifier_amount +" to " + modifier_type + "."
+		ItemType.MOVE:
+			modifier_text =  "This gives you the ability " + self.name + "."
+			
+	return self.description + ' ' + str(modifier_text)
