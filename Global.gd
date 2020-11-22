@@ -110,12 +110,12 @@ func _ready():
 		Move.new(1, "Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.7, 1.1, [2, 2], [85, 3]),
 		Move.new(2, "Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.25, [2, 3], [80, 6]),
 		Move.new(3, "Masterful Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [3, 4], [75, 9]),
-		Move.new(4, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
-		Move.new(5, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], [Moves.MoveList.PSY_T1]),
-		Move.new(6, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
-		Move.new(7, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
-		Move.new(8, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], [Moves.MoveList.HEAL_T1]),
-		Move.new(9, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
+		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], [Moves.MoveList.HEAL_T1]),
+		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
+		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], [Moves.MoveList.PSY_T1]),
+		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
 	]
 	var available_items = [
 		# Game Start
