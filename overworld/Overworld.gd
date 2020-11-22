@@ -119,11 +119,11 @@ func trigger_combat():
 	Global.goto_scene(Global.Scene.COMBAT)
 
 func trigger_boss_combat():
-	print("Boss Combat Initiated!")
+	Global.boss_fight = true
 	set_boss_movement(false)
-	Global.player.set_floor_key(true)
 	trigger_combat()
 	remove_boss()
+	Global.player.set_floor_key(true)
 
 func update_floor_level(value):
 	Global.floor_level = value + 1

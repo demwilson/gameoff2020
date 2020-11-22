@@ -135,8 +135,7 @@ func _on_Player_collided(collisionPoint, direction, collider):
 
 func _on_Boss_collided(hitCollider, direction):
 	if hitCollider.name == "Player":
-		overworld.set_boss_movement(false)
-		overworld.trigger_combat()
+		overworld.trigger_boss_combat()
 	
 func build_level():
 	self.clear()

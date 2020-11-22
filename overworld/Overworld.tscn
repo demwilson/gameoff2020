@@ -511,7 +511,7 @@ script = ExtResource( 7 )
 [node name="PlayerRoot" type="Node2D" parent="."]
 
 [node name="Player" type="Area2D" parent="PlayerRoot"]
-position = Vector2( 314.684, 192.783 )
+position = Vector2( 344.684, 192.783 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
@@ -571,7 +571,6 @@ script = ExtResource( 4 )
 
 [node name="Cam" type="Camera2D" parent="PlayerRoot/Anchor"]
 current = true
-zoom = Vector2( 6, 6 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 [connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]

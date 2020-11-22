@@ -78,6 +78,7 @@ var last_combat_enemies = 0
 var floor_level = 1
 var currency = 0
 var roll_up_percentage = 1
+var boss_fight = false
 
 # Debugging purposes
 var random
