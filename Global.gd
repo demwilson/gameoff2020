@@ -309,9 +309,7 @@ func goto_scene(target_scene, function_call = null):
 		Scene.STATS:
 			_deferred_goto_scene(target_scene, "res://Stats.tscn")
 		Scene.GAME_OVER:
-			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
-		Scene.COMBAT_WIN:
-			call_deferred("_deferred_goto_scene", target_scene, "res://combat/CombatWin.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://lose/Lose.tscn")
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 		Scene.SETTINGS:

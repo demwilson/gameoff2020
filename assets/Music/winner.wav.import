@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/winner.wav-8010e24fdc1a6988ad752dc89a87e095.sample"
+
+[deps]
+
+source_file="res://assets/Music/winner.wav"
+dest_files=[ "res://.import/winner.wav-8010e24fdc1a6988ad752dc89a87e095.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
