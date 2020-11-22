@@ -7,8 +7,10 @@ var tileHalfSize = Vector2(tileSize.x / 2, tileSize.y / 2)
 var levelNum = 0
 var levelSize
 var playerStartPosition
+var bossStartPosition
 var topLeftAnchorPoints = []
 var possibleExitAnchorPoints = []
+var possibleBossAnchorPoints = []
 var roomCellSize = Vector2(9,9)
 var nextTileCellQueue = []
 var possibleStartPoints = []
@@ -16,10 +18,14 @@ var isGeneratingNewLevel = false
 var gameOver = false
 var chestIsOpen = false
 var minExitDistanceInRoomCells = 2
+var bossNodeName = "Boss"
+var playerNodeName = "Player"
 
 #Resources
 var Room_0000 = preload("res://overworld/Room_0000.tscn")
 var Corridor_1111 = preload("res://overworld/Corridor_1111.tscn")
+var Corridor_1010 = preload("res://overworld/Corridor_1010.tscn")
+var Corridor_0101 = preload("res://overworld/Corridor_0101.tscn")
 
 #Objects
 var CellMidpoints = {
@@ -45,10 +51,10 @@ var DirectionValue = {
 
 const LEVEL_SIZES = [
 	Vector2(54, 36),
-	Vector2(72, 54)
+	Vector2(63, 45)
 ]
 
-const ROOM_CELL_PROBABILITY_WEIGHTS = [60, 40]
+const ROOM_CELL_PROBABILITY_WEIGHTS = [40, 60]
 
 #enums
 enum Tile {
@@ -73,15 +79,25 @@ enum Tile {
 
 enum RoomCellType {
 	CORRIDOR,
-	ROOM
+	ROOM,
+}
+
+enum CorridorTypes {
+	LEFT_RIGHT, #0
+	TOP_DOWN, #1
+	FOUR_WAY #2
 }
 
 func _ready():
 	overworld = get_parent()
 	build_level()
 
-func _on_Player_collided(collisionPoint, direction):
+func _on_Player_collided(collisionPoint, direction, collider):
 	if isGeneratingNewLevel || gameOver || chestIsOpen:
+		return
+	
+	if collider.name == bossNodeName:
+		overworld.trigger_boss_combat()
 		return
 	
 	match direction:
@@ -108,14 +124,23 @@ func _on_Player_collided(collisionPoint, direction):
 			isGeneratingNewLevel = true
 			build_level()
 			overworld.place_player()
+			if (levelNum + 1) == LEVEL_SIZES.size():
+				overworld.place_boss()
 			overworld.update_floor_level(levelNum)
 		else:
-			gameOver = true
-			overworld.score += 1000
-			overworld.win_event()
+			if Global.player.get_floor_key():
+				gameOver = true
+				overworld.win_event()
+			else:
+				overworld.need_key_event()
+
+func _on_Boss_collided(hitCollider, direction):
+	if hitCollider.name == playerNodeName:
+		overworld.trigger_boss_combat()
 	
 func build_level():
 	self.clear()
+	Global.player.set_combat_count(0)
 	levelSize = LEVEL_SIZES[levelNum]
 	#populate possible starting points
 	generate_possible_start_points()
@@ -134,6 +159,7 @@ func build_level():
 	var numberOfCellsPlaced = 0
 		
 	while numberOfCellsPlaced <= numberOfCells:
+		#yield(get_tree().create_timer(0.5), 'timeout')
 		var chosenRoomCellType = Global.get_random_type_by_weight(ROOM_CELL_PROBABILITY_WEIGHTS)
 		
 		var currentSpot
@@ -144,17 +170,16 @@ func build_level():
 			currentSpot = nextTileCellQueue.pop_front()
 		
 		#add the room
-		add_room(currentSpot, needsCorridor)
+		var typePlaced = add_room(currentSpot, needsCorridor)
 
 		if needsCorridor:
 			#close blocked off sections
-			place_walls(currentSpot)	
+			place_walls(currentSpot, typePlaced)	
 		else:
 			#place doors
 			place_doors(currentSpot)
 			#place chest
-			if possibleStartPoints.find(currentSpot) == -1:
-				place_treasure_chest(currentSpot)
+			place_treasure_chest(currentSpot)
 		
 		numberOfCellsPlaced += 1
 		
@@ -167,18 +192,72 @@ func build_level():
 			break;
 	
 	# Place Player
-	place_player_start(startingSpot)	
-	# Place end ladder
-	place_exit(startingSpot)
+	place_player_start(startingSpot)
 	
+	# Place end ladder
+	var exitSpot = place_exit(startingSpot)
+	
+	if (levelNum + 1) == LEVEL_SIZES.size():
+		# Place boss
+		place_boss(startingSpot, exitSpot)
+
 func place_player_start(startingSpot):
 	var startRoom = startingSpot
 	var roomOffset = 4
 	var offsetVariance = 2
-	var playerX = startRoom.x + roomOffset - Global.random.randi() % offsetVariance
-	var playerY = startRoom.y + roomOffset - Global.random.randi() % offsetVariance
-	playerStartPosition = map_to_world(Vector2(playerX, playerY))
+	var spotFound = false
+	var playerX
+	var playerY
 	
+	while !spotFound:
+		playerX = startRoom.x + roomOffset - Global.random.randi() % offsetVariance
+		playerY = startRoom.y + roomOffset - Global.random.randi() % offsetVariance
+		var cellIndex = get_cell(playerX, playerY)
+		if cellIndex != Tile.CLOSED_CHEST:
+			spotFound = true
+
+	playerStartPosition = map_to_world(Vector2(playerX, playerY))
+
+func place_boss(startingSpot, exitSpot):
+	#remove player start from 
+	possibleBossAnchorPoints.erase(startingSpot)
+	#remove ladder room from 
+	possibleBossAnchorPoints.erase(exitSpot)
+	var bossRoom
+	var exitOffset = 4
+	var offsetVariance = 2
+	var cellIndex
+	var bossPlaced = false
+	var loops = 0
+	var maxLoops = 12
+	
+	while !bossPlaced:
+		loops += 1
+		if loops >= maxLoops:
+			if minExitDistanceInRoomCells > 0:
+				minExitDistanceInRoomCells -= 1
+			loops = 0
+		#select a random spot
+		var possiblePoint = possibleBossAnchorPoints[Global.random.randi() % possibleBossAnchorPoints.size()]
+		
+		if minExitDistanceInRoomCells != 0:
+			if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
+			if abs(startingSpot.y - possiblePoint.y) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
+		#if cellIndex -1 skip everything
+		cellIndex = self.get_cell(possiblePoint.x + exitOffset, possiblePoint.y + exitOffset)
+		if cellIndex == -1 || cellIndex == Tile.CLOSED_CHEST:
+			possibleBossAnchorPoints.erase(possiblePoint)
+			continue
+		else:
+			bossRoom = possiblePoint
+			bossPlaced = true
+
+	var bossX = bossRoom.x + exitOffset - Global.random.randi() % offsetVariance
+	var bossY = bossRoom.y + exitOffset - Global.random.randi() % offsetVariance
+	bossStartPosition = map_to_world(Vector2(bossX, bossY))
+
 func place_exit(startingSpot):
 	#Remove Player start point from possible points
 	possibleExitAnchorPoints.erase(startingSpot)
@@ -187,18 +266,27 @@ func place_exit(startingSpot):
 	var offsetVariance = 2
 	var cellIndex
 	var ladderPlaced = false
+	var loops = 0
+	var maxLoops = 12
 	
-	while !ladderPlaced: 
+	while !ladderPlaced:
+		loops += 1
+		if loops >= maxLoops:
+			if minExitDistanceInRoomCells > 0:
+				minExitDistanceInRoomCells -= 1
+			loops = 0
 		#select a random spot
 		var possiblePoint = possibleExitAnchorPoints[Global.random.randi() % possibleExitAnchorPoints.size()]
 		
-		if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
-			continue
-		if abs(startingSpot.y - possiblePoint.y) <= (minExitDistanceInRoomCells * roomCellSize.x):
-			continue
+		if minExitDistanceInRoomCells != 0:
+			if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
+			if abs(startingSpot.y - possiblePoint.y) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
 		#if cellIndex -1 skip everything
 		cellIndex = self.get_cell(possiblePoint.x + exitOffset, possiblePoint.y + exitOffset)
 		if cellIndex == -1:
+			possibleExitAnchorPoints.erase(possiblePoint)
 			continue
 		else:
 			endRoom = possiblePoint
@@ -208,16 +296,19 @@ func place_exit(startingSpot):
 	var exitX = endRoom.x + exitOffset - Global.random.randi() % offsetVariance
 	var exitY = endRoom.y + exitOffset - Global.random.randi() % offsetVariance
 	set_tile(exitX, exitY, Tile.LADDER)
+	return endRoom
 
 func generate_Anchor_Points():
 	topLeftAnchorPoints = []
 	possibleExitAnchorPoints = []
+	possibleBossAnchorPoints = []
 	var roomSizeX = roomCellSize.x
 	var roomSizeY = roomCellSize.y
 	for x in range(levelSize.x / roomCellSize.x):
 		for y in range(levelSize.y / roomCellSize.y):
 			topLeftAnchorPoints.append(Vector2(x * roomSizeX, y * roomSizeY))
 			possibleExitAnchorPoints.append(Vector2(x * roomSizeX, y * roomSizeY))
+			possibleBossAnchorPoints.append(Vector2(x * roomSizeX, y * roomSizeY))
 
 func generate_Map_Corner_Points():
 	#top left corner
@@ -234,25 +325,25 @@ func add_room(topLefPosition, isCorridor):
 	var scene
 	var roomsTileMap
 	var usedCells
+	var typeOfRoomCorridor
 	
 	#map the scene to the tilemap
 	if isCorridor:
-		scene = Corridor_1111.instance()
+		#check neighbors to determine which corridor we can place
+		var listOfPossibleTypes = gen_list_of_corridor_types_with_neighbor_cell_midpoint(topLefPosition)
+		var randCor = listOfPossibleTypes[randi() % listOfPossibleTypes.size()]		
+		if randCor == CorridorTypes.LEFT_RIGHT:
+			scene = Corridor_1010.instance()
+		elif randCor == CorridorTypes.TOP_DOWN:
+			scene = Corridor_0101.instance()
+		else:
+			scene = Corridor_1111.instance()
+		typeOfRoomCorridor = randCor
 		roomsTileMap = scene.get_node("TileMap")
 		usedCells = roomsTileMap.get_used_cells()
 		for usedCell in usedCells:
 			var cellindex = roomsTileMap.get_cell(usedCell.x, usedCell.y)
-			if cellindex == Tile.BOTTOM_RIGHT_CORNER:
-				if usedCell.x == 2 && usedCell.y == 6:
-					#rotate tile 270 degree to right
-					set_tile(topLefPosition.x + usedCell.x, topLefPosition.y + usedCell.y, cellindex, false, true, true)
-				elif usedCell.x == 6 && usedCell.y == 6:
-					#rotate tile 180 degree to the right
-					set_tile(topLefPosition.x + usedCell.x, topLefPosition.y + usedCell.y, cellindex, true, true, false)
-				else:
-					set_tile(topLefPosition.x + usedCell.x, topLefPosition.y + usedCell.y, cellindex)
-			else:
-				set_tile(topLefPosition.x + usedCell.x, topLefPosition.y + usedCell.y, cellindex)
+			set_tile(topLefPosition.x + usedCell.x, topLefPosition.y + usedCell.y, cellindex)
 	else:
 		scene = Room_0000.instance()
 		roomsTileMap = scene.get_node("TileMap")
@@ -264,6 +355,8 @@ func add_room(topLefPosition, isCorridor):
 	#remove possible anchor points
 	if topLeftAnchorPoints.find(topLefPosition) != -1:
 		topLeftAnchorPoints.remove(topLeftAnchorPoints.find(topLefPosition))
+	
+	return typeOfRoomCorridor
 
 func place_doors(anchorSpotPosition):
 	var currentBottomMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Bottom)
@@ -366,7 +459,7 @@ func add_door_and_get_point_to_add(direction, pointsToAdd, currentDirectionMidPo
 			pointsToAdd.append(Vector2(anchorSpotPosition.x - roomCellSize.x, anchorSpotPosition.y))
 	return pointsToAdd
 
-func place_walls(anchorSpotPosition):
+func place_walls(anchorSpotPosition, typeOfCorridor):
 	var pointsToAdd = []
 	var currentBottomMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Bottom)
 	var currentRightMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Right)
@@ -380,70 +473,125 @@ func place_walls(anchorSpotPosition):
 	if anchorSpotPosition == MapCornerPoints.TopLeft:
 		canPlaceTop = false
 		canPlaceLeft = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceBottom = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceRight = false
 	elif anchorSpotPosition == MapCornerPoints.TopRight:
 		canPlaceTop = false
 		canPlaceRight = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceBottom = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceLeft = false
 	elif anchorSpotPosition == MapCornerPoints.BottomLeft:
 		canPlaceLeft = false
 		canPlaceBottom = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceTop = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceRight = false
 	elif anchorSpotPosition == MapCornerPoints.BottomRight:
 		canPlaceRight = false
 		canPlaceBottom = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceTop = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceLeft = false
 	elif anchorSpotPosition.y == 0 && anchorSpotPosition.x > 0 && anchorSpotPosition.x < (levelSize.x - roomCellSize.x):
 		canPlaceTop = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceBottom = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceRight = false
+			canPlaceLeft = false
 	elif anchorSpotPosition.x == 0 && anchorSpotPosition.y > 0 && anchorSpotPosition.y < (levelSize.y - roomCellSize.y):
 		canPlaceLeft = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceBottom = false
+			canPlaceTop = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceRight = false
 	elif anchorSpotPosition.y == (levelSize.y - roomCellSize.y) && anchorSpotPosition.x > 0 && anchorSpotPosition.x < (levelSize.x - roomCellSize.x):
 		canPlaceBottom = false
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceTop = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceRight = false
+			canPlaceLeft = false
 	elif anchorSpotPosition.x == (levelSize.x - roomCellSize.x) && anchorSpotPosition.y > 0 && anchorSpotPosition.y < (levelSize.y - roomCellSize.y):
 		canPlaceRight = false
-	
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceBottom = false
+			canPlaceTop = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceLeft = false
+	else:
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			canPlaceBottom = false
+			canPlaceTop = false
+		elif typeOfCorridor == CorridorTypes.TOP_DOWN:
+			canPlaceLeft = false
+			canPlaceRight = false
+
 	var canPlaceObj = true
 	var nextPoint
 	if !canPlaceTop:
-		set_tile(currentTopMidPoint.x, currentTopMidPoint.y, Tile.TOP_WALL)
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			set_tile(currentTopMidPoint.x, currentTopMidPoint.y, Tile.ROCK)
+		else:
+			set_tile(currentTopMidPoint.x, currentTopMidPoint.y, Tile.TOP_WALL)
 	else:
 		#top is a possible direction
-		nextPoint = Vector2(anchorSpotPosition.x, anchorSpotPosition.y - roomCellSize.y)
-		pointsToAdd.append(nextPoint)
-		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentTopMidPoint, DirectionValue.Top)
+		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentTopMidPoint, DirectionValue.Top, typeOfCorridor)
 		if canPlaceObj:
+			nextPoint = Vector2(anchorSpotPosition.x, anchorSpotPosition.y - roomCellSize.y)
+			pointsToAdd.append(nextPoint)
 			set_tile(currentTopMidPoint.x, currentTopMidPoint.y, Tile.FLOOR)
 		else:
 			set_tile(currentTopMidPoint.x, currentTopMidPoint.y, Tile.TOP_WALL)
 
 	if !canPlaceBottom:
-		set_tile(currentBottomMidPoint.x, currentBottomMidPoint.y, Tile.HORIZONTAL_WALL)
+		if typeOfCorridor == CorridorTypes.LEFT_RIGHT:
+			set_tile(currentBottomMidPoint.x, currentBottomMidPoint.y, Tile.ROCK)
+		else:
+			set_tile(currentBottomMidPoint.x, currentBottomMidPoint.y, Tile.HORIZONTAL_WALL)
 	else:
 		#bottom is a possible direction
-		nextPoint = Vector2(anchorSpotPosition.x, anchorSpotPosition.y + roomCellSize.y)
-		pointsToAdd.append(nextPoint)
-		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentBottomMidPoint, DirectionValue.Bottom)
+		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentBottomMidPoint, DirectionValue.Bottom, typeOfCorridor)
 		if canPlaceObj:
+			nextPoint = Vector2(anchorSpotPosition.x, anchorSpotPosition.y + roomCellSize.y)
+			pointsToAdd.append(nextPoint)
 			set_tile(currentBottomMidPoint.x, currentBottomMidPoint.y, Tile.FLOOR)
 		else:
 			set_tile(currentBottomMidPoint.x, currentBottomMidPoint.y, Tile.HORIZONTAL_WALL)
 
 	if !canPlaceLeft:
-		set_tile(currentLeftMidPoint.x, currentLeftMidPoint.y, Tile.VERTICAL_WALL)
+		if typeOfCorridor == CorridorTypes.TOP_DOWN:
+			set_tile(currentLeftMidPoint.x, currentLeftMidPoint.y, Tile.ROCK)
+		else:
+			set_tile(currentLeftMidPoint.x, currentLeftMidPoint.y, Tile.VERTICAL_WALL)
 	else:
 		#left is a possible direction
-		nextPoint = Vector2(anchorSpotPosition.x - roomCellSize.x, anchorSpotPosition.y)
-		pointsToAdd.append(nextPoint)
-		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentLeftMidPoint, DirectionValue.Left)
+		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentLeftMidPoint, DirectionValue.Left, typeOfCorridor)
 		if canPlaceObj:
+			nextPoint = Vector2(anchorSpotPosition.x - roomCellSize.x, anchorSpotPosition.y)
+			pointsToAdd.append(nextPoint)
 			set_tile(currentLeftMidPoint.x, currentLeftMidPoint.y, Tile.FLOOR)
 		else:
 			set_tile(currentLeftMidPoint.x, currentLeftMidPoint.y, Tile.VERTICAL_WALL)
 
 	if !canPlaceRight:
-		set_tile(currentRightMidPoint.x, currentRightMidPoint.y, Tile.VERTICAL_WALL)
+		if typeOfCorridor == CorridorTypes.TOP_DOWN:
+			set_tile(currentRightMidPoint.x, currentRightMidPoint.y, Tile.ROCK)
+		else:
+			set_tile(currentRightMidPoint.x, currentRightMidPoint.y, Tile.VERTICAL_WALL)
 	else:
 		#right is a possible direction
-		nextPoint = Vector2(anchorSpotPosition.x + roomCellSize.x, anchorSpotPosition.y)
-		pointsToAdd.append(nextPoint)
-		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentRightMidPoint, DirectionValue.Right)
+		canPlaceObj = can_place_with_neighbor_cell_midpoint(currentRightMidPoint, DirectionValue.Right, typeOfCorridor)
 		if canPlaceObj:
+			nextPoint = Vector2(anchorSpotPosition.x + roomCellSize.x, anchorSpotPosition.y)
+			pointsToAdd.append(nextPoint)
 			set_tile(currentRightMidPoint.x, currentRightMidPoint.y, Tile.FLOOR)
 		else:
 			set_tile(currentRightMidPoint.x, currentRightMidPoint.y, Tile.VERTICAL_WALL)
@@ -477,7 +625,11 @@ func can_place_door_with_neighbor_cell_midpoint(currentMidpoint, direction, canP
 	elif cellIndex == Tile.FLOOR:
 		canPlaceObj.canPlace = true
 		canPlaceObj.forced = true
-		canPlaceObj.tileToPlace = Tile.DOOR		
+		canPlaceObj.tileToPlace = Tile.DOOR
+	elif cellIndex == Tile.ROCK:
+		canPlaceObj.canPlace = false
+		canPlaceObj.forced = false
+		canPlaceObj.tileToPlace = null
 	else:
 		canPlaceObj.canPlace = false
 		canPlaceObj.forced = false
@@ -485,7 +637,7 @@ func can_place_door_with_neighbor_cell_midpoint(currentMidpoint, direction, canP
 		
 	return canPlaceObj
 
-func can_place_with_neighbor_cell_midpoint(currentMidpoint, direction):
+func can_place_with_neighbor_cell_midpoint(currentMidpoint, direction, typeOfCorridor):
 	var cellIndex
 
 	match direction:
@@ -504,6 +656,64 @@ func can_place_with_neighbor_cell_midpoint(currentMidpoint, direction):
 		return true
 	else:
 		return false
+
+func gen_list_of_corridor_types_with_neighbor_cell_midpoint(anchorSpotPosition):
+	var listOfPossibleTypes = []
+	for i in range(CorridorTypes.size()):
+		listOfPossibleTypes.append(i)
+	
+	var midpointCellIndex	
+	
+	var currentBottomMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Bottom)
+	var currentRightMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Right)
+	var currentTopMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Top)
+	var currentLeftMidPoint = get_current_midpoint(anchorSpotPosition, CellMidpoints.Left)
+
+	#check top midpoint
+	midpointCellIndex = get_cell(currentTopMidPoint.x, currentTopMidPoint.y  - 1)
+	if midpointCellIndex == Tile.DOOR || midpointCellIndex == Tile.FLOOR:
+		#left right type not valid #Topdown valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.LEFT_RIGHT) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.LEFT_RIGHT)
+	if midpointCellIndex == Tile.ROCK:
+		#left right valid #4 way valid #top down not valid
+		if listOfPossibleTypes.find(CorridorTypes.TOP_DOWN) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.TOP_DOWN)
+	
+	#check right midpoint
+	midpointCellIndex = get_cell(currentRightMidPoint.x  + 1, currentRightMidPoint.y)
+	if midpointCellIndex == Tile.DOOR || midpointCellIndex == Tile.FLOOR:
+		#topdown not valid #left right valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.TOP_DOWN) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.TOP_DOWN)
+	if midpointCellIndex == Tile.ROCK:
+		#left right not valid #topDown valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.LEFT_RIGHT) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.LEFT_RIGHT)
+
+	#check bottom midpoint
+	midpointCellIndex = get_cell(currentBottomMidPoint.x, currentBottomMidPoint.y + 1)
+	if midpointCellIndex == Tile.DOOR || midpointCellIndex == Tile.FLOOR:
+		#topdown valid #left right not valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.LEFT_RIGHT) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.LEFT_RIGHT)
+	if midpointCellIndex == Tile.ROCK:
+		#topdown not valid #left right valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.TOP_DOWN) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.TOP_DOWN)
+			
+	#check left midpoint
+	midpointCellIndex = get_cell(currentLeftMidPoint.x - 1, currentLeftMidPoint.y)
+	if midpointCellIndex == Tile.DOOR || midpointCellIndex == Tile.FLOOR:
+		#topdown not valid #left right valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.TOP_DOWN) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.TOP_DOWN)
+	if midpointCellIndex == Tile.ROCK:
+		#topdown valid #left right not valid #4 way valid
+		if listOfPossibleTypes.find(CorridorTypes.LEFT_RIGHT) != -1:
+			listOfPossibleTypes.erase(CorridorTypes.LEFT_RIGHT)
+
+	return listOfPossibleTypes
 
 func get_current_midpoint(anchorSpotPosition, MidpointDirection):
 	return Vector2(anchorSpotPosition.x + MidpointDirection.x, anchorSpotPosition.y + MidpointDirection.y)

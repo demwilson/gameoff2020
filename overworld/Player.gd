@@ -17,7 +17,7 @@ var Raycasts = {
 
 var stepsTaken = 0
 var stepsToTriggerCombat = 20
-var encounterStep = 25
+var encounterStep = 20
 var oxygenStepCost = 1
 
 signal collided
@@ -56,7 +56,7 @@ func has_collided(dir):
 		if hitCollider:
 			var tileMap = hitCollider
 			var hitPos = get_node(Raycasts[dir]).get_collision_point()
-			emit_signal('collided', hitPos, dir)
+			emit_signal('collided', hitPos, dir, hitCollider)
 		return true
 	else:
 		return false

@@ -19,30 +19,33 @@ enum AnimationDetail {
 	VECTOR_OFFSET,
 	HFRAMES,
 	VFRAMES,
+	SELF_TARGET,
 }
 
 const animation_details = [
-	["melee_attack",  Vector2(-16, 8), 34, 1],
-	["fireball_power_up", Vector2(-16, 8), 23, 1],
-	["healing", Vector2(0, 0), 51, 1],
+	["melee_attack",  Vector2(-16, 8), 34, 1, false],
+	["fireball_power_up", Vector2(-16, 8), 23, 1, false],
+	["healing", Vector2(0, -32), 51, 1, true],
 ]
 
+var id
 var name
 var type
 var level
 var animation_path
-var base
+var previous_tiers
 var low
 var high
 var damage
 var accuracy
 
-func _init(name, level, type, animation_path, low, high, damage, accuracy=null, base=null):
+func _init(id, name, level, type, animation_path, low, high, damage, accuracy=null, previous_tiers=null):
+	self.id = id
 	self.name = name
 	self.type = type
 	self.level = level
 	self.animation_path = animation_path
-	self.base = base
+	self.previous_tiers = previous_tiers
 	self.low = low
 	self.high = high
 	self.damage = damage

@@ -1,26 +1,23 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://overworld/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://assets/Music/overworld_loop.tres" type="AudioStream" id=3]
+[ext_resource path="res://assets/Music/overworld_simple.wav" type="AudioStream" id=3]
 [ext_resource path="res://overworld/Anchor.gd" type="Script" id=4]
-[ext_resource path="res://assets/Label_O2.png" type="Texture" id=5]
+[ext_resource path="res://assets/Tony_Created_Assets/icons.png" type="Texture" id=5]
 [ext_resource path="res://overworld/Player.gd" type="Script" id=6]
 [ext_resource path="res://overworld/TileMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/Tony_Created_Assets/astro_walking_overland.png" type="Texture" id=8]
 [ext_resource path="res://assets/O2_bar_empty.png" type="Texture" id=9]
 [ext_resource path="res://assets/O2_bar_fill.png" type="Texture" id=10]
-[ext_resource path="res://assets/Label_CO2.png" type="Texture" id=11]
-[ext_resource path="res://assets/Label_H2O.png" type="Texture" id=12]
-[ext_resource path="res://assets/Label_Battery.png" type="Texture" id=13]
-[ext_resource path="res://assets/coin.png" type="Texture" id=14]
+[ext_resource path="res://assets/Tony_Created_Assets/moon_stone.png" type="Texture" id=14]
+[ext_resource path="res://assets/Tony_Created_Assets/top_bar.png" type="Texture" id=15]
 
-[sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0 )
-colors = PoolColorArray( 0.00392157, 0.14902, 0.592157, 0.588235 )
+[sub_resource type="InputEventKey" id=1]
+scancode = 32
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="ShortCut" id=2]
+shortcut = SubResource( 1 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 16, 16 )
@@ -96,52 +93,64 @@ script = ExtResource( 1 )
 
 [node name="HUD" type="MarginContainer" parent="GUI"]
 anchor_right = 1.0
-margin_bottom = 88.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="TextureRect" parent="GUI/HUD"]
+margin_right = 640.0
+margin_bottom = 65.0
+texture = ExtResource( 15 )
+
+[node name="HUDSpacer" type="MarginContainer" parent="GUI/HUD"]
+margin_right = 640.0
+margin_bottom = 65.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
 custom_constants/margin_bottom = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GUI/HUD"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/HUD/HUDSpacer"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 630.0
-margin_bottom = 78.0
+margin_bottom = 55.0
 
-[node name="BarsLeft" type="VBoxContainer" parent="GUI/HUD/HBoxContainer"]
-margin_right = 170.0
-margin_bottom = 68.0
+[node name="BarsLeft" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
+margin_right = 190.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 190, 0 )
 
-[node name="OxygenBar" type="HBoxContainer" parent="GUI/HUD/HBoxContainer/BarsLeft"]
-margin_right = 170.0
-margin_bottom = 32.0
+[node name="OxygenBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft"]
+margin_right = 190.0
+margin_bottom = 37.0
 
-[node name="Oxygen" type="MarginContainer" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar"]
-margin_right = 170.0
-margin_bottom = 32.0
+[node name="Oxygen" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
+margin_right = 32.0
+margin_bottom = 37.0
+rect_min_size = Vector2( 32, 32 )
+custom_constants/margin_top = 8
+custom_constants/margin_left = 10
 
-[node name="Background" type="NinePatchRect" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen"]
-margin_right = 170.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 2 )
-
-[node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background"]
-margin_right = 50.0
-margin_bottom = 32.0
+[node name="Sprite" type="Sprite" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/Oxygen"]
+position = Vector2( 10, 4 )
 texture = ExtResource( 5 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
+centered = false
+hframes = 16
+frame = 7
 
-[node name="Number" type="Label" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background"]
-margin_left = 42.883
-margin_right = 67.883
-margin_bottom = 32.0
+[node name="OxygenAmount" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
+margin_left = 36.0
+margin_right = 60.0
+margin_bottom = 37.0
+custom_constants/margin_top = 10
+
+[node name="Number" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenAmount"]
+margin_top = 16.0
+margin_right = 24.0
+margin_bottom = 30.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "100"
 align = 1
 valign = 1
@@ -149,10 +158,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gauge" type="TextureProgress" parent="GUI/HUD/HBoxContainer/BarsLeft/OxygenBar/Oxygen/Background"]
-margin_left = 70.0
-margin_right = 166.0
-margin_bottom = 32.0
+[node name="OxygenGauge" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
+margin_left = 64.0
+margin_right = 160.0
+margin_bottom = 37.0
+custom_constants/margin_top = 5
+
+[node name="Gauge" type="TextureProgress" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenGauge"]
+margin_top = 5.0
+margin_right = 96.0
+margin_bottom = 37.0
 value = 50.0
 texture_under = ExtResource( 9 )
 texture_progress = ExtResource( 10 )
@@ -160,234 +175,113 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CarbonBar" type="HBoxContainer" parent="GUI/HUD/HBoxContainer/BarsLeft"]
-visible = false
-margin_top = 36.0
-margin_right = 170.0
-margin_bottom = 68.0
+[node name="BarsMiddle" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
+margin_left = 194.0
+margin_right = 474.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 280, 0 )
 
-[node name="Carbon" type="MarginContainer" parent="GUI/HUD/HBoxContainer/BarsLeft/CarbonBar"]
-margin_right = 170.0
-margin_bottom = 32.0
+[node name="PlayerInfoBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle"]
+margin_right = 280.0
+margin_bottom = 23.0
 
-[node name="Background" type="NinePatchRect" parent="GUI/HUD/HBoxContainer/BarsLeft/CarbonBar/Carbon"]
-margin_right = 170.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 2 )
+[node name="PlayerLevel" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar"]
+margin_right = 58.0
+margin_bottom = 23.0
+custom_constants/margin_top = 7
+custom_constants/margin_bottom = 2
 
-[node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsLeft/CarbonBar/Carbon/Background"]
-margin_right = 50.0
-margin_bottom = 32.0
-texture = ExtResource( 11 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Number" type="Label" parent="GUI/HUD/HBoxContainer/BarsLeft/CarbonBar/Carbon/Background"]
-margin_left = 50.0
-margin_right = 75.0
-margin_bottom = 32.0
-text = "50"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Gauge" type="TextureProgress" parent="GUI/HUD/HBoxContainer/BarsLeft/CarbonBar/Carbon/Background"]
-margin_left = 70.0
-margin_right = 166.0
-margin_bottom = 32.0
-value = 50.0
-texture_under = ExtResource( 9 )
-texture_progress = ExtResource( 10 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Currencys" type="VBoxContainer" parent="GUI/HUD/HBoxContainer"]
-margin_left = 174.0
-margin_right = 446.0
-margin_bottom = 68.0
-size_flags_horizontal = 3
-
-[node name="PlayerInfoBar" type="VBoxContainer" parent="GUI/HUD/HBoxContainer/Currencys"]
-margin_right = 272.0
-margin_bottom = 32.0
-
-[node name="PlayerInfo" type="MarginContainer" parent="GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar"]
-margin_right = 272.0
-margin_bottom = 32.0
-
-[node name="Background" type="NinePatchRect" parent="GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo"]
-margin_right = 272.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 2 )
-
-[node name="Level" type="Label" parent="GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background"]
-margin_top = 2.0
-margin_right = 60.0
-margin_bottom = 33.0
+[node name="Level" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerLevel"]
+margin_top = 7.0
+margin_right = 58.0
+margin_bottom = 21.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Level: 10"
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Health" type="Label" parent="GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background"]
-margin_left = 75.0
-margin_top = 1.0
-margin_right = 163.0
-margin_bottom = 32.0
+[node name="PlayerHealth" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar"]
+margin_left = 62.0
+margin_right = 154.0
+margin_bottom = 23.0
+custom_constants/margin_top = 7
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 2
+
+[node name="Health" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerHealth"]
+margin_left = 10.0
+margin_top = 7.0
+margin_right = 92.0
+margin_bottom = 21.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Health: 2000"
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Combats" type="Label" parent="GUI/HUD/HBoxContainer/Currencys/PlayerInfoBar/PlayerInfo/Background"]
-margin_left = 175.0
-margin_top = 1.0
-margin_right = 263.0
-margin_bottom = 32.0
+[node name="PlayerCombat" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar"]
+margin_left = 158.0
+margin_right = 256.0
+margin_bottom = 23.0
+custom_constants/margin_top = 7
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 2
+
+[node name="Combats" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerCombat"]
+margin_left = 10.0
+margin_top = 7.0
+margin_right = 98.0
+margin_bottom = 21.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Combats: 400"
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BarsRight" type="VBoxContainer" parent="GUI/HUD/HBoxContainer"]
-margin_left = 450.0
-margin_right = 620.0
-margin_bottom = 68.0
+[node name="BarsRight" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
+margin_left = 478.0
+margin_right = 554.0
+margin_bottom = 45.0
 
-[node name="CurrencyBar" type="HBoxContainer" parent="GUI/HUD/HBoxContainer/BarsRight"]
-margin_right = 170.0
-margin_bottom = 32.0
+[node name="CurrencyBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight"]
+margin_right = 76.0
+margin_bottom = 45.0
 
-[node name="Currency" type="MarginContainer" parent="GUI/HUD/HBoxContainer/BarsRight/CurrencyBar"]
-margin_right = 170.0
-margin_bottom = 32.0
+[node name="Currency" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar"]
+margin_right = 32.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 45 )
+custom_constants/margin_top = 5
 
-[node name="Background" type="NinePatchRect" parent="GUI/HUD/HBoxContainer/BarsRight/CurrencyBar/Currency"]
-margin_right = 170.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 2 )
-
-[node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsRight/CurrencyBar/Currency/Background"]
-margin_right = 50.0
-margin_bottom = 32.0
+[node name="Title" type="TextureRect" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar/Currency"]
+margin_top = 5.0
+margin_right = 32.0
+margin_bottom = 45.0
 texture = ExtResource( 14 )
 stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Number" type="Label" parent="GUI/HUD/HBoxContainer/BarsRight/CurrencyBar/Currency/Background"]
-margin_left = 50.0
-margin_right = 75.0
+[node name="CurrencyAmount" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar"]
+margin_left = 36.0
+margin_right = 76.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 45 )
+custom_constants/margin_top = 5
+
+[node name="Number" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar/CurrencyAmount"]
+margin_top = 18.0
+margin_right = 40.0
 margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "10000"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PowerBar" type="HBoxContainer" parent="GUI/HUD/HBoxContainer/BarsRight"]
-visible = false
-margin_top = 36.0
-margin_right = 170.0
-margin_bottom = 68.0
-
-[node name="Power" type="MarginContainer" parent="GUI/HUD/HBoxContainer/BarsRight/PowerBar"]
-margin_right = 170.0
-margin_bottom = 32.0
-
-[node name="Background" type="NinePatchRect" parent="GUI/HUD/HBoxContainer/BarsRight/PowerBar/Power"]
-margin_right = 170.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 2 )
-
-[node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsRight/PowerBar/Power/Background"]
-margin_right = 50.0
-margin_bottom = 32.0
-texture = ExtResource( 13 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Number" type="Label" parent="GUI/HUD/HBoxContainer/BarsRight/PowerBar/Power/Background"]
-margin_left = 50.0
-margin_right = 75.0
-margin_bottom = 32.0
-text = "50"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Gauge" type="TextureProgress" parent="GUI/HUD/HBoxContainer/BarsRight/PowerBar/Power/Background"]
-margin_left = 70.0
-margin_right = 166.0
-margin_bottom = 32.0
-value = 50.0
-texture_under = ExtResource( 9 )
-texture_progress = ExtResource( 10 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="WaterBar" type="HBoxContainer" parent="GUI/HUD/HBoxContainer/BarsRight"]
-visible = false
-margin_top = 36.0
-margin_right = 170.0
-margin_bottom = 68.0
-
-[node name="Water" type="MarginContainer" parent="GUI/HUD/HBoxContainer/BarsRight/WaterBar"]
-margin_right = 170.0
-margin_bottom = 32.0
-
-[node name="Background" type="NinePatchRect" parent="GUI/HUD/HBoxContainer/BarsRight/WaterBar/Water"]
-margin_right = 170.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 170, 32 )
-texture = SubResource( 2 )
-
-[node name="Title" type="TextureRect" parent="GUI/HUD/HBoxContainer/BarsRight/WaterBar/Water/Background"]
-margin_right = 50.0
-margin_bottom = 32.0
-texture = ExtResource( 12 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Number" type="Label" parent="GUI/HUD/HBoxContainer/BarsRight/WaterBar/Water/Background"]
-margin_left = 50.0
-margin_right = 75.0
-margin_bottom = 32.0
-text = "50"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Gauge" type="TextureProgress" parent="GUI/HUD/HBoxContainer/BarsRight/WaterBar/Water/Background"]
-margin_left = 70.0
-margin_right = 166.0
-margin_bottom = 32.0
-value = 50.0
-texture_under = ExtResource( 9 )
-texture_progress = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -402,8 +296,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Level" type="Label" parent="GUI"]
+[node name="Debug" type="Control" parent="GUI"]
 visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+
+[node name="Level" type="Label" parent="GUI/Debug"]
 margin_top = 80.0
 margin_right = 64.0
 margin_bottom = 120.0
@@ -413,8 +311,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HP" type="Label" parent="GUI"]
-visible = false
+[node name="HP" type="Label" parent="GUI/Debug"]
 margin_left = 88.0
 margin_top = 80.0
 margin_right = 136.0
@@ -425,8 +322,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Counter" type="Label" parent="GUI"]
-visible = false
+[node name="Counter" type="Label" parent="GUI/Debug"]
 margin_left = 152.0
 margin_top = 80.0
 margin_right = 240.0
@@ -437,8 +333,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TilePos" type="Label" parent="GUI"]
-visible = false
+[node name="TilePos" type="Label" parent="GUI/Debug"]
 margin_left = 320.0
 margin_top = 80.0
 margin_right = 352.0
@@ -449,8 +344,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MousePos" type="Label" parent="GUI"]
-visible = false
+[node name="MousePos" type="Label" parent="GUI/Debug"]
 margin_left = 264.0
 margin_top = 80.0
 margin_right = 304.0
@@ -461,8 +355,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StepCount" type="Label" parent="GUI"]
-visible = false
+[node name="StepCount" type="Label" parent="GUI/Debug"]
 margin_left = 520.0
 margin_top = 88.0
 margin_right = 640.0
@@ -473,8 +366,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StepToFight" type="Label" parent="GUI"]
-visible = false
+[node name="StepToFight" type="Label" parent="GUI/Debug"]
 margin_left = 400.0
 margin_top = 88.0
 margin_right = 513.0
@@ -485,94 +377,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Win" type="ColorRect" parent="GUI"]
-visible = false
-margin_right = 640.0
-margin_bottom = 328.0
-color = Color( 0, 0, 0, 0.694118 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="GUI/Win"]
-margin_left = 69.566
-margin_top = 40.0
-margin_right = 555.566
-margin_bottom = 88.0
-text = "You've done excellent! Spend your currency at SAAN to go further next time.
-You Win!"
-align = 1
-valign = 1
-
-[node name="Restart" type="Button" parent="GUI/Win"]
-margin_left = 216.0
-margin_top = 104.0
-margin_right = 432.0
-margin_bottom = 168.0
-text = "Go To SAAN"
-
-[node name="Lose" type="ColorRect" parent="GUI"]
-visible = false
-margin_right = 640.0
-margin_bottom = 328.0
-color = Color( 0, 0, 0, 0.694118 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="GUI/Lose"]
-margin_left = 36.0
-margin_top = 41.0
-margin_right = 607.0
-margin_bottom = 100.0
-text = "You have made poor choices and it lead to your demise. Spend what currency you managed to find at SAAN.
-You Lose!"
-align = 1
-valign = 1
-autowrap = true
-
-[node name="LoseRestart" type="Button" parent="GUI/Lose"]
-margin_left = 216.0
-margin_top = 104.0
-margin_right = 432.0
-margin_bottom = 168.0
-text = "Go To SAAN"
-
-[node name="Loot" type="ColorRect" parent="GUI"]
+[node name="NeedKey" type="ColorRect" parent="GUI"]
 visible = false
 margin_left = 184.0
-margin_top = 48.0
+margin_top = 152.0
 margin_right = 441.0
-margin_bottom = 363.0
+margin_bottom = 312.0
 color = Color( 0, 0, 0, 0.694118 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LootText" type="Label" parent="GUI/Loot"]
-margin_left = 26.0
-margin_top = 20.0
-margin_right = 240.0
-margin_bottom = 60.0
-text = "After fighting with the lock mechanism you pry open the chest and find:"
+[node name="NeedKeyText" type="Label" parent="GUI/NeedKey"]
+margin_left = 24.0
+margin_top = 32.0
+margin_right = 238.0
+margin_bottom = 72.0
+text = "You must defeat the floor boss and obtain the key to exit!"
 align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LootAccept" type="Button" parent="GUI/Loot"]
-margin_left = 58.0
-margin_top = 255.0
-margin_right = 194.0
-margin_bottom = 290.0
-text = "Take All"
-
-[node name="LootList" type="ItemList" parent="GUI/Loot"]
-margin_left = 22.0
-margin_top = 71.0
-margin_right = 239.0
-margin_bottom = 247.0
+[node name="NeedKeyAccept" type="Button" parent="GUI/NeedKey"]
+margin_left = 56.0
+margin_top = 96.0
+margin_right = 192.0
+margin_bottom = 131.0
+shortcut = SubResource( 2 )
+text = "Ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
@@ -583,7 +420,7 @@ script = ExtResource( 7 )
 [node name="PlayerRoot" type="Node2D" parent="."]
 
 [node name="Player" type="Area2D" parent="PlayerRoot"]
-position = Vector2( 314.684, 192.783 )
+position = Vector2( 344.684, 192.783 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
@@ -594,7 +431,7 @@ texture = ExtResource( 8 )
 centered = false
 vframes = 4
 hframes = 16
-frame = 63
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
@@ -612,27 +449,31 @@ anims/up = SubResource( 7 )
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( -32, 0 )
+collide_with_areas = true
 
 [node name="RayCastRight" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 32, 0 )
+collide_with_areas = true
 
 [node name="RayCastUp" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, -32 )
+collide_with_areas = true
 
 [node name="RayCastDown" type="RayCast2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 enabled = true
 cast_to = Vector2( 0, 32 )
+collide_with_areas = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerRoot/Player"]
 position = Vector2( 16, 16 )
 stream = ExtResource( 3 )
-volume_db = -10.097
 autoplay = true
+attenuation = 0.34151
 
 [node name="Anchor" type="Position2D" parent="PlayerRoot"]
 position = Vector2( 16, 16 )
@@ -640,11 +481,8 @@ script = ExtResource( 4 )
 
 [node name="Cam" type="Camera2D" parent="PlayerRoot/Anchor"]
 current = true
-zoom = Vector2( 0.75, 0.75 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
-[connection signal="pressed" from="GUI/Win/Restart" to="." method="_on_Restart_pressed"]
-[connection signal="pressed" from="GUI/Lose/LoseRestart" to="." method="_on_LoseRestart_pressed"]
-[connection signal="pressed" from="GUI/Loot/LootAccept" to="." method="_on_LootAccept_pressed"]
+[connection signal="pressed" from="GUI/NeedKey/NeedKeyAccept" to="." method="_on_NeedKeyAccept_pressed"]
 [connection signal="collided" from="PlayerRoot/Player" to="TileMap" method="_on_Player_collided"]
 [connection signal="tween_completed" from="PlayerRoot/Player/MoveTween" to="PlayerRoot/Player" method="_on_MoveTween_tween_completed"]
