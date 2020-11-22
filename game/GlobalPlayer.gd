@@ -2,6 +2,8 @@ extends "res://game/Creature.gd"
 
 const Item = preload("res://game/Item.gd")
 
+const MAX_ALLIES = 2
+
 var _tier = null
 var _items = null
 var _max_oxygen = null
@@ -105,10 +107,10 @@ func get_moves():
 				var found_previous_tier = false
 				# Loop through the tiers
 				for previous_tier in move.previous_tiers:
-				    # see if this tier exists in the moves list
+					# see if this tier exists in the moves list
 					var position = moves.find(previous_tier)
 					if position > -1:
-					    # replace the existing lower tier move with this higher tier move
+						# replace the existing lower tier move with this higher tier move
 						moves[position] = item.modifier
 						found_previous_tier = true
 						continue
@@ -124,4 +126,7 @@ func get_allies():
 		var item = Global.items.get_item_by_id(item_id)
 		if item.type == Item.ItemType.ALLY:
 				allies.append(item.modifier)
+	allies.sort()
+	while allies.size() > MAX_ALLIES:
+		allies.pop_front()
 	return allies
