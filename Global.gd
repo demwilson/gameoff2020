@@ -32,6 +32,7 @@ var TEXT_COLOR = {
 	"TEXT": "000000",
 }
 
+const PLAYER_POSITION_COMBAT = 0
 const TEXTURE_FILE_EXTENSION = ".png"
 const ANIMATION_FILE_EXTENSION = ".tres"
 const BASE_STAT_VALUE = 0
@@ -165,24 +166,66 @@ func _ready():
 		Item.new(29, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It will absorb most of the blow.", [Creature.Stats.DEFENSE, 8]),
 		Item.new(30, "Foresight Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "See what happens before you make a decision.", [Creature.Stats.EVADE, 8]),
 		# Advanced Stat Items
-		Item.new(31, "Quantum Strength", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Oh no... now you got math involved.", [Creature.Stats.ATTACK, 3]),
+		Item.new(31, "Quantum Strength", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Oh no... now you got math involved.", [Creature.Stats.ATTACK, 4]),
 		Item.new(32, "Third Eye", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Nothing can hide.", [Creature.Stats.ACCURACY, 4]),
 		Item.new(33, "Chrono Boots", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Time is relative.", [Creature.Stats.SPEED, 4]),
 		Item.new(34, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "This will stop almost everything.", [Creature.Stats.DEFENSE, 4]),
 		Item.new(35, "Essokinesis Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "In some reality, somewhere, you're not getting hit.", [Creature.Stats.EVADE, 4]),
 		# Advanced Moves
-		Item.new(36, "Space Machete", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the space machete.", Moves.MoveList.MELEE_T3),
+		Item.new(36, "Mono Blade", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the mono balde.", Moves.MoveList.MELEE_T3),
 		Item.new(37, "Psychic Immolation", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Let them live in the flames!", Moves.MoveList.PSY_T3),
-		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "These guys repair damage now for more action now!", Moves.MoveList.HEAL_T3),
+		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Healing yourself is below you.", Moves.MoveList.HEAL_T3),
 	]
 	var available_enemies = [
-		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 3, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.MELEE_T1]),
-		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60, Creature.Stats.new([3, 3, 3, 1, 3]), Creature.Stats.new([5, 6, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T2]),
-		Enemy.new(1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10, Creature.Stats.new([1, 1, 2, 0, 2]), Creature.Stats.new([0, 4, 0, 0, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T1]),
-		Enemy.new(2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35, Creature.Stats.new([2, 2, 3, 1, 3]), Creature.Stats.new([2, 4, 0, 1, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T2]),
-		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T2]),
-		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([4, 4, 0, 4, 4]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T3]),
-		Enemy.new(0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200, Creature.Stats.new([5, 5, 5, 5, 5]), Creature.Stats.new([5, 5, 0, 5, 5]), Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS, [Moves.MoveList.MELEE_T3]),
+		Enemy.new(
+			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, 
+			Creature.Stats.new([2, 2, 2, 0, 1]),
+			Creature.Stats.new([0, 3, 0, 0, 0]),
+			Creature.BasePath.DOG, Creature.Behavior.PACK,
+			[Moves.MoveList.MELEE_T1]
+		),
+		Enemy.new(
+			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60, 
+			Creature.Stats.new([3, 3, 3, 1, 3]),
+			Creature.Stats.new([5, 6, 0, 2, 5]),
+			Creature.BasePath.DOG, Creature.Behavior.PACK,
+			[Moves.MoveList.MELEE_T2]
+		),
+		Enemy.new(
+			1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10,
+			Creature.Stats.new([1, 1, 2, 0, 2]),
+			Creature.Stats.new([0, 4, 0, 0, 4]),
+			Creature.BasePath.BUG, Creature.Behavior.FOCUSED,
+			[Moves.MoveList.MELEE_T1]
+		),
+		Enemy.new(
+			2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35,
+			Creature.Stats.new([2, 2, 3, 1, 3]),
+			Creature.Stats.new([2, 4, 0, 1, 4]),
+			Creature.BasePath.BUG, Creature.Behavior.STUPID,
+			[Moves.MoveList.MELEE_T2]
+		),
+		Enemy.new(
+			1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35,
+			Creature.Stats.new(Creature.BASE_STATS),
+			Creature.Stats.new(Creature.BASE_BONUSES),
+			Creature.BasePath.ROBOT, Creature.Behavior.STUPID,
+			[Moves.MoveList.MELEE_T2]
+		),
+		Enemy.new(
+			2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90,
+			Creature.Stats.new([3, 3, 3, 3, 3]),
+			Creature.Stats.new([4, 4, 0, 4, 4]),
+			Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED,
+			[Moves.MoveList.MELEE_T3]
+		),
+		Enemy.new(
+			0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200,
+			Creature.Stats.new([5, 5, 5, 5, 5]),
+			Creature.Stats.new([5, 5, 0, 5, 5]),
+			Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS,
+			[Moves.MoveList.MELEE_T3]
+		),
 	]
 
 	moves = Moves.new(available_moves)

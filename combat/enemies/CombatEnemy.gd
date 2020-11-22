@@ -65,17 +65,20 @@ func _ready():
 	ani_player.play(IDLE_ANIMATION_NAME)
 	# Framing PNG
 	self.vframes = BASE_V_FRAMES
+	update_hframes()
+	match self.creature_size:
+		Creature.CreatureSize.LARGE_TALL:
+			self.ticks.rect_position.y = TICKS_LOCATION_Y_LARGE_TALL
+		_:
+			self.ticks.rect_position.y = TICKS_LOCATION_Y_MEDIUM
+
+func update_hframes():
 	# Temporary while waiting for animation stuff
 	match self.creature_name:
 		Global.PLAYER_NAME:
 			self.hframes = PLAYER_H_FRAMES
 		_:
 			self.hframes = BASE_H_FRAMES
-	match self.creature_size:
-		Creature.CreatureSize.LARGE_TALL:
-			self.ticks.rect_position.y = TICKS_LOCATION_Y_LARGE_TALL
-		_:
-			self.ticks.rect_position.y = TICKS_LOCATION_Y_MEDIUM
 
 func stop_animation():
 	ani_player.stop()
@@ -95,7 +98,10 @@ func move_backward():
 	tween.start()
 
 func damage_creature():
+	ani_player.stop()
 	self.set("texture", damaged_texture)
+	self.set_frame(0)
+	self.hframes = BASE_H_FRAMES
 	var original_x = position.x
 	var right_sway = position.x + 5
 	var left_sway = position.x - 10
@@ -120,6 +126,8 @@ func _on_Tween_tween_all_completed():
 	if is_being_hit:
 		is_being_hit = false
 		self.set("texture", base_texture)
+		update_hframes()
+		ani_player.play(IDLE_ANIMATION_NAME)
 		emit_signal("damaged_animation_complete")
 	else:
 		emit_signal("animation_step_complete")
