@@ -99,6 +99,21 @@ func get_moves():
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
 		if item.type == Item.ItemType.MOVE:
+			var move = Global.moves.get_move_by_id(item.modifier)
+			# If the move has previous tiers
+			if move.previous_tiers:
+				var found_previous_tier = false
+				# Loop through the tiers
+				for previous_tier in move.previous_tiers:
+				    # see if this tier exists in the moves list
+					var position = moves.find(previous_tier)
+					if position > -1:
+					    # replace the existing lower tier move with this higher tier move
+						moves[position] = item.modifier
+						found_previous_tier = true
+						continue
+				if found_previous_tier:
+					continue
 			if moves.find(item.modifier) == -1:
 				moves.append(item.modifier)
 	return moves
