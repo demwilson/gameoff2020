@@ -249,7 +249,7 @@ func build_player():
 	var player_bonuses = Creature.Stats.new()
 
 	# Items
-	var player_items = [Items.ItemList.CROWBAR, 10, 10]
+	var player_items = [Items.ItemList.CROWBAR]
 	# Add attack-based item (T1)
 	if Upgrades.BasicWeapon:
 		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)
