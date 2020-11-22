@@ -50,6 +50,7 @@ const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
 
+const MAX_MOVES_AVAILABLE = 6
 const MENU_ARROW_POSITION = 0
 const TARGET_ARROW_POSITION = 1
 const FIRST_POSITION = 0
@@ -311,7 +312,8 @@ func show_move_options(creature):
 		moves.append(move)
 	_creature_moves = moves
 	# Load moves
-	for i in range(moves.size()):
+	var moves_available_size = min(moves.size(), MAX_MOVES_AVAILABLE)
+	for i in range(moves_available_size):
 		MoveNameLabels[i].text = moves[i].name
 		MoveNameLabels[i].visible = true
 	# Show menu
