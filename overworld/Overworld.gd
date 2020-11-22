@@ -10,6 +10,7 @@ onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
 onready var loot_list = $GUI/Loot/LootList
 
+var LootWindowNode = preload("res://loot_window/LootWindow.tscn")
 # game state
 var player_tile
 var score = 0
@@ -80,15 +81,16 @@ func _on_Restart_pressed():
 
 func get_loot_for_chest(floorLevel):
 	loot_list.clear()
-	# generate list of items
-	var loot = Global.items.generate_loot(Global.floor_level, Global.player)
-	# Add to UI
-	Global.populate_loot_list(loot_list, loot)
 	#show Loot Screen
-	$GUI/Loot.visible = true
-
-func _on_LootAccept_pressed():
-	$GUI/Loot.visible = false
+	load_loot_window()
+	
+func load_loot_window():
+	var lootInstance = LootWindowNode.instance()
+	lootInstance._init(Global.Scene.OVERWORLD)
+	add_child(lootInstance)
+	lootInstance.connect("loot_window_closed", self, "_on_LootWindow_pressed")
+	
+func _on_LootWindow_pressed():
 	#allow player movement again
 	player.set_can_move(true)
 	#allow collision

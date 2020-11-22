@@ -344,7 +344,7 @@ func check_end_combat():
 	if dead_enemies == enemies.size():
 		save_player_changes(allies[PLAYER_POSITION])
 		self.set_process(false)
-		return Global.goto_scene(Global.Scene.COMBAT_WIN)
+		return Global.goto_scene(Global.Scene.LOOT_WINDOW)
 
 func save_player_changes(combat_player):
 	Global.player.set_health(combat_player.get_health())
