@@ -9,10 +9,13 @@ var counter = 0
 # node references
 onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
+onready var anchor = $PlayerRoot/Anchor
 onready var loot_list = $GUI/Loot/LootList
 onready var debug_ui = $GUI/Debug
+onready	var needKeyWindow = $GUI/NeedKey
 
 var BossNode = preload("res://overworld/BossOverworld.tscn")
+var BossNodeName = "Boss"
 
 # game state
 var player_tile
@@ -25,8 +28,8 @@ func _ready():
 	
 func place_player():
 	player.position = tile_map.playerStartPosition
-	$PlayerRoot/Anchor.set_start_position(player.position)
-	print("The player starts at: " + str(player.position))
+	anchor.set_start_position(player.position)
+	Global.log(Settings.Trace, "The player starts at: " + str(player.position))
 	tile_map.isGeneratingNewLevel = false
 
 func place_boss():
@@ -35,14 +38,17 @@ func place_boss():
 	add_child(bossInstance)
 	boss = bossInstance.get_node("Boss")
 	boss.position = tile_map.bossStartPosition
-	print("The Boss starts at: " + str(tile_map.bossStartPosition))
+	Global.log(Settings.Trace, "The Boss starts at: " + str(tile_map.bossStartPosition))
 
 func set_boss_movement(active):
 	boss.set_can_move(active)
 
+func get_boss_node_name():
+	return self.BossNodeName
+
 func remove_boss():
 	if boss:
-		boss.free()
+		boss.queue_free()
 
 func _process(delta):
 	update_HUD_values()
@@ -165,7 +171,7 @@ func _on_LoseRestart_pressed():
 	Global.goto_scene(Global.Scene.GROUND_CONTROL)
 
 func need_key_event():
-	$GUI/NeedKey.visible = true
+	needKeyWindow.visible = true
 
 func _on_NeedKeyAccept_pressed():
-	$GUI/NeedKey.visible = false
+	needKeyWindow.visible = false

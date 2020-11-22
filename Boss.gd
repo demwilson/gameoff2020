@@ -3,6 +3,7 @@ extends Area2D
 var overworld
 var canMove = true
 var accumilatedDelta = 0.0
+var actionRate = 1.0
 var Moves = {
 	"right": Vector2(1,0),
 	"left": Vector2(-1,0),
@@ -24,7 +25,7 @@ func _ready():
 
 func _process(delta):
 	accumilatedDelta += delta
-	if canMove && accumilatedDelta >= 1.0:
+	if canMove && accumilatedDelta >= actionRate:
 		accumilatedDelta = 0.0
 		var keys = Moves.keys()
 		var dir = keys[randi() % keys.size()]

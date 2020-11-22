@@ -18,6 +18,8 @@ var isGeneratingNewLevel = false
 var gameOver = false
 var chestIsOpen = false
 var minExitDistanceInRoomCells = 2
+var bossNodeName = "Boss"
+var playerNodeName = "Player"
 
 #Resources
 var Room_0000 = preload("res://overworld/Room_0000.tscn")
@@ -94,7 +96,7 @@ func _on_Player_collided(collisionPoint, direction, collider):
 	if isGeneratingNewLevel || gameOver || chestIsOpen:
 		return
 	
-	if collider.name == "Boss":
+	if collider.name == bossNodeName:
 		overworld.trigger_boss_combat()
 		return
 	
@@ -126,7 +128,6 @@ func _on_Player_collided(collisionPoint, direction, collider):
 				overworld.place_boss()
 			overworld.update_floor_level(levelNum)
 		else:
-			print("Has Floor Key: " + str(Global.player.get_floor_key()))
 			if Global.player.get_floor_key():
 				gameOver = true
 				overworld.win_event()
@@ -134,7 +135,7 @@ func _on_Player_collided(collisionPoint, direction, collider):
 				overworld.need_key_event()
 
 func _on_Boss_collided(hitCollider, direction):
-	if hitCollider.name == "Player":
+	if hitCollider.name == playerNodeName:
 		overworld.trigger_boss_combat()
 	
 func build_level():
@@ -211,7 +212,7 @@ func place_boss(startingSpot, exitSpot):
 	#remove player start from 
 	possibleBossAnchorPoints.erase(startingSpot)
 	#remove ladder room from 
-	possibleBossAnchorPoints.erase(startingSpot)
+	possibleBossAnchorPoints.erase(exitSpot)
 	var bossRoom
 	var exitOffset = 4
 	var offsetVariance = 2
