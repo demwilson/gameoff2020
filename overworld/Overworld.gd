@@ -9,13 +9,19 @@ var counter = 0
 # node references
 onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
+onready var anchor = $PlayerRoot/Anchor
 onready var loot_list = $GUI/Loot/LootList
 onready var debug_ui = $GUI/Debug
+onready	var needKeyWindow = $GUI/NeedKey
+
+var BossNode = preload("res://overworld/BossOverworld.tscn")
+var BossNodeName = "Boss"
 
 var LootWindowNode = preload("res://loot_window/LootWindow.tscn")
 # game state
 var player_tile
 var score = 0
+var boss
 
 func _ready():
 	update_HUD_values()
@@ -23,9 +29,27 @@ func _ready():
 	
 func place_player():
 	player.position = tile_map.playerStartPosition
-	$PlayerRoot/Anchor.set_start_position(player.position)
-	print("The player starts at: " + str(player.position))
+	anchor.set_start_position(player.position)
+	Global.log(Settings.LogLevel.TRACE, "The player starts at: " + str(player.position))
 	tile_map.isGeneratingNewLevel = false
+
+func place_boss():
+	#set boss position from tileMap
+	var bossInstance = BossNode.instance()
+	add_child(bossInstance)
+	boss = bossInstance.get_node("Boss")
+	boss.position = tile_map.bossStartPosition
+	Global.log(Settings.LogLevel.TRACE, "The Boss starts at: " + str(tile_map.bossStartPosition))
+
+func set_boss_movement(active):
+	boss.set_can_move(active)
+
+func get_boss_node_name():
+	return self.BossNodeName
+
+func remove_boss():
+	if boss:
+		boss.queue_free()
 
 func _process(delta):
 	update_HUD_values()
@@ -47,6 +71,7 @@ func _input(event):
 		Global.goto_scene(Global.Scene.STATS)
 
 func win_event():
+	remove_boss()
 	set_audio(false)
 	$GUI/Win.visible = true
 	
@@ -55,6 +80,7 @@ func set_audio(value):
 
 func restart_overworld():
 	set_audio(false)
+	remove_boss()
 	tile_map.levelNum = 0
 	Global.floor_level = FIRST_FLOOR
 	tile_map.isGeneratingNewLevel = true
@@ -98,6 +124,13 @@ func trigger_combat():
 	Global.player.add_combat_count(1)
 	Global.goto_scene(Global.Scene.COMBAT)
 
+func trigger_boss_combat():
+	Global.boss_fight = true
+	set_boss_movement(false)
+	trigger_combat()
+	remove_boss()
+	Global.player.set_floor_key(true)
+
 func update_floor_level(value):
 	Global.floor_level = value + 1
 
@@ -117,6 +150,7 @@ func update_HUD_values():
 	currencyHudValue.text = str(Global.currency)
 
 func lose_event():
+	remove_boss()
 	tile_map.gameOver = true
 	$GUI/Lose.visible = true
 	set_audio(false)
@@ -125,7 +159,6 @@ func set_ui_visible(show):
 	$GUI/HUD.visible = show
 	if Settings.debug > Settings.LogLevel.INFO:
 		debug_ui.visible = show
-
 
 func _on_LoseRestart_pressed():
 	$GUI/Lose/LoseRestart.disabled = true
@@ -136,3 +169,9 @@ func _on_LoseRestart_pressed():
 	$GUI/Lose/LoseRestart.disabled = false
 	#Send player to SAAN
 	Global.goto_scene(Global.Scene.GROUND_CONTROL)
+
+func need_key_event():
+	needKeyWindow.visible = true
+
+func _on_NeedKeyAccept_pressed():
+	needKeyWindow.visible = false

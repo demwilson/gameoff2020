@@ -7,8 +7,10 @@ var tileHalfSize = Vector2(tileSize.x / 2, tileSize.y / 2)
 var levelNum = 0
 var levelSize
 var playerStartPosition
+var bossStartPosition
 var topLeftAnchorPoints = []
 var possibleExitAnchorPoints = []
+var possibleBossAnchorPoints = []
 var roomCellSize = Vector2(9,9)
 var nextTileCellQueue = []
 var possibleStartPoints = []
@@ -16,6 +18,8 @@ var isGeneratingNewLevel = false
 var gameOver = false
 var chestIsOpen = false
 var minExitDistanceInRoomCells = 2
+var bossNodeName = "Boss"
+var playerNodeName = "Player"
 
 #Resources
 var Room_0000 = preload("res://overworld/Room_0000.tscn")
@@ -47,7 +51,7 @@ var DirectionValue = {
 
 const LEVEL_SIZES = [
 	Vector2(54, 36),
-	Vector2(72, 54)
+	Vector2(63, 45)
 ]
 
 const ROOM_CELL_PROBABILITY_WEIGHTS = [40, 60]
@@ -88,8 +92,12 @@ func _ready():
 	overworld = get_parent()
 	build_level()
 
-func _on_Player_collided(collisionPoint, direction):
+func _on_Player_collided(collisionPoint, direction, collider):
 	if isGeneratingNewLevel || gameOver || chestIsOpen:
+		return
+	
+	if collider.name == bossNodeName:
+		overworld.trigger_boss_combat()
 		return
 	
 	match direction:
@@ -116,11 +124,19 @@ func _on_Player_collided(collisionPoint, direction):
 			isGeneratingNewLevel = true
 			build_level()
 			overworld.place_player()
+			if (levelNum + 1) == LEVEL_SIZES.size():
+				overworld.place_boss()
 			overworld.update_floor_level(levelNum)
 		else:
-			gameOver = true
-			overworld.score += 1000
-			overworld.win_event()
+			if Global.player.get_floor_key():
+				gameOver = true
+				overworld.win_event()
+			else:
+				overworld.need_key_event()
+
+func _on_Boss_collided(hitCollider, direction):
+	if hitCollider.name == playerNodeName:
+		overworld.trigger_boss_combat()
 	
 func build_level():
 	self.clear()
@@ -175,10 +191,15 @@ func build_level():
 			break;
 	
 	# Place Player
-	place_player_start(startingSpot)	
-	# Place end ladder
-	place_exit(startingSpot)
+	place_player_start(startingSpot)
 	
+	# Place end ladder
+	var exitSpot = place_exit(startingSpot)
+	
+	if (levelNum + 1) == LEVEL_SIZES.size():
+		# Place boss
+		place_boss(startingSpot, exitSpot)
+
 func place_player_start(startingSpot):
 	var startRoom = startingSpot
 	var roomOffset = 4
@@ -186,7 +207,47 @@ func place_player_start(startingSpot):
 	var playerX = startRoom.x + roomOffset - Global.random.randi() % offsetVariance
 	var playerY = startRoom.y + roomOffset - Global.random.randi() % offsetVariance
 	playerStartPosition = map_to_world(Vector2(playerX, playerY))
+
+func place_boss(startingSpot, exitSpot):
+	#remove player start from 
+	possibleBossAnchorPoints.erase(startingSpot)
+	#remove ladder room from 
+	possibleBossAnchorPoints.erase(exitSpot)
+	var bossRoom
+	var exitOffset = 4
+	var offsetVariance = 2
+	var cellIndex
+	var bossPlaced = false
+	var loops = 0
+	var maxLoops = 12
 	
+	while !bossPlaced:
+		loops += 1
+		if loops >= maxLoops:
+			if minExitDistanceInRoomCells > 0:
+				minExitDistanceInRoomCells -= 1
+			loops = 0
+		#select a random spot
+		var possiblePoint = possibleBossAnchorPoints[Global.random.randi() % possibleBossAnchorPoints.size()]
+		
+		if minExitDistanceInRoomCells != 0:
+			if abs(startingSpot.x - possiblePoint.x) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
+			if abs(startingSpot.y - possiblePoint.y) <= (minExitDistanceInRoomCells * roomCellSize.x):
+				continue
+		#if cellIndex -1 skip everything
+		cellIndex = self.get_cell(possiblePoint.x + exitOffset, possiblePoint.y + exitOffset)
+		if cellIndex == -1:
+			possibleBossAnchorPoints.erase(possiblePoint)
+			continue
+		else:
+			bossRoom = possiblePoint
+			bossPlaced = true
+
+	var bossX = bossRoom.x + exitOffset - Global.random.randi() % offsetVariance
+	var bossY = bossRoom.y + exitOffset - Global.random.randi() % offsetVariance
+	bossStartPosition = map_to_world(Vector2(bossX, bossY))
+
 func place_exit(startingSpot):
 	#Remove Player start point from possible points
 	possibleExitAnchorPoints.erase(startingSpot)
@@ -225,16 +286,19 @@ func place_exit(startingSpot):
 	var exitX = endRoom.x + exitOffset - Global.random.randi() % offsetVariance
 	var exitY = endRoom.y + exitOffset - Global.random.randi() % offsetVariance
 	set_tile(exitX, exitY, Tile.LADDER)
+	return endRoom
 
 func generate_Anchor_Points():
 	topLeftAnchorPoints = []
 	possibleExitAnchorPoints = []
+	possibleBossAnchorPoints = []
 	var roomSizeX = roomCellSize.x
 	var roomSizeY = roomCellSize.y
 	for x in range(levelSize.x / roomCellSize.x):
 		for y in range(levelSize.y / roomCellSize.y):
 			topLeftAnchorPoints.append(Vector2(x * roomSizeX, y * roomSizeY))
 			possibleExitAnchorPoints.append(Vector2(x * roomSizeX, y * roomSizeY))
+			possibleBossAnchorPoints.append(Vector2(x * roomSizeX, y * roomSizeY))
 
 func generate_Map_Corner_Points():
 	#top left corner

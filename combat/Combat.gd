@@ -107,7 +107,7 @@ var _hover = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Populate the combatants
+	# Populate Combatants
 	var num_enemies = get_combat_enemies(Global.player.get_combat_count())
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
@@ -136,7 +136,7 @@ func _ready():
 		)
 		enemies.append(creature)
 		CombatantBox.add_child(creature.scene)
-
+	
 	var ally_list = Global.player.get_allies()
 	ally_list.push_front(Global.player)
 	var num_allies = min(ally_list.size(), MAX_ALLIES)
