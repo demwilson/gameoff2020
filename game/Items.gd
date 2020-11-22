@@ -38,11 +38,6 @@ var _items = null
 func _init(items):
 	self._items = items
 
-func get_item_by_id(id):
-	if id < self._items.size():
-		return self._items[id]
-	return null
-
 func generate_combat_loot(tier_level, last_combat_enemies=DEFAULT_COUNT):
 	var item_count = 0
 	# Check if each enemy will drop loot
@@ -99,6 +94,13 @@ func generate_items(tier_level, count=DEFAULT_COUNT):
 			var item = filtered_list[Global.random.randi() % filtered_list_size]
 			item_list.append(item)
 	return item_list
+
+func get_item_by_id(item_id):
+	var items = []
+	for item in self._items:
+		if item.id == item_id:
+			return item
+	return null
 
 func get_items_by_tier(tier_level):
 	var items = []
