@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/robot_servant_2.png-bf6255e48846d5b030e5aeaf5b8483f8.stex"
+path="res://.import/robot1_damaged.png-5d8f84d7af9e4a05bf9fa8bf944fb092.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/robot_servant_2.png"
-dest_files=[ "res://.import/robot_servant_2.png-bf6255e48846d5b030e5aeaf5b8483f8.stex" ]
+source_file="res://assets/Tony_Created_Assets/robot1_damaged.png"
+dest_files=[ "res://.import/robot1_damaged.png-5d8f84d7af9e4a05bf9fa8bf944fb092.stex" ]
 
 [params]
 

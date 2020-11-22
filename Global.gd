@@ -38,8 +38,8 @@ const BASE_ATTACK_VALUE = 3
 const BASE_ACCURACY_VALUE = 1
 const BASE_SPEED_VALUE = 2
 const STAT_STEP = 1
-const OXYGEN_STEP = 5
-const HEALTH_STEP = 5
+const OXYGEN_STEP = 50
+const HEALTH_STEP = 20
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
