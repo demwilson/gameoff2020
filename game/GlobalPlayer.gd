@@ -99,6 +99,7 @@ func get_moves():
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
 		if item.type == Item.ItemType.MOVE:
+			if moves.find(item.modifier) == -1:
 				moves.append(item.modifier)
 	return moves
 
