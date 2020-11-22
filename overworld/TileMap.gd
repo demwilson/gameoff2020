@@ -49,7 +49,7 @@ var DirectionValue = {
 
 const LEVEL_SIZES = [
 	Vector2(54, 36),
-	Vector2(72, 54)
+	Vector2(63, 45)
 ]
 
 const ROOM_CELL_PROBABILITY_WEIGHTS = [40, 60]

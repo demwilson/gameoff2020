@@ -46,7 +46,6 @@ func set_can_move(active):
 func has_collided(dir):
 	if get_node(Raycasts[dir]).is_colliding():
 		var hitCollider = get_node(Raycasts[dir]).get_collider()
-		print(hitCollider)
 		if hitCollider:
 			emit_signal('bossCollided', hitCollider, dir)
 		return true
