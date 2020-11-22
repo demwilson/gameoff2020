@@ -23,6 +23,7 @@ enum Scene {
 	GAME_OVER,
 	GROUND_CONTROL,
 	SETTINGS,
+	LOOT_WINDOW
 }
 
 var TEXT_COLOR = {
@@ -272,7 +273,9 @@ func goto_scene(target_scene, function_call = null):
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 		Scene.SETTINGS:
 			call_deferred("_deferred_goto_scene", target_scene, "res://settings/Settings.tscn")
-	
+		Scene.LOOT_WINDOW:
+			call_deferred("_deferred_goto_scene", target_scene, "res://loot_window/LootWindow.tscn")
+
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing
 	var overworld_node = persisted_scenes[Scene.OVERWORLD]
@@ -351,14 +354,12 @@ func get_random_type_by_weight(weight_list):
 		rand -= chance
 
 func populate_loot_list(loot_list, loot_bag):
-	var entries = []
 	for loot in loot_bag:
 		match loot.type:
 			Items.LootType.GEAR:
-				entries.append(loot.item.name)
+				loot_list.add_item(loot.item.name, null, false)
+				loot_list.set_item_tooltip(loot_list.get_item_count()-1, loot.item.get_description())
 			Items.LootType.CURRENCY:
-				entries.append(str(loot.item) + " " + Global.CURRENCY_TEXT)
+				loot_list.add_item(str(loot.item) + " " + Global.CURRENCY_TEXT, null, false)
 			Items.LootType.OXYGEN:
-				entries.append(str(loot.item) + " " + Global.OXYGEN_TEXT)
-	for entry in entries:
-		loot_list.add_item(entry, null, false)
+				loot_list.add_item(str(loot.item) + " " + Global.OXYGEN_TEXT, null, false)

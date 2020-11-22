@@ -17,6 +17,7 @@ onready	var needKeyWindow = $GUI/NeedKey
 var BossNode = preload("res://overworld/BossOverworld.tscn")
 var BossNodeName = "Boss"
 
+var LootWindowNode = preload("res://loot_window/LootWindow.tscn")
 # game state
 var player_tile
 var score = 0
@@ -104,17 +105,16 @@ func _on_Restart_pressed():
 
 func get_loot_for_chest(floorLevel):
 	loot_list.clear()
-	# generate list of items
-	var loot_bag = Global.items.generate_loot(Global.floor_level)
-	# Add loot to player
-	Global.items.apply_loot_bag(loot_bag, Global.player)
-	# Add to UI
-	Global.populate_loot_list(loot_list, loot_bag)
 	#show Loot Screen
-	$GUI/Loot.visible = true
+	load_loot_window()
 
-func _on_LootAccept_pressed():
-	$GUI/Loot.visible = false
+func load_loot_window():
+	var lootInstance = LootWindowNode.instance()
+	lootInstance._init(Global.Scene.OVERWORLD)
+	add_child(lootInstance)
+	lootInstance.connect("loot_window_closed", self, "_on_LootWindow_pressed")
+
+func _on_LootWindow_pressed():
 	#allow player movement again
 	player.set_can_move(true)
 	#allow collision
@@ -154,7 +154,7 @@ func lose_event():
 	tile_map.gameOver = true
 	$GUI/Lose.visible = true
 	set_audio(false)
-	
+
 func set_ui_visible(show):
 	$GUI/HUD.visible = show
 	if Settings.debug > Settings.LogLevel.INFO:
