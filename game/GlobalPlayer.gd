@@ -118,6 +118,8 @@ func get_moves():
 					continue
 			if moves.find(item.modifier) == -1:
 				moves.append(item.modifier)
+	moves.sort()
+	moves.invert()
 	return moves
 
 func get_allies():
