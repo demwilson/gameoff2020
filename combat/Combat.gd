@@ -104,6 +104,8 @@ var _menu_target = null
 var _menu_creature = null
 var _creature_moves = null
 var _hover = 0
+var _hover_move_last_position = 0
+var _hover_target_last_position = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -151,6 +153,8 @@ func _ready():
 		# Setup Scene
 		var creature_scene = EnemyScene.instance()
 		creature_scene.set("position", position)
+		if typeof(ally.get_tier()) == TYPE_INT:
+			creature_scene.set_flip_h(true)
 		creature_scene.creature_name = ally.get_name()
 		creature_scene.show_name = true
 		creature_scene.creature_size = ally.size
@@ -195,14 +199,14 @@ func _process(delta):
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				if creature.get_behavior() == Creature.Behavior.PLAYER:
 					show_move_options(creature)
-				    creature.is_queued = true
+					creature.is_queued = true
 				else:
 					var move_id = creature.get_move()
 					var move = Global.moves.get_move_by_id(move_id)
 					var target = creature.choose_target(move, enemies)
 					if target:
-					    action_queue.append(CombatEvent.new(move, creature, target))
-				        creature.is_queued = true
+						action_queue.append(CombatEvent.new(move, creature, target))
+						creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
 		creature.update_health_percentage()
@@ -263,7 +267,8 @@ func _input(event):
 				_menu_move = move
 				_phase = MenuPhase.TARGET_SELECT
 				MoveSelectionArrow.visible = false
-				_hover = FIRST_POSITION
+				_hover_move_last_position = _hover
+				_hover = _hover_target_last_position
 				update_selection_arrow(_hover)
 				TargetSelectionArrow.visible = true
 			elif _phase == MenuPhase.TARGET_SELECT:
@@ -329,7 +334,8 @@ func reset_menuing():
 	_menu_creature = null
 	_menu_move = null
 	_phase = MenuPhase.NONE
-	_hover = 0
+	_hover_target_last_position = _hover
+	_hover = _hover_move_last_position
 	CombatInstructions.visible = false
 	TargetSelectionArrow.visible = false
 	MoveSelectionArrow.visible = false

@@ -157,7 +157,7 @@ func _ready():
 		# Advanced Moves
 		Item.new(24, "Space Machete", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "You swing the space machete.", Moves.MoveList.MELEE_T2),
 		Item.new(25, "Expanded Psychic Fire", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "More fire solves most problems.", Moves.MoveList.PSY_T2),
-		Item.new(26, "Stim Injections", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "The injections make you feel invincible!", Moves.MoveList.HEAL_T2),
+		Item.new(26, "Stim Injections", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "The injections make you feel invincible!", Moves.MoveList.HEAL_T2),
 
 		# T3 Bonus Items
 		Item.new(27, "Plasma Sabre", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It cuts ALL THE THINGS!", [Creature.Stats.ATTACK, 8]),
