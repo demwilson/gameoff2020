@@ -116,28 +116,7 @@ func _ready():
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
-		# Setup Scene
-		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", position)
-		creature_scene.creature_name = enemy.get_name()
-		creature_scene.show_name = true
-		creature_scene.creature_size = enemy.size
-		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier())
-		creature_scene.idle_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.ANIMATION_FILE_EXTENSION
-		creature_scene.connect("animation_step_complete", self, "next_animation_step")
-		var creature = CombatCreature.new(
-			CombatCreature.CombatantType.ENEMY,
-			enemy.get_name(),
-			creature_scene,
-			enemy.size,
-			enemy.get_max_health(),
-			enemy.get_health(),
-			enemy.get_moves(),
-			enemy.get_stats(),
-			enemy.get_bonuses(),
-			enemy.get_base_path(),
-			enemy.get_behavior()
-		)
+		var creature = build_combat_creature(enemy, position, CombatCreature.CombatantType.ENEMY)
 		enemies.append(creature)
 		CombatantBox.add_child(creature.scene)
 	
@@ -152,30 +131,7 @@ func _ready():
 			ally = Global.player
 		else:
 			ally = Global.enemies.get_enemy_by_id(ally)
-		# Setup Scene
-		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", position)
-		if typeof(ally.get_tier()) == TYPE_INT:
-			creature_scene.set_flip_h(true)
-		creature_scene.creature_name = ally.get_name()
-		creature_scene.show_name = true
-		creature_scene.creature_size = ally.size
-		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier())
-		creature_scene.idle_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.ANIMATION_FILE_EXTENSION
-		creature_scene.connect("animation_step_complete", self, "next_animation_step")
-		creature = CombatCreature.new(
-			CombatCreature.CombatantType.ALLY,
-			ally.get_name(),
-			creature_scene,
-			ally.size,
-			ally.get_max_health(),
-			ally.get_health(),
-			ally.get_moves(),
-			ally.get_stats(),
-			ally.get_bonuses(),
-			ally.get_base_path(),
-			ally.get_behavior()
-		)
+		creature = build_combat_creature(ally, position, CombatCreature.CombatantType.ALLY)
 		allies.append(creature)
 		CombatantBox.add_child(creature.scene)
 	if Settings.debug >= Settings.LogLevel.TRACE:
@@ -282,6 +238,34 @@ func _input(event):
 				_menu_target = targeted_list[_hover]
 				add_selected_move_to_queue()
 				reset_menuing()
+
+func build_combat_creature(creature_details, position, combatant_type):
+	# Setup Scene
+	var creature_scene = EnemyScene.instance()
+	creature_scene.set("position", position)
+	# Flip the image for ally creatures that are not the player because we have them facing right by default
+	if combatant_type == CombatCreature.CombatantType.ALLY && typeof(creature_details.get_tier()) == TYPE_INT:
+		creature_scene.set_flip_h(true)
+	creature_scene.creature_name = creature_details.get_name()
+	creature_scene.show_name = true
+	creature_scene.creature_size = creature_details.size
+	creature_scene.texture_path = Creature.file_paths[creature_details.get_base_path()] + str(creature_details.get_tier())
+	creature_scene.idle_path = Creature.file_paths[creature_details.get_base_path()] + str(creature_details.get_tier()) + Global.ANIMATION_FILE_EXTENSION
+	creature_scene.connect("animation_step_complete", self, "next_animation_step")
+	var creature = CombatCreature.new(
+		combatant_type,
+		creature_details.get_name(),
+		creature_scene,
+		creature_details.size,
+		creature_details.get_max_health(),
+		creature_details.get_health(),
+		creature_details.get_moves(),
+		creature_details.get_stats(),
+		creature_details.get_bonuses(),
+		creature_details.get_base_path(),
+		creature_details.get_behavior()
+	)
+	return creature
 
 func update_hover(amount):
 	_hover += amount
