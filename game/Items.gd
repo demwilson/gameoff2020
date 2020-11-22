@@ -8,7 +8,10 @@ enum LootType {
 	CURRENCY
 }
 enum ItemList {
-	CROWBAR,
+	MELEE_T0 = 0,
+	MELEE_T1 = 11,
+	MELEE_T2 = 24,
+	MELEE_T3 = 36,
 }
 
 const LootTypeMap = [
