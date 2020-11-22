@@ -140,6 +140,7 @@ func _on_Boss_collided(hitCollider, direction):
 	
 func build_level():
 	self.clear()
+	Global.player.set_combat_count(0)
 	levelSize = LEVEL_SIZES[levelNum]
 	#populate possible starting points
 	generate_possible_start_points()

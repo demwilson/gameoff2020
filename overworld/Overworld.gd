@@ -16,6 +16,7 @@ onready	var needKeyWindow = $GUI/NeedKey
 
 var BossNode = preload("res://overworld/BossOverworld.tscn")
 var BossNodeName = "Boss"
+var BossInstance
 
 var LootWindowNode = preload("res://loot_window/LootWindow.tscn")
 # game state
@@ -35,9 +36,9 @@ func place_player():
 
 func place_boss():
 	#set boss position from tileMap
-	var bossInstance = BossNode.instance()
-	add_child(bossInstance)
-	boss = bossInstance.get_node("Boss")
+	BossInstance = BossNode.instance()
+	add_child(BossInstance)
+	boss = BossInstance.get_node("Boss")
 	boss.position = tile_map.bossStartPosition
 	Global.log(Settings.LogLevel.TRACE, "The Boss starts at: " + str(tile_map.bossStartPosition))
 
@@ -48,8 +49,8 @@ func get_boss_node_name():
 	return self.BossNodeName
 
 func remove_boss():
-	if boss:
-		boss.queue_free()
+	if BossInstance:
+		BossInstance.queue_free()
 
 func _process(delta):
 	update_HUD_values()
