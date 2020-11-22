@@ -177,7 +177,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ticks" type="Label" parent="CanvasLayer/Background"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer/Background"]
+position = Vector2( 320, 91 )
+frames = SubResource( 2 )
+animation = "satelite"
+frame = 88
+playing = true
+
+[node name="DebugContainer" type="Container" parent="CanvasLayer"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ticks" type="Label" parent="CanvasLayer/DebugContainer"]
 margin_left = 528.0
 margin_right = 640.0
 margin_bottom = 40.0
@@ -188,14 +203,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer/Background"]
-position = Vector2( 320, 91 )
-frames = SubResource( 2 )
-animation = "satelite"
-frame = 33
-playing = true
-
-[node name="AnimationTicks" type="Label" parent="CanvasLayer"]
+[node name="AnimationTicks" type="Label" parent="CanvasLayer/DebugContainer"]
 margin_left = 224.0
 margin_top = 136.0
 margin_right = 424.0
@@ -203,6 +211,7 @@ margin_bottom = 176.0
 text = "Animation Ticks:"
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
