@@ -17,7 +17,7 @@ enum CreatureSize {
 enum Behavior {
 	STUPID,
 	FOCUSED,
-	REVENGE,
+	PACK,
 	BOSS,
 	PLAYER,
 }

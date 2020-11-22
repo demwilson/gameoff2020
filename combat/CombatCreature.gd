@@ -7,11 +7,14 @@ enum CombatantType {
 	ALLY,
 }
 
+const MAX_RANDOM_TARGET = 10
+
 var scene = null
 var is_queued = false
 var _ticks = null
 var _moves = null
 var type = null
+var _current_target = null
 
 func _init(type, name, scene, size, max_health, health, moves, stats, bonuses, base_path, behavior).(name, size, max_health, health, stats, bonuses, base_path, behavior):
 	self.type = type
@@ -57,14 +60,48 @@ func update_ticks():
 func choose_target(move, target_list):
 	var target = null
 	if move.type == Move.MoveType.HEAL:
-		target = self
+		return self
 	else:
 		match self._behavior:
-#            Behavior.STUPID:
-			_:
-				while target == null:
-					var target_position = Global.random.randi() % target_list.size()
-					var potential_target = target_list[target_position]
-					if potential_target.is_alive():
-						target = potential_target
+			Behavior.FOCUSED:
+				if _current_target && _current_target.is_alive():
+					target = _current_target
+				else:
+					target = get_target_by_random(target_list)
+			Behavior.PACK:
+				target = get_target_by_lowest_health(target_list)
+			Behavior.BOSS:
+				if _current_target && _current_target.is_alive():
+					target = _current_target
+				elif target_list[Global.PLAYER_POSITION].is_alive():
+					target = target_list[Global.PLAYER_POSITION]
+				else:
+					target = get_target_by_random(target_list)
+			_: # Behavior.STUPID
+				target = get_target_by_random(target_list)
+	_current_target = target
+	return target
+
+func get_target_by_random(target_list):
+	var target_list_size = target_list.size()
+	for _i in range(MAX_RANDOM_TARGET):
+		var target_position = Global.random.randi() % target_list_size
+		var potential_target = target_list[target_position]
+		if potential_target.is_alive():
+			return potential_target
+	while target_list_size > 0:
+		var target = target_list[target_list_size - 1]
+		if target.is_alive():
+			return target
+		target_list_size -= 1
+	# If everything failed, just return the player character
+	return target_list[Global.PLAYER_POSITION]
+	
+func get_target_by_lowest_health(target_list):
+	var target_list_size = target_list.size()
+	var target = null
+	for i in range(target_list_size):
+		var possible_target = target_list[i]
+		if !target || possible_target.get_health() <= target.get_health():
+			target = possible_target
 	return target

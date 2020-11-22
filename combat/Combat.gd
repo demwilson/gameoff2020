@@ -44,7 +44,6 @@ const MAX_ENEMIES = 3
 const MAX_ANIMATION_TIMER = 1.2
 const ACTION_AVAILABLE_TICKS = 6.0
 const MAX_ALLIES = 3
-const PLAYER_POSITION = 0
 
 const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
@@ -347,14 +346,14 @@ func check_end_combat():
 		return
 
 	var dead_enemies = 0
-	if !allies[PLAYER_POSITION].is_alive():
+	if !allies[Global.PLAYER_POSITION].is_alive():
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:
 		if !creature.is_alive():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
-		save_player_changes(allies[PLAYER_POSITION])
+		save_player_changes(allies[Global.PLAYER_POSITION])
 		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
 		return Global.goto_scene(Global.Scene.COMBAT_WIN)
