@@ -105,7 +105,7 @@ size_flags_vertical = 3
 [node name="Moves" type="Label" parent="CanvasLayer/NinePatchRect/Character/Commands"]
 margin_right = 282.0
 margin_bottom = 14.0
-text = "Player Abilities"
+text = "Abilities"
 
 [node name="MoveList" type="ItemList" parent="CanvasLayer/NinePatchRect/Character/Commands"]
 margin_top = 18.0

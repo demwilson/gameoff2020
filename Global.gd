@@ -70,8 +70,8 @@ var Upgrades = {
 
 # game mechanics
 const PLAYER_NAME = "Astronaut"
-const BASE_HEALTH = 100
-const BASE_OXYGEN = 200
+const BASE_HEALTH = 1000
+const BASE_OXYGEN = 20000
 const CURRENCY_TEXT = "Moon Rocks"
 const OXYGEN_TEXT = "Units of Oxygen"
 const ONE_CURRENCY_TEXT = "Moon Rock"
@@ -263,7 +263,7 @@ func build_player():
 	var player_bonuses = Creature.Stats.new()
 
 	# Items
-	var player_items = [Items.ItemList.MELEE_T0,13]
+	var player_items = [Items.ItemList.MELEE_T0]
 	# Add attack-based item (T1)
 	if Upgrades.BasicWeapon:
 		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)
@@ -415,12 +415,12 @@ func populate_loot_list(loot_list, loot_bag):
 				loot_list.add_item(loot.item.name, null, false)
 				loot_list.set_item_tooltip(loot_list.get_item_count()-1, loot.item.get_description())
 			Items.LootType.CURRENCY:
-			    if loot.item == 1:
-			    	loot_list.add_item(str(loot.item) + " " + ONE_CURRENCY_TEXT, null, false)
+				if loot.item == 1:
+					loot_list.add_item(str(loot.item) + " " + ONE_CURRENCY_TEXT, null, false)
 				else:
 					loot_list.add_item(str(loot.item) + " " + CURRENCY_TEXT, null, false)
 			Items.LootType.OXYGEN:
-			    if loot.item == 1:
+				if loot.item == 1:
 					loot_list.add_item(str(loot.item) + " " + ONE_OXYGEN_TEXT, null, false)
 				else:
 					loot_list.add_item(str(loot.item) + " " + OXYGEN_TEXT, null, false)
