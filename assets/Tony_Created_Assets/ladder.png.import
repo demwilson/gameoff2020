@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Astro_idle_damaged.png-3b83f727cf62cc7339e53db45c295286.stex"
+path="res://.import/ladder.png-c92205717c30478f8c15719bba74aa3c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/Astro_idle_damaged.png"
-dest_files=[ "res://.import/Astro_idle_damaged.png-3b83f727cf62cc7339e53db45c295286.stex" ]
+source_file="res://assets/Tony_Created_Assets/ladder.png"
+dest_files=[ "res://.import/ladder.png-c92205717c30478f8c15719bba74aa3c.stex" ]
 
 [params]
 

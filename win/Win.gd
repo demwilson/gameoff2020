@@ -13,3 +13,7 @@ func _input(event):
 func _on_Restart_pressed():
 	Global.goto_scene(Global.Scene.GROUND_CONTROL)
 	self.queue_free()
+
+
+func _on_Credits_pressed():
+	Global.goto_scene(Global.Scene.CREDITS)
