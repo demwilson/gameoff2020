@@ -11,6 +11,7 @@ enum MoveList {
 	PSY_T1,
 	PSY_T2,
 	PSY_T3,
+	ACID_T5,
 }
 
 var _moves = null

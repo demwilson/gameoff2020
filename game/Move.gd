@@ -12,6 +12,7 @@ enum AnimationPath {
 	BASIC_ATTACK,
 	FIREBOLT,
 	HEAL,
+	ACID_SPIT,
 }
 
 enum AnimationDetail {
@@ -26,6 +27,7 @@ const animation_details = [
 	["melee_attack",  Vector2(-16, 8), 34, 1, false],
 	["fireball_power_up", Vector2(-16, 8), 23, 1, false],
 	["healing", Vector2(0, -32), 51, 1, true],
+	["acid_spit", Vector2(-16, 8), 43, 1, false],
 ]
 
 var id

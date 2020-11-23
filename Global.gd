@@ -121,6 +121,7 @@ func _ready():
 		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.5, 1.5, [3, 3], [70, 3]),
 		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.75, 1.75, [25, 4], [55, 4], [Moves.MoveList.PSY_T1]),
 		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [40, 8], [45, 6], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
+		Move.new(10, "Acid Spray", 5, Move.MoveType.DAMAGE, Move.AnimationPath.ACID_SPIT, 1, 1.5, [3, 4], [75, 9]),
 	]
 	var available_items = [
 		# Game Start
@@ -229,7 +230,7 @@ func _ready():
 			Creature.Stats.new([5, 5, 4.1, 0, 5]),
 			Creature.Stats.new([5, 5, 0, 25, 0]),
 			Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS,
-			[Moves.MoveList.MELEE_T2]
+			[Moves.MoveList.ACID_T5]
 		),
 	]
 
