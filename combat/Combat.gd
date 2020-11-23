@@ -12,6 +12,7 @@ enum CombatAnimationState {
 const PauseOverlay = preload("res://PauseOverlay.tscn")
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
+const Stats = preload("res://game/Stats.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
 var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
@@ -440,7 +441,7 @@ func execute_move(attacker, target, move):
 			log_arr.append("HEAL: " + str(damage))
 		Move.MoveType.DAMAGE:
 			# check for a hit
-			var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
+			var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat(Stats.ACCURACY), attacker.get_bonus(Stats.ACCURACY))
 			var target_hit = false
 			var target_evaded = false
 			var damaged_mitigated = false
@@ -448,7 +449,7 @@ func execute_move(attacker, target, move):
 				target_hit = true
 				log_arr.append("ATTACK HIT!")
 				# check for a evade
-				if check_to_evade(target.get_stat("evade"), target.get_bonus("evade"), move.level):
+				if check_to_evade(target.get_stat(Stats.EVADE), target.get_bonus(Stats.EVADE), move.level):
 					target_evaded = true
 					log_arr.append("ATTACK EVADED!")
 					apply_floating_text(target, EVADED_TEXT)
@@ -457,9 +458,6 @@ func execute_move(attacker, target, move):
 				apply_floating_text(target, MISSED_TEXT)
 
 			if target_hit && !target_evaded:
-				# get the damage range
-				var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-				var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
 				# get damage
 				var damage = get_damage(attacker, target, move)
 				if damage <= 0:
@@ -489,14 +487,19 @@ func execute_move(attacker, target, move):
 
 func get_damage(attacker, target, move):
 	var log_arr = []
-	log_arr.append("[get_damage]MOVE: " + move.name)
+	log_arr.append("[get_damage] MOVE: " + move.name)
 	log_arr.append("ATTACKER STATS: " + str(attacker.pretty_print_stats()))
 	log_arr.append("ATTACKER BONUSES: " + str(attacker.pretty_print_bonuses()))
 	# get the damage range
-	var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-	log_arr.append("MIN: " + str(minimum))
-	var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
-	log_arr.append("MAX: " + str(maximum))
+	var target_stat
+	if move.type == Move.MoveType.HEAL:
+	    target_stat = Stats.DEFENSE
+    else:
+	    target_stat = Stats.ATTACK
+    var minimum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.low)
+    log_arr.append("MIN: " + str(minimum))
+    var maximum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.high)
+    log_arr.append("MAX: " + str(maximum))
 	# get raw damage
 	var raw_damage = calculate_damage(minimum, maximum)
 	log_arr.append("RAW DAMAGE: " + str(raw_damage))
