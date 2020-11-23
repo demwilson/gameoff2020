@@ -115,9 +115,9 @@ func _ready():
 		Move.new(1, "Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.1, [3, 2], [90, 5]),
 		Move.new(2, "Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.90, 1.25, [5, 3], [85, 7]),
 		Move.new(3, "Flawless Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [7, 4], [75, 9]),
-		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2], null),
-		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [5, 3], null, [Moves.MoveList.HEAL_T1]),
-		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 3], null),
+		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 5], null, [Moves.MoveList.HEAL_T1]),
+		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [20, 7], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
 		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.5, 1.5, [3, 3], [70, 3]),
 		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.75, 1.75, [25, 4], [55, 4], [Moves.MoveList.PSY_T1]),
 		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [40, 8], [45, 6], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
@@ -260,7 +260,7 @@ func build_player():
 	var player_bonuses = Creature.Stats.new()
 
 	# Items
-	var player_items = [Items.ItemList.MELEE_T0]
+	var player_items = [Items.ItemList.MELEE_T0,13]
 	# Add attack-based item (T1)
 	if Upgrades.BasicWeapon:
 		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)

@@ -52,6 +52,8 @@ const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
+const DEFENSE_MULTIPLIER = 5
+const EVADE_MULTIPLIER = 5
 
 const MAX_MOVES_AVAILABLE = 6
 const MENU_ARROW_POSITION = 0
@@ -493,13 +495,13 @@ func get_damage(attacker, target, move):
 	# get the damage range
 	var target_stat
 	if move.type == Move.MoveType.HEAL:
-	    target_stat = Stats.DEFENSE
-    else:
-	    target_stat = Stats.ATTACK
-    var minimum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.low)
-    log_arr.append("MIN: " + str(minimum))
-    var maximum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.high)
-    log_arr.append("MAX: " + str(maximum))
+		target_stat = Stats.DEFENSE
+	else:
+		target_stat = Stats.ATTACK
+	var minimum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.low)
+	log_arr.append("MIN: " + str(minimum))
+	var maximum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.high)
+	log_arr.append("MAX: " + str(maximum))
 	# get raw damage
 	var raw_damage = calculate_damage(minimum, maximum)
 	log_arr.append("RAW DAMAGE: " + str(raw_damage))
