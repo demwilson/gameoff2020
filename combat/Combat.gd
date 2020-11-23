@@ -29,6 +29,7 @@ onready var MoveNameLabels = [
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName4,
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName5,
 ]
+onready var debug_data = $CanvasLayer/DebugContainer/
 onready var audio = get_node("AudioStreamPlayer2D")
 
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
@@ -177,21 +178,23 @@ func _ready():
 		)
 		allies.append(creature)
 		CombatantBox.add_child(creature.scene)
-	
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		 debug_data.visible = true
 	OS.set_window_size(Vector2(1280, 720))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# game ticks
 	counter += delta
-	$CanvasLayer/Background/Ticks.text = "Ticks: " + str(counter)
 
 	# actual processing
 	if animation_lock:
 		animation_ticks += delta
 	else:
 		animation_ticks = 0
-	$CanvasLayer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		$CanvasLayer/DebugContainer/Ticks.text = "Ticks: " + str(counter)
+		$CanvasLayer/DebugContainer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
 
 	# actual processing
 	for i in range(allies.size()):

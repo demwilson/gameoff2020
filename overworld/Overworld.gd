@@ -10,7 +10,6 @@ var counter = 0
 onready var tile_map = $TileMap
 onready var player = $PlayerRoot/Player
 onready var anchor = $PlayerRoot/Anchor
-onready var loot_list = $GUI/Loot/LootList
 onready var debug_ui = $GUI/Debug
 onready	var needKeyWindow = $GUI/NeedKey
 
@@ -19,6 +18,8 @@ var BossNodeName = "Boss"
 var BossInstance
 
 var LootWindowNode = preload("res://loot_window/LootWindow.tscn")
+var WinWindowNode = preload("res://win/Win.tscn")
+var LoseWindowNode = preload("res://lose/Lose.tscn")
 # game state
 var player_tile
 var score = 0
@@ -74,7 +75,7 @@ func _input(event):
 func win_event():
 	remove_boss()
 	set_audio(false)
-	$GUI/Win.visible = true
+	load_win_window()
 	
 func set_audio(value):
 	player.get_node("AudioStreamPlayer2D").stream_paused = !value
@@ -105,7 +106,6 @@ func _on_Restart_pressed():
 	Global.goto_scene(Global.Scene.GROUND_CONTROL)
 
 func get_loot_for_chest(floorLevel):
-	loot_list.clear()
 	#show Loot Screen
 	load_loot_window()
 
@@ -114,6 +114,14 @@ func load_loot_window():
 	lootInstance._init(Global.Scene.OVERWORLD)
 	add_child(lootInstance)
 	lootInstance.connect("loot_window_closed", self, "_on_LootWindow_pressed")
+	
+func load_lose_window():
+	var loseInstance = LoseWindowNode.instance()
+	add_child(loseInstance)
+
+func load_win_window():
+	var winInstance = WinWindowNode.instance()
+	add_child(winInstance)
 
 func _on_LootWindow_pressed():
 	#allow player movement again
@@ -153,8 +161,8 @@ func update_HUD_values():
 func lose_event():
 	remove_boss()
 	tile_map.gameOver = true
-	$GUI/Lose.visible = true
 	set_audio(false)
+	load_lose_window()
 
 func set_ui_visible(show):
 	$GUI/HUD.visible = show

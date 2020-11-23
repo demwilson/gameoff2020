@@ -110,12 +110,12 @@ func _ready():
 		Move.new(1, "Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.7, 1.1, [2, 2], [85, 3]),
 		Move.new(2, "Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.25, [2, 3], [80, 6]),
 		Move.new(3, "Masterful Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [3, 4], [75, 9]),
-		Move.new(4, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
-		Move.new(5, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], [Moves.MoveList.PSY_T1]),
-		Move.new(6, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
-		Move.new(7, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
-		Move.new(8, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], [Moves.MoveList.HEAL_T1]),
-		Move.new(9, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
+		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], [Moves.MoveList.HEAL_T1]),
+		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
+		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], [Moves.MoveList.PSY_T1]),
+		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
 	]
 	var available_items = [
 		# Game Start
@@ -251,7 +251,7 @@ func build_player():
 	var player_bonuses = Creature.Stats.new()
 
 	# Items
-	var player_items = [Items.ItemList.CROWBAR]
+	var player_items = [Items.ItemList.MELEE_T0]
 	# Add attack-based item (T1)
 	if Upgrades.BasicWeapon:
 		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)
@@ -262,7 +262,7 @@ func build_player():
 		player_items.append(item.id)
 	# Add move-based item (T1)
 	if Upgrades.CombatTraining:
-		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE)
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T1)
 		player_items.append(item.id)
 	# Add attack-based item (T2)
 	if Upgrades.AdvanceWeapon:
@@ -274,7 +274,7 @@ func build_player():
 		player_items.append(item.id)
 	# Add move-based item (T2)
 	if Upgrades.AdvanceTraining:
-		var item = items.get_random_item(Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE)
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T2)
 		player_items.append(item.id)
 
 	player = GlobalPlayer.new(
@@ -309,9 +309,7 @@ func goto_scene(target_scene, function_call = null):
 		Scene.STATS:
 			_deferred_goto_scene(target_scene, "res://Stats.tscn")
 		Scene.GAME_OVER:
-			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
-		Scene.COMBAT_WIN:
-			call_deferred("_deferred_goto_scene", target_scene, "res://combat/CombatWin.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://lose/Lose.tscn")
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 		Scene.SETTINGS:

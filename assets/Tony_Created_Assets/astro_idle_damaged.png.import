@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/robot_servant_damage.png-49984972258920785b46269402e90fe7.stex"
+path="res://.import/astro_idle_damaged.png-7606e1ad94c1222896f83bfd7138a0d9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Tony_Created_Assets/robot_servant_damage.png"
-dest_files=[ "res://.import/robot_servant_damage.png-49984972258920785b46269402e90fe7.stex" ]
+source_file="res://assets/Tony_Created_Assets/astro_idle_damaged.png"
+dest_files=[ "res://.import/astro_idle_damaged.png-7606e1ad94c1222896f83bfd7138a0d9.stex" ]
 
 [params]
 
