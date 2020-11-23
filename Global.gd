@@ -42,8 +42,8 @@ const BASE_ATTACK_VALUE = 3
 const BASE_ACCURACY_VALUE = 1
 const BASE_SPEED_VALUE = 2
 const STAT_STEP = 1
-const OXYGEN_STEP = 50
-const HEALTH_STEP = 20
+const OXYGEN_STEP = 80
+const HEALTH_STEP = 25
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -127,7 +127,7 @@ func _ready():
 		Item.new(0, "Crowbar", Item.ItemTier.GAME_START, Item.ItemType.MOVE, "You swing the crowbar.", Moves.MoveList.MELEE_T0),
 
 		# T1 Bonus Items
-		Item.new(1, "Flimsy Sword", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1]),
+		Item.new(1, "Dull Dagger", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Sharp enough to cut butter.", [Creature.Stats.ATTACK, 1]),
 		Item.new(2, "Ruler", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Helps with measurements.", [Creature.Stats.ACCURACY, 1]),
 		# No bonuses allowed for speed
 		Item.new(3, "Flimsy Buckler", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Only a shield in the most technical sense.", [Creature.Stats.DEFENSE, 1]),
