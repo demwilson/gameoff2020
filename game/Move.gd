@@ -56,4 +56,6 @@ static func calculate_damage(formula, stat, bonus, variance):
 	return (formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus) * variance
 
 static func calculate_accuracy(formula, stat, bonus):
-	return formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus
+	var accuracy_calculation = formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus
+	Global.log(Settings.LogLevel.TRACE, "ACCURACY: " + str(accuracy_calculation))
+	return accuracy_calculation

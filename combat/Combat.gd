@@ -379,7 +379,7 @@ func check_action_queue():
 func confirm_combat_action(combat_action):
 	if !combat_action.creature.is_alive():
 		return null
-	if !_current_combat_action.target.is_alive():
+	if !_current_combat_action.target && !_current_combat_action.target.is_alive():
 		match combat_action.move.type:
 			Move.MoveType.HEAL:
 				return null
@@ -488,20 +488,34 @@ func execute_move(attacker, target, move):
 	Global.log(Settings.LogLevel.INFO, log_string)
 
 func get_damage(attacker, target, move):
-		# get the damage range
-		var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-		var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
-		# get raw damage
-		var raw_damage = calculate_damage(minimum, maximum)
-		var damage = raw_damage
-		if move.type == Move.MoveType.DAMAGE:
-			# calculate defense
-			var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
-			var damage_percentage = (MAX_PERCENTAGE - raw_defense)
-			var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
-			# mitigate damage
-			damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
-		return damage
+	var log_arr = []
+	log_arr.append("[get_damage]MOVE: " + move.name)
+	log_arr.append("ATTACKER STATS: " + str(attacker.pretty_print_stats()))
+	log_arr.append("ATTACKER BONUSES: " + str(attacker.pretty_print_bonuses()))
+	# get the damage range
+	var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
+	log_arr.append("MIN: " + str(minimum))
+	var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
+	log_arr.append("MAX: " + str(maximum))
+	# get raw damage
+	var raw_damage = calculate_damage(minimum, maximum)
+	log_arr.append("RAW DAMAGE: " + str(raw_damage))
+	var damage = raw_damage
+	if move.type == Move.MoveType.DAMAGE:
+		# calculate defense
+		log_arr.append("DEFENDER STATS: " + str(target.pretty_print_stats()))
+		log_arr.append("DEFENDER BONUSES: " + str(target.pretty_print_bonuses()))
+		var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
+		log_arr.append("DEFENSE: " + str(raw_defense) + "%")
+		var damage_percentage = (MAX_PERCENTAGE - raw_defense)
+		var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
+		# mitigate damage
+		damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
+		log_arr.append("ACTUAL DAMAGE: " + str(damage))
+	# Logging stuff
+	var log_string = PoolStringArray(log_arr).join("\n	")
+	Global.log(Settings.LogLevel.TRACE, log_string)
+	return damage
 
 func apply_floating_text(target, amount, type=null):
 	# Floating damage
@@ -522,7 +536,7 @@ func check_to_hit(accuracy):
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
-	var processed = (evade * 2) + bonus_evade - (move_level * 2)
+	var processed = (evade * 5) + bonus_evade - (move_level * 5)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER

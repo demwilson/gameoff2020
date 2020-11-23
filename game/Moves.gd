@@ -19,6 +19,7 @@ func _init(moves):
 	self._moves = moves
 
 func get_move_by_id(move_id):
-	if move_id < _moves.size():
-		return _moves[move_id]
+	for move in self._moves:
+		if move.id == move_id:
+			return move
 	return null

@@ -44,6 +44,7 @@ func get_description():
 			var modifier_type = self.modifier[GEAR_MODIFIER_TYPE]
 			modifier_text =  "+" + modifier_amount +" to " + modifier_type + "."
 		ItemType.MOVE:
-			modifier_text =  "This gives you the ability " + self.name + "."
+			var move = Global.moves.get_move_by_id(self.modifier)
+			modifier_text =  "This gives you the ability " + move.name + "."
 			
 	return self.description + ' ' + str(modifier_text)
