@@ -117,7 +117,6 @@ func get_loot_for_chest(floorLevel):
 	load_loot_window()
 
 func load_loot_window():
-	set_audio(false)
 	var lootInstance = LootWindowNode.instance()
 	lootInstance._init(Global.Scene.OVERWORLD)
 	add_child(lootInstance)
