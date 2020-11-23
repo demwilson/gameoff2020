@@ -122,7 +122,7 @@ func _ready():
 		var creature = build_combat_creature(enemy, position, CombatCreature.CombatantType.ENEMY)
 		enemies.append(creature)
 		CombatantBox.add_child(creature.scene)
-	
+
 	var ally_list = Global.player.get_allies()
 	ally_list.push_front(Global.player)
 	var num_allies = min(ally_list.size(), MAX_ALLIES)
