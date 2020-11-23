@@ -70,6 +70,8 @@ const BASE_HEALTH = 100
 const BASE_OXYGEN = 200
 const CURRENCY_TEXT = "Moon Rocks"
 const OXYGEN_TEXT = "Units of Oxygen"
+const ONE_CURRENCY_TEXT = "Moon Rock"
+const ONE_OXYGEN_TEXT = "Unit of Oxygen"
 var player = null
 var moves = null
 var items = null
@@ -355,8 +357,14 @@ func populate_loot_list(loot_list, loot_bag):
 			Items.LootType.GEAR:
 				entries.append(loot.item.name)
 			Items.LootType.CURRENCY:
-				entries.append(str(loot.item) + " " + Global.CURRENCY_TEXT)
+				if loot.item == 1:
+					entries.append(str(loot.item) + " " + ONE_CURRENCY_TEXT)
+				else:
+					entries.append(str(loot.item) + " " + CURRENCY_TEXT)
 			Items.LootType.OXYGEN:
-				entries.append(str(loot.item) + " " + Global.OXYGEN_TEXT)
+				if loot.item == 1:
+					entries.append(str(loot.item) + " " + ONE_OXYGEN_TEXT)
+				else:
+					entries.append(str(loot.item) + " " + OXYGEN_TEXT)
 	for entry in entries:
 		loot_list.add_item(entry, null, false)

@@ -466,7 +466,7 @@ func execute_move(attacker, target, move):
 				else:
 					# apply damage
 					target.add_health(-damage)
-	                # TODO: target is hit animation
+					# TODO: target is hit animation
 					# show damage
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))
