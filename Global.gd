@@ -24,6 +24,7 @@ enum Scene {
 	GROUND_CONTROL,
 	SETTINGS,
 	LOOT_WINDOW
+	CREDITS
 }
 
 var TEXT_COLOR = {
@@ -316,6 +317,8 @@ func goto_scene(target_scene, function_call = null):
 			call_deferred("_deferred_goto_scene", target_scene, "res://settings/Settings.tscn")
 		Scene.LOOT_WINDOW:
 			call_deferred("_deferred_goto_scene", target_scene, "res://loot_window/LootWindow.tscn")
+		Scene.CREDITS:
+			call_deferred("_deferred_goto_scene", target_scene, "res://credits/Credits.tscn")
 
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing

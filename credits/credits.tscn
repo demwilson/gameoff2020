@@ -1,110 +1,110 @@
 [gd_scene load_steps=109 format=2]
 
-[ext_resource path="res://assets/Tony_Created_Assets/combat_background.png" type="Texture" id=1]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite17.png" type="Texture" id=2]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite18.png" type="Texture" id=3]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite9.png" type="Texture" id=4]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite19.png" type="Texture" id=5]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite23.png" type="Texture" id=6]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite1.png" type="Texture" id=7]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite5.png" type="Texture" id=8]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite20.png" type="Texture" id=9]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite7.png" type="Texture" id=10]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite25.png" type="Texture" id=11]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite26.png" type="Texture" id=12]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite2.png" type="Texture" id=13]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite11.png" type="Texture" id=14]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite3.png" type="Texture" id=15]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite14.png" type="Texture" id=16]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite22.png" type="Texture" id=17]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite31.png" type="Texture" id=18]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite32.png" type="Texture" id=19]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite27.png" type="Texture" id=20]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite33.png" type="Texture" id=21]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite35.png" type="Texture" id=22]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite28.png" type="Texture" id=23]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite37.png" type="Texture" id=24]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite38.png" type="Texture" id=25]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite39.png" type="Texture" id=26]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite8.png" type="Texture" id=27]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite40.png" type="Texture" id=28]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite41.png" type="Texture" id=29]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite42.png" type="Texture" id=30]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite43.png" type="Texture" id=31]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite36.png" type="Texture" id=32]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite45.png" type="Texture" id=33]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite34.png" type="Texture" id=34]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite46.png" type="Texture" id=35]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite47.png" type="Texture" id=36]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite49.png" type="Texture" id=37]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite6.png" type="Texture" id=38]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite48.png" type="Texture" id=39]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite4.png" type="Texture" id=40]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite44.png" type="Texture" id=41]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite29.png" type="Texture" id=42]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite50.png" type="Texture" id=43]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite21.png" type="Texture" id=44]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite13.png" type="Texture" id=45]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite16.png" type="Texture" id=46]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite12.png" type="Texture" id=47]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite30.png" type="Texture" id=48]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite15.png" type="Texture" id=49]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite10.png" type="Texture" id=50]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite24.png" type="Texture" id=51]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite52.png" type="Texture" id=52]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite56.png" type="Texture" id=53]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite54.png" type="Texture" id=54]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite53.png" type="Texture" id=55]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite55.png" type="Texture" id=56]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite51.png" type="Texture" id=57]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite69.png" type="Texture" id=58]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite68.png" type="Texture" id=59]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite57.png" type="Texture" id=60]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite59.png" type="Texture" id=61]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite58.png" type="Texture" id=62]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite63.png" type="Texture" id=63]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite61.png" type="Texture" id=64]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite62.png" type="Texture" id=65]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite65.png" type="Texture" id=66]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite66.png" type="Texture" id=67]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite64.png" type="Texture" id=68]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite67.png" type="Texture" id=69]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite60.png" type="Texture" id=70]
-[ext_resource path="res://assets/Tony_Created_Assets/astro_idle.png" type="Texture" id=71]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite79.png" type="Texture" id=72]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite84.png" type="Texture" id=73]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite80.png" type="Texture" id=74]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite81.png" type="Texture" id=75]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite71.png" type="Texture" id=76]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite83.png" type="Texture" id=77]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite90.png" type="Texture" id=78]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite89.png" type="Texture" id=79]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite74.png" type="Texture" id=80]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite75.png" type="Texture" id=81]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite82.png" type="Texture" id=82]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite85.png" type="Texture" id=83]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite70.png" type="Texture" id=84]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite88.png" type="Texture" id=85]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite72.png" type="Texture" id=86]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite78.png" type="Texture" id=87]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite87.png" type="Texture" id=88]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite73.png" type="Texture" id=89]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite76.png" type="Texture" id=90]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite77.png" type="Texture" id=91]
-[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite86.png" type="Texture" id=92]
-[ext_resource path="res://assets/Tony_Created_Assets/Astro_idle_damaged.png" type="Texture" id=93]
-[ext_resource path="res://assets/Tony_Created_Assets/tardigrade0.png" type="Texture" id=94]
-[ext_resource path="res://assets/Tony_Created_Assets/tardigrade0_damaged.png" type="Texture" id=95]
-[ext_resource path="res://assets/Music/overworld.wav" type="AudioStream" id=96]
-[ext_resource path="res://assets/Tony_Created_Assets/robot2.png" type="Texture" id=97]
-[ext_resource path="res://assets/Tony_Created_Assets/robot2_damaged.png" type="Texture" id=98]
-[ext_resource path="res://assets/Tony_Created_Assets/robot1.png" type="Texture" id=99]
-[ext_resource path="res://assets/Tony_Created_Assets/robot1_damaged.png" type="Texture" id=100]
-[ext_resource path="res://credits/credits.gd" type="Script" id=101]
+[ext_resource path="res://assets/Tony_Created_Assets/astro_idle.png" type="Texture" id=1]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite42.png" type="Texture" id=2]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite43.png" type="Texture" id=3]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite36.png" type="Texture" id=4]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite45.png" type="Texture" id=5]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite34.png" type="Texture" id=6]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite46.png" type="Texture" id=7]
+[ext_resource path="res://credits/credits.gd" type="Script" id=8]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite11.png" type="Texture" id=9]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite18.png" type="Texture" id=10]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite22.png" type="Texture" id=11]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite5.png" type="Texture" id=12]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite3.png" type="Texture" id=13]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite38.png" type="Texture" id=14]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite39.png" type="Texture" id=15]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite8.png" type="Texture" id=16]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite28.png" type="Texture" id=17]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite37.png" type="Texture" id=18]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite40.png" type="Texture" id=19]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite41.png" type="Texture" id=20]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite9.png" type="Texture" id=21]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite2.png" type="Texture" id=22]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite26.png" type="Texture" id=23]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite19.png" type="Texture" id=24]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite25.png" type="Texture" id=25]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite14.png" type="Texture" id=26]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite23.png" type="Texture" id=27]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite17.png" type="Texture" id=28]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite20.png" type="Texture" id=29]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite7.png" type="Texture" id=30]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite1.png" type="Texture" id=31]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite31.png" type="Texture" id=32]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite32.png" type="Texture" id=33]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite27.png" type="Texture" id=34]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite33.png" type="Texture" id=35]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite35.png" type="Texture" id=36]
+[ext_resource path="res://assets/Tony_Created_Assets/combat_background.png" type="Texture" id=37]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite73.png" type="Texture" id=38]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite81.png" type="Texture" id=39]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite60.png" type="Texture" id=40]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite56.png" type="Texture" id=41]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite10.png" type="Texture" id=42]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite83.png" type="Texture" id=43]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite77.png" type="Texture" id=44]
+[ext_resource path="res://assets/Tony_Created_Assets/tardigrade0.png" type="Texture" id=45]
+[ext_resource path="res://assets/Tony_Created_Assets/tardigrade0_damaged.png" type="Texture" id=46]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite6.png" type="Texture" id=47]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite57.png" type="Texture" id=48]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite84.png" type="Texture" id=49]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite87.png" type="Texture" id=50]
+[ext_resource path="res://assets/Tony_Created_Assets/robot2.png" type="Texture" id=51]
+[ext_resource path="res://assets/Tony_Created_Assets/robot2_damaged.png" type="Texture" id=52]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite49.png" type="Texture" id=53]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite72.png" type="Texture" id=54]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite79.png" type="Texture" id=55]
+[ext_resource path="res://assets/Tony_Created_Assets/robot1.png" type="Texture" id=56]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite50.png" type="Texture" id=57]
+[ext_resource path="res://assets/Tony_Created_Assets/robot1_damaged.png" type="Texture" id=58]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite12.png" type="Texture" id=59]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite51.png" type="Texture" id=60]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite58.png" type="Texture" id=61]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite67.png" type="Texture" id=62]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite78.png" type="Texture" id=63]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite30.png" type="Texture" id=64]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite24.png" type="Texture" id=65]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite63.png" type="Texture" id=66]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite16.png" type="Texture" id=67]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite53.png" type="Texture" id=68]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite64.png" type="Texture" id=69]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite48.png" type="Texture" id=70]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite66.png" type="Texture" id=71]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite71.png" type="Texture" id=72]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite85.png" type="Texture" id=73]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite68.png" type="Texture" id=74]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite29.png" type="Texture" id=75]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite47.png" type="Texture" id=76]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite70.png" type="Texture" id=77]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite88.png" type="Texture" id=78]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite86.png" type="Texture" id=79]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite65.png" type="Texture" id=80]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite90.png" type="Texture" id=81]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite52.png" type="Texture" id=82]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite59.png" type="Texture" id=83]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite4.png" type="Texture" id=84]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite55.png" type="Texture" id=85]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite69.png" type="Texture" id=86]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite62.png" type="Texture" id=87]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite75.png" type="Texture" id=88]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite76.png" type="Texture" id=89]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite21.png" type="Texture" id=90]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite13.png" type="Texture" id=91]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite15.png" type="Texture" id=92]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite44.png" type="Texture" id=93]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite89.png" type="Texture" id=94]
+[ext_resource path="res://assets/Tony_Created_Assets/Astro_idle_damaged.png" type="Texture" id=95]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite54.png" type="Texture" id=96]
+[ext_resource path="res://assets/Music/overworld.wav" type="AudioStream" id=97]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite80.png" type="Texture" id=98]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite74.png" type="Texture" id=99]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite82.png" type="Texture" id=100]
+[ext_resource path="res://assets/Tony_Created_Assets/satellite/satellite61.png" type="Texture" id=101]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 7 ), ExtResource( 13 ), ExtResource( 15 ), ExtResource( 40 ), ExtResource( 8 ), ExtResource( 38 ), ExtResource( 10 ), ExtResource( 27 ), ExtResource( 4 ), ExtResource( 50 ), ExtResource( 14 ), ExtResource( 47 ), ExtResource( 45 ), ExtResource( 16 ), ExtResource( 49 ), ExtResource( 46 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 44 ), ExtResource( 17 ), ExtResource( 6 ), ExtResource( 51 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 42 ), ExtResource( 48 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 34 ), ExtResource( 22 ), ExtResource( 32 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 41 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 37 ), ExtResource( 43 ), ExtResource( 57 ), ExtResource( 52 ), ExtResource( 55 ), ExtResource( 54 ), ExtResource( 56 ), ExtResource( 53 ), ExtResource( 60 ), ExtResource( 62 ), ExtResource( 61 ), ExtResource( 70 ), ExtResource( 64 ), ExtResource( 65 ), ExtResource( 63 ), ExtResource( 68 ), ExtResource( 66 ), ExtResource( 67 ), ExtResource( 69 ), ExtResource( 59 ), ExtResource( 58 ), ExtResource( 84 ), ExtResource( 76 ), ExtResource( 86 ), ExtResource( 89 ), ExtResource( 80 ), ExtResource( 81 ), ExtResource( 90 ), ExtResource( 91 ), ExtResource( 87 ), ExtResource( 72 ), ExtResource( 74 ), ExtResource( 75 ), ExtResource( 82 ), ExtResource( 77 ), ExtResource( 73 ), ExtResource( 83 ), ExtResource( 92 ), ExtResource( 88 ), ExtResource( 85 ), ExtResource( 79 ), ExtResource( 78 ) ],
+"frames": [ ExtResource( 31 ), ExtResource( 22 ), ExtResource( 13 ), ExtResource( 84 ), ExtResource( 12 ), ExtResource( 47 ), ExtResource( 30 ), ExtResource( 16 ), ExtResource( 21 ), ExtResource( 42 ), ExtResource( 9 ), ExtResource( 59 ), ExtResource( 91 ), ExtResource( 26 ), ExtResource( 92 ), ExtResource( 67 ), ExtResource( 28 ), ExtResource( 10 ), ExtResource( 24 ), ExtResource( 29 ), ExtResource( 90 ), ExtResource( 11 ), ExtResource( 27 ), ExtResource( 65 ), ExtResource( 25 ), ExtResource( 23 ), ExtResource( 34 ), ExtResource( 17 ), ExtResource( 75 ), ExtResource( 64 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 6 ), ExtResource( 36 ), ExtResource( 4 ), ExtResource( 18 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 93 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 76 ), ExtResource( 70 ), ExtResource( 53 ), ExtResource( 57 ), ExtResource( 60 ), ExtResource( 82 ), ExtResource( 68 ), ExtResource( 96 ), ExtResource( 85 ), ExtResource( 41 ), ExtResource( 48 ), ExtResource( 61 ), ExtResource( 83 ), ExtResource( 40 ), ExtResource( 101 ), ExtResource( 87 ), ExtResource( 66 ), ExtResource( 69 ), ExtResource( 80 ), ExtResource( 71 ), ExtResource( 62 ), ExtResource( 74 ), ExtResource( 86 ), ExtResource( 77 ), ExtResource( 72 ), ExtResource( 54 ), ExtResource( 38 ), ExtResource( 99 ), ExtResource( 88 ), ExtResource( 89 ), ExtResource( 44 ), ExtResource( 63 ), ExtResource( 55 ), ExtResource( 98 ), ExtResource( 39 ), ExtResource( 100 ), ExtResource( 43 ), ExtResource( 49 ), ExtResource( 73 ), ExtResource( 79 ), ExtResource( 50 ), ExtResource( 78 ), ExtResource( 94 ), ExtResource( 81 ) ],
 "loop": true,
 "name": "satelite",
 "speed": 10.0
@@ -112,17 +112,17 @@ animations = [ {
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
-atlas = ExtResource( 71 )
+atlas = ExtResource( 1 )
 region = Rect2( 192, 0, 32, 64 )
 
 [sub_resource type="AtlasTexture" id=3]
 flags = 4
-atlas = ExtResource( 71 )
+atlas = ExtResource( 1 )
 region = Rect2( 224, 0, 32, 64 )
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
-"frames": [ ExtResource( 93 ), SubResource( 2 ), SubResource( 3 ) ],
+"frames": [ ExtResource( 95 ), SubResource( 2 ), SubResource( 3 ) ],
 "loop": true,
 "name": "astro",
 "speed": 6.01
@@ -130,7 +130,7 @@ animations = [ {
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ ExtResource( 94 ), ExtResource( 95 ) ],
+"frames": [ ExtResource( 45 ), ExtResource( 46 ) ],
 "loop": true,
 "name": "tardigrade",
 "speed": 5.0
@@ -138,7 +138,7 @@ animations = [ {
 
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ ExtResource( 97 ), ExtResource( 98 ) ],
+"frames": [ ExtResource( 51 ), ExtResource( 52 ) ],
 "loop": true,
 "name": "yellowrobot",
 "speed": 2.0
@@ -146,14 +146,14 @@ animations = [ {
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ ExtResource( 99 ), ExtResource( 100 ) ],
+"frames": [ ExtResource( 56 ), ExtResource( 58 ) ],
 "loop": true,
 "name": "grayrobot",
 "speed": 2.0
 } ]
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource( 101 )
+script = ExtResource( 8 )
 
 [node name="credits" type="CanvasLayer" parent="."]
 
@@ -169,7 +169,7 @@ __meta__ = {
 margin_top = 64.0
 margin_right = 640.0
 margin_bottom = 280.0
-texture = ExtResource( 1 )
+texture = ExtResource( 37 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -179,7 +179,7 @@ position = Vector2( 319.902, 50.6747 )
 scale = Vector2( 1, 1.01327 )
 frames = SubResource( 1 )
 animation = "satelite"
-frame = 39
+frame = 5
 playing = true
 
 [node name="astro" type="AnimatedSprite" parent="credits/creditbackground"]
@@ -187,6 +187,7 @@ position = Vector2( 448, 168 )
 scale = Vector2( 0.994147, 1 )
 frames = SubResource( 4 )
 animation = "astro"
+frame = 2
 playing = true
 
 [node name="tardigrade" type="AnimatedSprite" parent="credits/creditbackground"]
@@ -200,12 +201,14 @@ playing = true
 position = Vector2( 169.309, 96.6408 )
 frames = SubResource( 6 )
 animation = "yellowrobot"
+frame = 1
 playing = true
 
 [node name="grayrobot" type="AnimatedSprite" parent="credits/creditbackground"]
 position = Vector2( 472, 104 )
 frames = SubResource( 7 )
 animation = "grayrobot"
+frame = 1
 playing = true
 flip_h = true
 
@@ -254,11 +257,11 @@ autowrap = true
 
 [node name="retry" type="Button" parent="credits/creditstext"]
 visible = false
-margin_left = 72.0
+margin_left = 56.0
 margin_top = 56.0
-margin_right = 136.0
+margin_right = 152.0
 margin_bottom = 76.0
-text = "Retry"
+text = "Back to title"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -276,6 +279,6 @@ text = "Thank you for playing"
 align = 1
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 96 )
+stream = ExtResource( 97 )
 autoplay = true
 [connection signal="pressed" from="credits/creditstext/retry" to="." method="_on_retry_pressed"]
