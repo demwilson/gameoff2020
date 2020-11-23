@@ -9,6 +9,7 @@ const Move = preload("res://game/Move.gd")
 const Moves = preload("res://game/Moves.gd")
 const Stats = preload("res://game/Stats.gd")
 
+onready var audio = $AudioStreamPlayer
 onready var loot_list = $CanvasLayer/NinePatchRect/Equipment/EquipList
 
 #Character main stats
@@ -87,5 +88,10 @@ func _input(event):
 		return
 	elif event.is_action("stats_profile"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
-	
+		
+func set_audio(value):
+	if value:
+		audio.play()
+	else:
+		audio.stop()
 

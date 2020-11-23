@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var audio = get_node("AudioStreamPlayer2D")
+onready var audio = get_node("AudioStreamPlayer")
 #Count on button clicks
 var Button_Click = {
 	"Oxygen": Global.Upgrades.Oxygen,

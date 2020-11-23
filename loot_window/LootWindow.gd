@@ -48,6 +48,8 @@ func possible_roll_up(loot_bag):
 				Global.roll_up_percentage += ROLL_UP_STEP
 
 func _on_ok_button_pressed():
-	Global.goto_scene(Global.Scene.OVERWORLD)
+	if scene == Global.Scene.COMBAT:
+		Global.goto_scene(Global.Scene.OVERWORLD)
+	
 	emit_signal("loot_window_closed")
 	self.queue_free()
