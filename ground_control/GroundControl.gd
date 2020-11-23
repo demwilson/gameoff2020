@@ -170,25 +170,25 @@ func get_cost(type, level):
 		UpgradeType.ATTACK:
 			return (level + 1) * 12
 		UpgradeType.ACCURACY:
-			return(level + 1) * 10
+			return(level + 1) * 8
 		UpgradeType.DEFENSE:
-			return(level + 1) * 15
+			return(level + 1) * 10
 		UpgradeType.SPEED:
 			return (level + 1) * 20
 		UpgradeType.EVADE:
-			return (level + 1) * 24
+			return (level + 1) * 18
 		UpgradeType.BASICWEAPONS:
-			return (level + 1) * 50
+			return (level + 1) * 30
 		UpgradeType.BASICDEFENSE:
 			return (level + 1) * 30
 		UpgradeType.COMBATTRAINING:
-			return (level + 1) * 60
+			return (level + 1) * 40
 		UpgradeType.ADVANCEWEAPONS:
-			return (level + 1) * 75
+			return (level + 1) * 40
 		UpgradeType.ADVANCEDEFENSE:
-			return (level + 1) * 50
+			return (level + 1) * 40
 		UpgradeType.ADVANCETRAINING:
-			return (level + 1) * 60
+			return (level + 1) * 50
 			
 func spend_currency(cost):
 	

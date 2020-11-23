@@ -12,6 +12,7 @@ enum AnimationPath {
 	BASIC_ATTACK,
 	FIREBOLT,
 	HEAL,
+	ACID_SPIT,
 }
 
 enum AnimationDetail {
@@ -26,6 +27,7 @@ const animation_details = [
 	["melee_attack",  Vector2(-16, 8), 34, 1, false],
 	["fireball_power_up", Vector2(-16, 8), 23, 1, false],
 	["healing", Vector2(0, -32), 51, 1, true],
+	["acid_spit", Vector2(-16, 8), 43, 1, false],
 ]
 
 var id
@@ -56,4 +58,6 @@ static func calculate_damage(formula, stat, bonus, variance):
 	return (formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus) * variance
 
 static func calculate_accuracy(formula, stat, bonus):
-	return formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus
+	var accuracy_calculation = formula[MoveFormula.BASE] + (formula[MoveFormula.MULTIPLIER] * stat) + bonus
+	Global.log(Settings.LogLevel.TRACE, "ACCURACY: " + str(accuracy_calculation))
+	return accuracy_calculation

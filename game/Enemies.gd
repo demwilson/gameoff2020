@@ -27,6 +27,13 @@ func get_random_enemy_by_tier_level(tier_level):
 	var selected_enemy_position = Global.random.randi() % enemies_tier_list.size()
 	return enemies_tier_list[selected_enemy_position]
 
+func get_enemies_by_tier_level(tier_level):
+	var enemies_tier_list = []
+	for enemy in self._enemies:
+		if enemy.get_tier() == tier_level:
+			enemies_tier_list.append(enemy)
+	return enemies_tier_list
+
 func get_enemy_by_id(id):
 	if id < self._enemies.size():
 		return self._enemies[id]

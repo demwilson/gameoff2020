@@ -1,5 +1,6 @@
 extends Node2D
 
+const LootItem = preload("res://game/LootItem.gd")
 const Creature = preload("res://game/Creature.gd")
 const GlobalPlayer = preload("res://game/GlobalPlayer.gd")
 const Item = preload("res://game/Item.gd")
@@ -7,6 +8,8 @@ const Items = preload("res://game/Items.gd")
 const Move = preload("res://game/Move.gd")
 const Moves = preload("res://game/Moves.gd")
 const Stats = preload("res://game/Stats.gd")
+
+onready var loot_list = $CanvasLayer/NinePatchRect/Equipment/EquipList
 
 #Character main stats
 var current_hp = Global.player.get_health()
@@ -21,6 +24,12 @@ var accuracy = Global.player.get_stat(Stats.ACCURACY)
 var speed = Global.player.get_stat(Stats.SPEED)
 var defense = Global.player.get_stat(Stats.DEFENSE)
 var evade = Global.player.get_stat(Stats.EVADE)
+# Stat Bonuses
+var attack_bonus = Global.player.get_bonus(Stats.ATTACK)
+var accuracy_bonus = Global.player.get_bonus(Stats.ACCURACY)
+# No speed bonus
+var defense_bonus = Global.player.get_bonus(Stats.DEFENSE)
+var evade_bonus = Global.player.get_bonus(Stats.EVADE)
 
 #Moves
 func obtain_move_list():
@@ -47,14 +56,13 @@ func obtain_equipment_list():
 	equip_id = Global.player.get_items()
 	for id in equip_id:
 		var item = Global.items.get_item_by_id(id)
-		equip_list.append(item)
+		var loot_item = LootItem.new(Items.LootType.GEAR, item)
+		equip_list.append(loot_item)
 	return equip_list
 	
 func populate_equipment_list():
 	var equips = obtain_equipment_list()
-	for item in equips:
-		var item_name = item.name
-		$CanvasLayer/NinePatchRect/Equipment/EquipList.add_item(item_name, null, true)
+	Global.populate_loot_list(loot_list, equips)
 		
 func set_data():
 	
@@ -62,11 +70,11 @@ func set_data():
 	$CanvasLayer/NinePatchRect/Character/HP.text = "HP: " + str(current_hp) + "/" + str(max_hp)
 	$CanvasLayer/NinePatchRect/Character/Oxygen.text = "Oxygen: " + str(current_oxygen) + "/" + str(max_oxygen)
 	
-	$CanvasLayer/NinePatchRect/Character/Abilities/Attack.text = "Attack: " + str(attack)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Accuracy.text = "Accuracy: " + str(accuracy)
+	$CanvasLayer/NinePatchRect/Character/Abilities/Attack.text = "Attack: " + str(attack) + " + " + str(attack_bonus)
+	$CanvasLayer/NinePatchRect/Character/Abilities/Accuracy.text = "Accuracy: " + str(accuracy) + " + " + str(accuracy_bonus)
 	$CanvasLayer/NinePatchRect/Character/Abilities/Speed.text = "Speed: " + str(speed)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Defense.text = "Defense: " + str(defense)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Evade.text = "Evade: " + str(evade)
+	$CanvasLayer/NinePatchRect/Character/Abilities/Defense.text = "Defense: " + str(defense) + " + " + str(defense_bonus)
+	$CanvasLayer/NinePatchRect/Character/Abilities/Evade.text = "Evade: " + str(evade) + " + " + str(evade_bonus)
 	
 	populate_move_list()
 	populate_equipment_list()
