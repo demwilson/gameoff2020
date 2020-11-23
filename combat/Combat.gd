@@ -379,7 +379,7 @@ func check_action_queue():
 func confirm_combat_action(combat_action):
 	if !combat_action.creature.is_alive():
 		return null
-	if !_current_combat_action.target && !_current_combat_action.target.is_alive():
+	if _current_combat_action.target && !_current_combat_action.target.is_alive():
 		match combat_action.move.type:
 			Move.MoveType.HEAL:
 				return null
@@ -536,7 +536,7 @@ func check_to_hit(accuracy):
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
-	var processed = (evade * 5) + bonus_evade - (move_level * 5)
+	var processed = (evade * EVADE_MULTIPLIER) + bonus_evade - (move_level * EVADE_MULTIPLIER)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER
@@ -550,7 +550,7 @@ func calculate_damage(min_damage, max_damage):
 	return rand
 
 func calculate_defense(defense, bonus_defense):
-	var processed = (defense * 2) + bonus_defense
+	var processed = (defense * DEFENSE_MULTIPLIER) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed
 

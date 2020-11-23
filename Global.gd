@@ -191,8 +191,8 @@ func _ready():
 		),
 		Enemy.new(
 			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 45, 45,
-			Creature.Stats.new([3, 3, 3.2, 8, 3]),
-			Creature.Stats.new([5, 0, 0, 4, 5]),
+			Creature.Stats.new([3, 3, 3.2, 0, 3]),
+			Creature.Stats.new([5, 0, 0, 20, 5]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
 			[Moves.MoveList.MELEE_T1]
 		),
@@ -205,29 +205,29 @@ func _ready():
 		),
 		Enemy.new(
 			2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 31, 31,
-			Creature.Stats.new([2, 2, 3, 2, 5]),
-			Creature.Stats.new([2, 4, 0, 6, 10]),
+			Creature.Stats.new([2, 2, 3, 0, 5]),
+			Creature.Stats.new([2, 4, 0, 10, 10]),
 			Creature.BasePath.BUG, Creature.Behavior.STUPID,
 			[Moves.MoveList.MELEE_T1]
 		),
 		Enemy.new(
 			1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35,
-			Creature.Stats.new([2, 3, 1.5, 5, 0]),
-			Creature.Stats.new([2, 5, 1.2, 10, 0]),
+			Creature.Stats.new([2, 3, 1.5, 0, 0]),
+			Creature.Stats.new([2, 5, 1.2, 20, 0]),
 			Creature.BasePath.ROBOT, Creature.Behavior.STUPID,
 			[Moves.MoveList.MELEE_T0]
 		),
 		Enemy.new(
 			2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 70, 70,
-			Creature.Stats.new([3, 3, 2, 20, 2]),
-			Creature.Stats.new([2, 4, 0, 0, 5]),
+			Creature.Stats.new([3, 3, 2, 0, 2]),
+			Creature.Stats.new([2, 4, 0, 40, 5]),
 			Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED,
 			[Moves.MoveList.MELEE_T2]
 		),
 		Enemy.new(
 			0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 160, 160,
-			Creature.Stats.new([5, 5, 4.1, 5, 5]),
-			Creature.Stats.new([5, 5, 0, 15, 0]),
+			Creature.Stats.new([5, 5, 4.1, 0, 5]),
+			Creature.Stats.new([5, 5, 0, 25, 0]),
 			Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS,
 			[Moves.MoveList.MELEE_T2]
 		),
