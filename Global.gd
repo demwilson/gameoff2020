@@ -1,5 +1,7 @@
 extends Node
 
+const Combat = preload("res://combat/Combat.gd")
+const CombatCreature = preload("res://combat/CombatCreature.gd")
 const Creature = preload("res://game/Creature.gd")
 const GlobalPlayer = preload("res://game/GlobalPlayer.gd")
 const Enemy = preload("res://game/Enemy.gd")
@@ -40,8 +42,8 @@ const BASE_ATTACK_VALUE = 3
 const BASE_ACCURACY_VALUE = 1
 const BASE_SPEED_VALUE = 2
 const STAT_STEP = 1
-const OXYGEN_STEP = 50
-const HEALTH_STEP = 20
+const OXYGEN_STEP = 80
+const HEALTH_STEP = 25
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -68,8 +70,8 @@ var Upgrades = {
 
 # game mechanics
 const PLAYER_NAME = "Astronaut"
-const BASE_HEALTH = 100
-const BASE_OXYGEN = 200
+const BASE_HEALTH = 1000
+const BASE_OXYGEN = 20000
 const CURRENCY_TEXT = "Moon Rocks"
 const OXYGEN_TEXT = "Units of Oxygen"
 const ONE_CURRENCY_TEXT = "Moon Rock"
@@ -85,11 +87,14 @@ var roll_up_percentage = 1
 var boss_fight = false
 
 # Debugging purposes
+var log_file
 var random
 var current_seed
 var seed_value = null
 
 func _ready():
+	log_file = File.new()
+	log_file.open("user://log_file.log", File.WRITE)
 	# Add debugging settings here
 	if Settings.debug >= Settings.LogLevel.TRACE:
 		currency = 6000
@@ -108,23 +113,24 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
-		Move.new(0, "Weak Swing", 0, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [1, 2], [90, 0]),
-		Move.new(1, "Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.7, 1.1, [2, 2], [85, 3]),
-		Move.new(2, "Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.25, [2, 3], [80, 6]),
-		Move.new(3, "Masterful Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [3, 4], [75, 9]),
-		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
-		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], [Moves.MoveList.HEAL_T1]),
-		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
-		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
-		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], [Moves.MoveList.PSY_T1]),
-		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
+		Move.new(0, "Weak Swing", 0, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [1, 2], [95, 0]),
+		Move.new(1, "Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.1, [3, 2], [90, 5]),
+		Move.new(2, "Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.90, 1.25, [5, 3], [85, 7]),
+		Move.new(3, "Flawless Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [7, 4], [75, 9]),
+		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 3], null),
+		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 5], null, [Moves.MoveList.HEAL_T1]),
+		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [20, 7], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.5, 1.5, [3, 3], [70, 3]),
+		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.75, 1.75, [25, 4], [55, 4], [Moves.MoveList.PSY_T1]),
+		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [40, 8], [45, 6], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
+		Move.new(10, "Acid Spray", 5, Move.MoveType.DAMAGE, Move.AnimationPath.ACID_SPIT, 1, 1.5, [3, 4], [75, 9]),
 	]
 	var available_items = [
 		# Game Start
 		Item.new(0, "Crowbar", Item.ItemTier.GAME_START, Item.ItemType.MOVE, "You swing the crowbar.", Moves.MoveList.MELEE_T0),
 
 		# T1 Bonus Items
-		Item.new(1, "Flimsy Sword", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "This is an almost useless sword.", [Creature.Stats.ATTACK, 1]),
+		Item.new(1, "Dull Dagger", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Sharp enough to cut butter.", [Creature.Stats.ATTACK, 1]),
 		Item.new(2, "Ruler", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Helps with measurements.", [Creature.Stats.ACCURACY, 1]),
 		# No bonuses allowed for speed
 		Item.new(3, "Flimsy Buckler", Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, "Only a shield in the most technical sense.", [Creature.Stats.DEFENSE, 1]),
@@ -143,11 +149,11 @@ func _ready():
 		Item.new(13, "Med Kit", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "Patching yourself up when you need it!", Moves.MoveList.HEAL_T1),
 
 		# T2 Bonus Items
-		Item.new(14, "Basic Phaser", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "Point and pull the trigger.", [Creature.Stats.ATTACK, 4]),
-		Item.new(15, "Aged Sight", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "It still helps.", [Creature.Stats.ACCURACY, 4]),
+		Item.new(14, "Basic Phaser", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "Point and pull the trigger.", [Creature.Stats.ATTACK, 2]),
+		Item.new(15, "Aged Sight", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "It still helps.", [Creature.Stats.ACCURACY, 2]),
 		# No bonuses allowed for speed
-		Item.new(16, "Basic Energy Shield", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "It will absorb some of the blow.", [Creature.Stats.DEFENSE, 4]),
-		Item.new(17, "Proximity Sensor", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "You will know when they are close.", [Creature.Stats.EVADE, 4]),
+		Item.new(16, "Basic Energy Shield", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "It will absorb some of the blow.", [Creature.Stats.DEFENSE, 2]),
+		Item.new(17, "Proximity Sensor", Item.ItemTier.LEVEL_TWO, Item.ItemType.BONUS, "You will know when they are close.", [Creature.Stats.EVADE, 2]),
 		# Advanced Stat Items
 		Item.new(18, "Strength Amplifiers", Item.ItemTier.LEVEL_TWO, Item.ItemType.STAT, "Now you know true strength.", [Creature.Stats.ATTACK, 2]),
 		Item.new(19, "Cybernetic Eye", Item.ItemTier.LEVEL_TWO, Item.ItemType.STAT, "This eye knows where things are even if you don't.", [Creature.Stats.ACCURACY, 2]),
@@ -162,11 +168,11 @@ func _ready():
 		Item.new(26, "Stim Injections", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "The injections make you feel invincible!", Moves.MoveList.HEAL_T2),
 
 		# T3 Bonus Items
-		Item.new(27, "Plasma Sabre", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It cuts ALL THE THINGS!", [Creature.Stats.ATTACK, 8]),
-		Item.new(28, "Locking System", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "Nothing will escape you.", [Creature.Stats.ACCURACY, 8]),
+		Item.new(27, "Plasma Sabre", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It cuts ALL THE THINGS!", [Creature.Stats.ATTACK, 4]),
+		Item.new(28, "Locking System", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "Nothing will escape you.", [Creature.Stats.ACCURACY, 4]),
 		# No bonuses allowed for speed
-		Item.new(29, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It will absorb most of the blow.", [Creature.Stats.DEFENSE, 8]),
-		Item.new(30, "Foresight Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "See what happens before you make a decision.", [Creature.Stats.EVADE, 8]),
+		Item.new(29, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It will absorb most of the blow.", [Creature.Stats.DEFENSE, 4]),
+		Item.new(30, "Foresight Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "See what happens before you make a decision.", [Creature.Stats.EVADE, 4]),
 		# Advanced Stat Items
 		Item.new(31, "Quantum Strength", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Oh no... now you got math involved.", [Creature.Stats.ATTACK, 4]),
 		Item.new(32, "Third Eye", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Nothing can hide.", [Creature.Stats.ACCURACY, 4]),
@@ -180,53 +186,53 @@ func _ready():
 	]
 	var available_enemies = [
 		Enemy.new(
-			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20,
-			Creature.Stats.new([2, 2, 2, 0, 1]),
-			Creature.Stats.new([0, 3, 0, 0, 0]),
+			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, 
+			Creature.Stats.new([3, 2, 2.3, 0, 1]),
+			Creature.Stats.new([3, 3, 0, 0, 2]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
-			[Moves.MoveList.MELEE_T1]
+			[Moves.MoveList.MELEE_T0]
 		),
 		Enemy.new(
-			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60,
-			Creature.Stats.new([3, 3, 3, 1, 3]),
-			Creature.Stats.new([5, 6, 0, 2, 5]),
+			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 45, 45,
+			Creature.Stats.new([3, 3, 3.2, 0, 3]),
+			Creature.Stats.new([5, 0, 0, 20, 5]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
-			[Moves.MoveList.MELEE_T2]
+			[Moves.MoveList.MELEE_T1]
 		),
 		Enemy.new(
 			1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10,
-			Creature.Stats.new([1, 1, 2, 0, 2]),
+			Creature.Stats.new([2, 1, 2.6, 0, 2]),
 			Creature.Stats.new([0, 4, 0, 0, 4]),
 			Creature.BasePath.BUG, Creature.Behavior.FOCUSED,
+			[Moves.MoveList.MELEE_T0]
+		),
+		Enemy.new(
+			2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 31, 31,
+			Creature.Stats.new([2, 2, 3, 0, 5]),
+			Creature.Stats.new([2, 4, 0, 10, 10]),
+			Creature.BasePath.BUG, Creature.Behavior.STUPID,
 			[Moves.MoveList.MELEE_T1]
 		),
 		Enemy.new(
-			2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35,
-			Creature.Stats.new([2, 2, 3, 1, 3]),
-			Creature.Stats.new([2, 4, 0, 1, 4]),
-			Creature.BasePath.BUG, Creature.Behavior.STUPID,
-			[Moves.MoveList.MELEE_T2]
-		),
-		Enemy.new(
 			1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35,
-			Creature.Stats.new(Creature.BASE_STATS),
-			Creature.Stats.new(Creature.BASE_BONUSES),
+			Creature.Stats.new([2, 3, 1.5, 0, 0]),
+			Creature.Stats.new([2, 5, 1.2, 20, 0]),
 			Creature.BasePath.ROBOT, Creature.Behavior.STUPID,
+			[Moves.MoveList.MELEE_T0]
+		),
+		Enemy.new(
+			2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 70, 70,
+			Creature.Stats.new([3, 3, 2, 0, 2]),
+			Creature.Stats.new([2, 4, 0, 40, 5]),
+			Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED,
 			[Moves.MoveList.MELEE_T2]
 		),
 		Enemy.new(
-			2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90,
-			Creature.Stats.new([3, 3, 3, 3, 3]),
-			Creature.Stats.new([4, 4, 0, 4, 4]),
-			Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED,
-			[Moves.MoveList.MELEE_T3]
-		),
-		Enemy.new(
-			0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200,
-			Creature.Stats.new([5, 5, 5, 5, 5]),
-			Creature.Stats.new([5, 5, 0, 5, 5]),
+			0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 160, 160,
+			Creature.Stats.new([5, 5, 4.1, 0, 5]),
+			Creature.Stats.new([5, 5, 0, 25, 0]),
 			Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS,
-			[Moves.MoveList.MELEE_T3]
+			[Moves.MoveList.ACID_T5]
 		),
 	]
 
@@ -236,6 +242,10 @@ func _ready():
 
 	# Build player after initializing everything
 	build_player()
+
+	# For Debugging Only
+	# analyze_moves()
+	# analyze_creatures()
 
 func build_player():
 	# Stats
@@ -309,7 +319,7 @@ func goto_scene(target_scene, function_call = null):
 		Scene.COMBAT:
 			_deferred_goto_scene(target_scene, "res://combat/Combat.tscn")
 		Scene.STATS:
-			_deferred_goto_scene(target_scene, "res://Stats.tscn")
+			_deferred_goto_scene(target_scene, "res://CharacterStats.tscn")
 		Scene.GAME_OVER:
 			call_deferred("_deferred_goto_scene", target_scene, "res://lose/Lose.tscn")
 		Scene.GROUND_CONTROL:
@@ -378,6 +388,8 @@ func persist_scene(scene, scene_node):
 
 func log(level, msg):
 	if level <= Settings.debug:
+		if log_file:
+			log_file.store_line(msg)
 		print(msg)
 
 # Useful functions
@@ -403,12 +415,68 @@ func populate_loot_list(loot_list, loot_bag):
 				loot_list.add_item(loot.item.name, null, false)
 				loot_list.set_item_tooltip(loot_list.get_item_count()-1, loot.item.get_description())
 			Items.LootType.CURRENCY:
-			    if loot.item == 1:
-			    	loot_list.add_item(str(loot.item) + " " + ONE_CURRENCY_TEXT, null, false)
+				if loot.item == 1:
+					loot_list.add_item(str(loot.item) + " " + ONE_CURRENCY_TEXT, null, false)
 				else:
 					loot_list.add_item(str(loot.item) + " " + CURRENCY_TEXT, null, false)
 			Items.LootType.OXYGEN:
-			    if loot.item == 1:
+				if loot.item == 1:
 					loot_list.add_item(str(loot.item) + " " + ONE_OXYGEN_TEXT, null, false)
 				else:
 					loot_list.add_item(str(loot.item) + " " + OXYGEN_TEXT, null, false)
+
+# Debugging tools
+func analyze_creatures():
+	var my_combat = Combat.new()
+	var static_position = Vector2(0,0)
+	Global.log(Settings.LogLevel.TRACE, "[analyze_creatures] -------------------- BEGIN ANALYSIS --------------------")
+	var creature_list = enemies.get_enemies_by_tier_level(2)
+	for thing in creature_list:
+		var enemy = thing
+		Global.log(Settings.LogLevel.TRACE, "NAME: " + enemy.get_name())
+		var creature = my_combat.build_combat_creature(enemy, static_position, CombatCreature.CombatantType.ENEMY)
+		var move_id = creature.get_move()
+		var move = Global.moves.get_move_by_id(move_id)
+		var damage = my_combat.get_damage(creature, creature, move)
+		var accuracy = Move.calculate_accuracy(move.accuracy, creature.get_stat("accuracy"), creature.get_bonus("accuracy"))
+		my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 0)
+		my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 1)
+		my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 2)
+		Global.log(Settings.LogLevel.TRACE, "-------------------- BREAK --------------------")
+	Global.log(Settings.LogLevel.TRACE, "[analyze_creatures] -------------------- END ANALYSIS --------------------")
+
+func analyze_moves():
+	var my_combat = Combat.new()
+	var static_position = Vector2(0,0)
+	var players = [
+		GlobalPlayer.new(
+			PLAYER_NAME,Creature.CreatureSize.LARGE_TALL,10,10,10,10,
+			Creature.Stats.new([3,1,2,0,0]),
+			Creature.Stats.new([0,0,0,0,0]),
+			[Items.ItemList.MELEE_T0], Creature.BasePath.PLAYER
+		),
+		GlobalPlayer.new(
+			PLAYER_NAME,Creature.CreatureSize.LARGE_TALL,10,10,10,10,
+			Creature.Stats.new([5,1,3,2,1]),
+			Creature.Stats.new([2,3,3,0,5]),
+			[Items.ItemList.MELEE_T0], Creature.BasePath.PLAYER
+		),
+		GlobalPlayer.new(
+			PLAYER_NAME,Creature.CreatureSize.LARGE_TALL,10,10,10,10,
+			Creature.Stats.new([6,4,5,3,3]),
+			Creature.Stats.new([8,4,2,0,8]),
+			[Items.ItemList.MELEE_T0], Creature.BasePath.PLAYER
+		),
+	]
+	Global.log(Settings.LogLevel.TRACE, "[analyze_moves] -------------------- BEGIN ANALYSIS --------------------")
+	for move in moves._moves:
+		for player_char in players:
+			var creature = my_combat.build_combat_creature(player_char, static_position, CombatCreature.CombatantType.ENEMY)
+			var damage = my_combat.get_damage(creature, creature, move)
+			if move.accuracy:
+				Move.calculate_accuracy(move.accuracy, creature.get_stat("accuracy"), creature.get_bonus("accuracy"))
+			my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 0)
+			my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 1)
+			my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 2)
+		Global.log(Settings.LogLevel.TRACE, "-------------------- BREAK --------------------")
+	Global.log(Settings.LogLevel.TRACE, "[analyze_moves] -------------------- END ANALYSIS --------------------")

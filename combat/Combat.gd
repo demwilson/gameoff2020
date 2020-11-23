@@ -12,6 +12,7 @@ enum CombatAnimationState {
 const PauseOverlay = preload("res://PauseOverlay.tscn")
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
+const Stats = preload("res://game/Stats.gd")
 var EnemyScene = preload("res://combat/enemies/CombatEnemy.tscn")
 var CombatCreature = preload("res://combat/CombatCreature.gd")
 var CombatEvent = preload("res://combat/CombatEvent.gd")
@@ -51,6 +52,8 @@ const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
+const DEFENSE_MULTIPLIER = 5
+const EVADE_MULTIPLIER = 5
 
 const MAX_MOVES_AVAILABLE = 6
 const MENU_ARROW_POSITION = 0
@@ -116,28 +119,7 @@ func _ready():
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
-		# Setup Scene
-		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", position)
-		creature_scene.creature_name = enemy.get_name()
-		creature_scene.show_name = true
-		creature_scene.creature_size = enemy.size
-		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier())
-		creature_scene.idle_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.ANIMATION_FILE_EXTENSION
-		creature_scene.connect("animation_step_complete", self, "next_animation_step")
-		var creature = CombatCreature.new(
-			CombatCreature.CombatantType.ENEMY,
-			enemy.get_name(),
-			creature_scene,
-			enemy.size,
-			enemy.get_max_health(),
-			enemy.get_health(),
-			enemy.get_moves(),
-			enemy.get_stats(),
-			enemy.get_bonuses(),
-			enemy.get_base_path(),
-			enemy.get_behavior()
-		)
+		var creature = build_combat_creature(enemy, position, CombatCreature.CombatantType.ENEMY)
 		enemies.append(creature)
 		CombatantBox.add_child(creature.scene)
 
@@ -152,30 +134,7 @@ func _ready():
 			ally = Global.player
 		else:
 			ally = Global.enemies.get_enemy_by_id(ally)
-		# Setup Scene
-		var creature_scene = EnemyScene.instance()
-		creature_scene.set("position", position)
-		if typeof(ally.get_tier()) == TYPE_INT:
-			creature_scene.set_flip_h(true)
-		creature_scene.creature_name = ally.get_name()
-		creature_scene.show_name = true
-		creature_scene.creature_size = ally.size
-		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier())
-		creature_scene.idle_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.ANIMATION_FILE_EXTENSION
-		creature_scene.connect("animation_step_complete", self, "next_animation_step")
-		creature = CombatCreature.new(
-			CombatCreature.CombatantType.ALLY,
-			ally.get_name(),
-			creature_scene,
-			ally.size,
-			ally.get_max_health(),
-			ally.get_health(),
-			ally.get_moves(),
-			ally.get_stats(),
-			ally.get_bonuses(),
-			ally.get_base_path(),
-			ally.get_behavior()
-		)
+		creature = build_combat_creature(ally, position, CombatCreature.CombatantType.ALLY)
 		allies.append(creature)
 		CombatantBox.add_child(creature.scene)
 	if Settings.debug >= Settings.LogLevel.TRACE:
@@ -282,6 +241,34 @@ func _input(event):
 				_menu_target = targeted_list[_hover]
 				add_selected_move_to_queue()
 				reset_menuing()
+
+func build_combat_creature(creature_details, position, combatant_type):
+	# Setup Scene
+	var creature_scene = EnemyScene.instance()
+	creature_scene.set("position", position)
+	# Flip the image for ally creatures that are not the player because we have them facing right by default
+	if combatant_type == CombatCreature.CombatantType.ALLY && typeof(creature_details.get_tier()) == TYPE_INT:
+		creature_scene.set_flip_h(true)
+	creature_scene.creature_name = creature_details.get_name()
+	creature_scene.show_name = true
+	creature_scene.creature_size = creature_details.size
+	creature_scene.texture_path = Creature.file_paths[creature_details.get_base_path()] + str(creature_details.get_tier())
+	creature_scene.idle_path = Creature.file_paths[creature_details.get_base_path()] + str(creature_details.get_tier()) + Global.ANIMATION_FILE_EXTENSION
+	creature_scene.connect("animation_step_complete", self, "next_animation_step")
+	var creature = CombatCreature.new(
+		combatant_type,
+		creature_details.get_name(),
+		creature_scene,
+		creature_details.size,
+		creature_details.get_max_health(),
+		creature_details.get_health(),
+		creature_details.get_moves(),
+		creature_details.get_stats(),
+		creature_details.get_bonuses(),
+		creature_details.get_base_path(),
+		creature_details.get_behavior()
+	)
+	return creature
 
 func update_hover(amount):
 	_hover += amount
@@ -395,7 +382,7 @@ func check_action_queue():
 func confirm_combat_action(combat_action):
 	if !combat_action.creature.is_alive():
 		return null
-	if !_current_combat_action.target.is_alive():
+	if _current_combat_action.target && !_current_combat_action.target.is_alive():
 		match combat_action.move.type:
 			Move.MoveType.HEAL:
 				return null
@@ -456,7 +443,7 @@ func execute_move(attacker, target, move):
 			log_arr.append("HEAL: " + str(damage))
 		Move.MoveType.DAMAGE:
 			# check for a hit
-			var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat("accuracy"), attacker.get_bonus("accuracy"))
+			var accuracy = Move.calculate_accuracy(move.accuracy, attacker.get_stat(Stats.ACCURACY), attacker.get_bonus(Stats.ACCURACY))
 			var target_hit = false
 			var target_evaded = false
 			var damaged_mitigated = false
@@ -464,7 +451,7 @@ func execute_move(attacker, target, move):
 				target_hit = true
 				log_arr.append("ATTACK HIT!")
 				# check for a evade
-				if check_to_evade(target.get_stat("evade"), target.get_bonus("evade"), move.level):
+				if check_to_evade(target.get_stat(Stats.EVADE), target.get_bonus(Stats.EVADE), move.level):
 					target_evaded = true
 					log_arr.append("ATTACK EVADED!")
 					apply_floating_text(target, EVADED_TEXT)
@@ -473,9 +460,6 @@ func execute_move(attacker, target, move):
 				apply_floating_text(target, MISSED_TEXT)
 
 			if target_hit && !target_evaded:
-				# get the damage range
-				var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-				var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
 				# get damage
 				var damage = get_damage(attacker, target, move)
 				if damage <= 0:
@@ -504,20 +488,39 @@ func execute_move(attacker, target, move):
 	Global.log(Settings.LogLevel.INFO, log_string)
 
 func get_damage(attacker, target, move):
-		# get the damage range
-		var minimum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.low)
-		var maximum = Move.calculate_damage(move.damage, attacker.get_stat("attack"), attacker.get_bonus("attack"), move.high)
-		# get raw damage
-		var raw_damage = calculate_damage(minimum, maximum)
-		var damage = raw_damage
-		if move.type == Move.MoveType.DAMAGE:
-			# calculate defense
-			var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
-			var damage_percentage = (MAX_PERCENTAGE - raw_defense)
-			var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
-			# mitigate damage
-			damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
-		return damage
+	var log_arr = []
+	log_arr.append("[get_damage] MOVE: " + move.name)
+	log_arr.append("ATTACKER STATS: " + str(attacker.pretty_print_stats()))
+	log_arr.append("ATTACKER BONUSES: " + str(attacker.pretty_print_bonuses()))
+	# get the damage range
+	var target_stat
+	if move.type == Move.MoveType.HEAL:
+		target_stat = Stats.DEFENSE
+	else:
+		target_stat = Stats.ATTACK
+	var minimum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.low)
+	log_arr.append("MIN: " + str(minimum))
+	var maximum = Move.calculate_damage(move.damage, attacker.get_stat(target_stat), attacker.get_bonus(target_stat), move.high)
+	log_arr.append("MAX: " + str(maximum))
+	# get raw damage
+	var raw_damage = calculate_damage(minimum, maximum)
+	log_arr.append("RAW DAMAGE: " + str(raw_damage))
+	var damage = raw_damage
+	if move.type == Move.MoveType.DAMAGE:
+		# calculate defense
+		log_arr.append("DEFENDER STATS: " + str(target.pretty_print_stats()))
+		log_arr.append("DEFENDER BONUSES: " + str(target.pretty_print_bonuses()))
+		var raw_defense = calculate_defense(target.get_stat("defense"), target.get_bonus("defense"))
+		log_arr.append("DEFENSE: " + str(raw_defense) + "%")
+		var damage_percentage = (MAX_PERCENTAGE - raw_defense)
+		var damage_multiplier = (damage_percentage / MAX_PERCENTAGE)
+		# mitigate damage
+		damage = max(MIN_DAMAGE, floor(raw_damage * damage_multiplier))
+		log_arr.append("ACTUAL DAMAGE: " + str(damage))
+	# Logging stuff
+	var log_string = PoolStringArray(log_arr).join("\n	")
+	Global.log(Settings.LogLevel.TRACE, log_string)
+	return damage
 
 func apply_floating_text(target, amount, type=null):
 	# Floating damage
@@ -538,7 +541,7 @@ func check_to_hit(accuracy):
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
-	var processed = (evade * 2) + bonus_evade - (move_level * 2)
+	var processed = (evade * EVADE_MULTIPLIER) + bonus_evade - (move_level * EVADE_MULTIPLIER)
 	if processed > EVADE_PROCESSED_MAX:
 		processed = EVADE_PROCESSED_MAX
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER
@@ -552,7 +555,7 @@ func calculate_damage(min_damage, max_damage):
 	return rand
 
 func calculate_defense(defense, bonus_defense):
-	var processed = (defense * 2) + bonus_defense
+	var processed = (defense * DEFENSE_MULTIPLIER) + bonus_defense
 	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed
 

@@ -93,3 +93,21 @@ func get_base_path():
 
 # moves
 func get_moves(): pass
+
+# Debugging tools
+func pretty_print_stats():
+	var pretty = []
+	pretty.append(Stats.ATTACK + ": " + str(self._stats[Stats.ATTACK]))
+	pretty.append(Stats.ACCURACY + ": " + str(self._stats[Stats.ACCURACY]))
+	pretty.append(Stats.SPEED + ": " + str(self._stats[Stats.SPEED]))
+	pretty.append(Stats.DEFENSE + ": " + str(self._stats[Stats.DEFENSE]))
+	pretty.append(Stats.EVADE + ": " + str(self._stats[Stats.EVADE]))
+	return PoolStringArray(pretty).join(", ")
+func pretty_print_bonuses():
+	var pretty = []
+	pretty.append(Stats.ATTACK + ": " + str(self._bonuses[Stats.ATTACK]))
+	pretty.append(Stats.ACCURACY + ": " + str(self._bonuses[Stats.ACCURACY]))
+	pretty.append(Stats.SPEED + ": " + str(self._bonuses[Stats.SPEED]))
+	pretty.append(Stats.DEFENSE + ": " + str(self._bonuses[Stats.DEFENSE]))
+	pretty.append(Stats.EVADE + ": " + str(self._bonuses[Stats.EVADE]))
+	return PoolStringArray(pretty).join(", ")
