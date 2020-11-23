@@ -2,11 +2,14 @@ extends "res://game/Creature.gd"
 
 const Item = preload("res://game/Item.gd")
 
+const MAX_ALLIES = 2
+
 var _tier = null
 var _items = null
 var _max_oxygen = null
 var _oxygen = null
 var _combat_count = 0
+var _floor_key = false
 
 func _init(name, size, max_health, health, max_oxygen, oxygen, stats, bonuses, items, base_path, behavior=Behavior.PLAYER, tier="").(name, size, max_health, health, stats, bonuses, base_path, behavior):
 	self._max_oxygen = max_oxygen
@@ -50,6 +53,12 @@ func add_combat_count(value):
 	self.set_combat_count(self._combat_count + value)
 func set_combat_count(value):
 	self._combat_count = value
+	
+func set_floor_key(value):
+	self._floor_key = value
+
+func get_floor_key():
+	return self._floor_key
 
 func get_stat(type):
 	var bonus = .get_stat(type)
@@ -92,7 +101,25 @@ func get_moves():
 	for item_id in self._items:
 		var item = Global.items.get_item_by_id(item_id)
 		if item.type == Item.ItemType.MOVE:
+			var move = Global.moves.get_move_by_id(item.modifier)
+			# If the move has previous tiers
+			if move.previous_tiers:
+				var found_previous_tier = false
+				# Loop through the tiers
+				for previous_tier in move.previous_tiers:
+					# see if this tier exists in the moves list
+					var position = moves.find(previous_tier)
+					if position > -1:
+						# replace the existing lower tier move with this higher tier move
+						moves[position] = item.modifier
+						found_previous_tier = true
+						continue
+				if found_previous_tier:
+					continue
+			if moves.find(item.modifier) == -1:
 				moves.append(item.modifier)
+	moves.sort()
+	moves.invert()
 	return moves
 
 func get_allies():
@@ -101,4 +128,7 @@ func get_allies():
 		var item = Global.items.get_item_by_id(item_id)
 		if item.type == Item.ItemType.ALLY:
 				allies.append(item.modifier)
+	allies.sort()
+	while allies.size() > MAX_ALLIES:
+		allies.pop_front()
 	return allies

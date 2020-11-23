@@ -29,6 +29,8 @@ onready var MoveNameLabels = [
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName4,
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName5,
 ]
+onready var debug_data = $CanvasLayer/DebugContainer/
+onready var audio = get_node("AudioStreamPlayer2D")
 
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
@@ -44,13 +46,13 @@ const MAX_ENEMIES = 3
 const MAX_ANIMATION_TIMER = 1.2
 const ACTION_AVAILABLE_TICKS = 6.0
 const MAX_ALLIES = 3
-const PLAYER_POSITION = 0
 
 const EVADE_PROCESSED_MAX = 60
 const ACCURACY_PROCESSED_MIN = 0.1
 const ACCURACY_PROCESSED_MAX = 99.9
 const PERCENT_MULTIPLIER = 100
 
+const MAX_MOVES_AVAILABLE = 6
 const MENU_ARROW_POSITION = 0
 const TARGET_ARROW_POSITION = 1
 const FIRST_POSITION = 0
@@ -104,10 +106,12 @@ var _menu_target = null
 var _menu_creature = null
 var _creature_moves = null
 var _hover = 0
+var _hover_move_last_position = 0
+var _hover_target_last_position = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Populate the combatants
+	# Populate Combatants
 	var num_enemies = get_combat_enemies(Global.player.get_combat_count())
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
@@ -118,7 +122,7 @@ func _ready():
 		creature_scene.creature_name = enemy.get_name()
 		creature_scene.show_name = true
 		creature_scene.creature_size = enemy.size
-		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.TEXTURE_FILE_EXTENSION
+		creature_scene.texture_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier())
 		creature_scene.idle_path = Creature.file_paths[enemy.get_base_path()] + str(enemy.get_tier()) + Global.ANIMATION_FILE_EXTENSION
 		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		var creature = CombatCreature.new(
@@ -151,10 +155,12 @@ func _ready():
 		# Setup Scene
 		var creature_scene = EnemyScene.instance()
 		creature_scene.set("position", position)
+		if typeof(ally.get_tier()) == TYPE_INT:
+			creature_scene.set_flip_h(true)
 		creature_scene.creature_name = ally.get_name()
 		creature_scene.show_name = true
 		creature_scene.creature_size = ally.size
-		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.TEXTURE_FILE_EXTENSION
+		creature_scene.texture_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier())
 		creature_scene.idle_path = Creature.file_paths[ally.get_base_path()] + str(ally.get_tier()) + Global.ANIMATION_FILE_EXTENSION
 		creature_scene.connect("animation_step_complete", self, "next_animation_step")
 		creature = CombatCreature.new(
@@ -172,21 +178,23 @@ func _ready():
 		)
 		allies.append(creature)
 		CombatantBox.add_child(creature.scene)
-	
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		 debug_data.visible = true
 	OS.set_window_size(Vector2(1280, 720))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# game ticks
 	counter += delta
-	$CanvasLayer/Background/Ticks.text = "Ticks: " + str(counter)
 
 	# actual processing
 	if animation_lock:
 		animation_ticks += delta
 	else:
 		animation_ticks = 0
-	$CanvasLayer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
+	if Settings.debug >= Settings.LogLevel.TRACE:
+		$CanvasLayer/DebugContainer/Ticks.text = "Ticks: " + str(counter)
+		$CanvasLayer/DebugContainer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
 
 	# actual processing
 	for i in range(allies.size()):
@@ -195,12 +203,14 @@ func _process(delta):
 			if creature.get_ticks() >= ACTION_AVAILABLE_TICKS && !creature.is_queued:
 				if creature.get_behavior() == Creature.Behavior.PLAYER:
 					show_move_options(creature)
+					creature.is_queued = true
 				else:
 					var move_id = creature.get_move()
 					var move = Global.moves.get_move_by_id(move_id)
 					var target = creature.choose_target(move, enemies)
-					action_queue.append(CombatEvent.new(move, creature, target))
-				creature.is_queued = true
+					if target:
+						action_queue.append(CombatEvent.new(move, creature, target))
+						creature.is_queued = true
 			else:
 				creature.add_ticks(delta)
 		creature.update_health_percentage()
@@ -261,11 +271,14 @@ func _input(event):
 				_menu_move = move
 				_phase = MenuPhase.TARGET_SELECT
 				MoveSelectionArrow.visible = false
-				_hover = FIRST_POSITION
+				_hover_move_last_position = _hover
+				_hover = _hover_target_last_position
 				update_selection_arrow(_hover)
 				TargetSelectionArrow.visible = true
 			elif _phase == MenuPhase.TARGET_SELECT:
 				var targeted_list = get_target_list(_menu_move)
+				if _hover < 0 || _hover >= targeted_list.size():
+					_hover = 0
 				_menu_target = targeted_list[_hover]
 				add_selected_move_to_queue()
 				reset_menuing()
@@ -310,7 +323,8 @@ func show_move_options(creature):
 		moves.append(move)
 	_creature_moves = moves
 	# Load moves
-	for i in range(moves.size()):
+	var moves_available_size = min(moves.size(), MAX_MOVES_AVAILABLE)
+	for i in range(moves_available_size):
 		MoveNameLabels[i].text = moves[i].name
 		MoveNameLabels[i].visible = true
 	# Show menu
@@ -326,7 +340,8 @@ func reset_menuing():
 	_menu_creature = null
 	_menu_move = null
 	_phase = MenuPhase.NONE
-	_hover = 0
+	_hover_target_last_position = _hover
+	_hover = _hover_move_last_position
 	CombatInstructions.visible = false
 	TargetSelectionArrow.visible = false
 	MoveSelectionArrow.visible = false
@@ -337,6 +352,8 @@ func update_selection_arrow(position):
 			MoveSelectionArrow.rect_position = menu_positions[position][MENU_ARROW_POSITION]
 		MenuPhase.TARGET_SELECT:
 			var targeted_list = get_target_list(_menu_move)
+			if position < 0 || position >= targeted_list.size():
+				position = 0
 			var creature_location = targeted_list[position].scene.position
 			var altered_position = creature_location + COMBAT_ARROW_DOWN_OFFSET
 			TargetSelectionArrow.rect_position = altered_position
@@ -347,17 +364,19 @@ func check_end_combat():
 		return
 
 	var dead_enemies = 0
-	if !allies[PLAYER_POSITION].is_alive():
+	if !allies[Global.PLAYER_POSITION_COMBAT].is_alive():
+		audio.stop()
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:
 		if !creature.is_alive():
 			dead_enemies += 1
 	if dead_enemies == enemies.size():
-		save_player_changes(allies[PLAYER_POSITION])
+		save_player_changes(allies[Global.PLAYER_POSITION_COMBAT])
 		Global.last_combat_enemies = enemies.size()
 		self.set_process(false)
-		return Global.goto_scene(Global.Scene.COMBAT_WIN)
+		audio.stop()
+		return Global.goto_scene(Global.Scene.LOOT_WINDOW)
 
 func save_player_changes(combat_player):
 	Global.player.set_health(combat_player.get_health())
@@ -404,9 +423,9 @@ func animation_process():
 		CombatAnimationState.ANIMATING:
 			# run animation 1 time
 			_current_combat_action.creature.scene.apply_animation(_current_combat_action.move)
-		CombatAnimationState.MOVING_BACKWARD:
 			# do damage after animation
 			execute_move(_current_combat_action.creature, _current_combat_action.target, _current_combat_action.move)
+		CombatAnimationState.MOVING_BACKWARD:
 			# move back to original position
 			move_backward(_current_combat_action.creature)
 		CombatAnimationState.COMPLETE:
@@ -466,7 +485,8 @@ func execute_move(attacker, target, move):
 				else:
 					# apply damage
 					target.add_health(-damage)
-					# TODO: target is hit animation
+					# damaged animation
+					target.scene.damage_creature()
 					# show damage
 					apply_floating_text(target, damage, move.type)
 					log_arr.append("DAMAGE: " + str(damage))

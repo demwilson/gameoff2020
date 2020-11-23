@@ -56,7 +56,7 @@ func has_collided(dir):
 		if hitCollider:
 			var tileMap = hitCollider
 			var hitPos = get_node(Raycasts[dir]).get_collision_point()
-			emit_signal('collided', hitPos, dir)
+			emit_signal('collided', hitPos, dir, hitCollider)
 		return true
 	else:
 		return false

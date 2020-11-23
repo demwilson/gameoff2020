@@ -11,6 +11,7 @@ const ACCURACY = "accuracy"
 const SPEED = "speed"
 const DEFENSE = "defense"
 const EVADE = "evade"
+const StatTypeMap = ["Attack", "Accuracy", "Speed", "Defense", "Evade"]
 
 var attack
 var accuracy

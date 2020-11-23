@@ -1,5 +1,6 @@
 extends Node2D
 
+onready var audio = get_node("AudioStreamPlayer2D")
 #Count on button clicks
 var Button_Click = {
 	"Oxygen": Global.Upgrades.Oxygen,
@@ -478,4 +479,5 @@ func _on_StartGameMission_pressed():
 	Global.currency = actual_currency
 	#Goes back to game
 	Global.build_player()
+	audio.stop()
 	Global.goto_scene(Global.Scene.OVERWORLD, "restart_overworld")

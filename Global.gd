@@ -23,6 +23,7 @@ enum Scene {
 	GAME_OVER,
 	GROUND_CONTROL,
 	SETTINGS,
+	LOOT_WINDOW
 }
 
 var TEXT_COLOR = {
@@ -31,6 +32,7 @@ var TEXT_COLOR = {
 	"TEXT": "000000",
 }
 
+const PLAYER_POSITION_COMBAT = 0
 const TEXTURE_FILE_EXTENSION = ".png"
 const ANIMATION_FILE_EXTENSION = ".tres"
 const BASE_STAT_VALUE = 0
@@ -38,8 +40,8 @@ const BASE_ATTACK_VALUE = 3
 const BASE_ACCURACY_VALUE = 1
 const BASE_SPEED_VALUE = 2
 const STAT_STEP = 1
-const OXYGEN_STEP = 5
-const HEALTH_STEP = 5
+const OXYGEN_STEP = 50
+const HEALTH_STEP = 20
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -79,6 +81,8 @@ var enemies = null
 var last_combat_enemies = 0
 var floor_level = 1
 var currency = 0
+var roll_up_percentage = 1
+var boss_fight = false
 
 # Debugging purposes
 var random
@@ -90,7 +94,7 @@ func _ready():
 	if Settings.debug >= Settings.LogLevel.TRACE:
 		currency = 6000
 		# Uncomment to force a seed value
-		# seed_value = -7489110890573097118
+		# seed_value = -4628785356089636443
 
 	# Set RNG value and get seed.
 	random = RandomNumberGenerator.new()
@@ -104,16 +108,16 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
 	var available_moves = [
-		Move.new("Weak Swing", 0, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [1, 2], [90, 0]),
-		Move.new("Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.7, 1.1, [2, 2], [85, 3]),
-		Move.new("Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.25, [2, 3], [80, 6], Moves.MoveList.MELEE_T1),
-		Move.new("Masterful Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [3, 4], [75, 9], Moves.MoveList.MELEE_T2),
-		Move.new("Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
-		Move.new("Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], Moves.MoveList.PSY_T1),
-		Move.new("Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], Moves.MoveList.PSY_T2),
-		Move.new("Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
-		Move.new("Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], Moves.MoveList.HEAL_T1),
-		Move.new("Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], Moves.MoveList.HEAL_T2),
+		Move.new(0, "Weak Swing", 0, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.5, 1, [1, 2], [90, 0]),
+		Move.new(1, "Basic Swing", 1, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.7, 1.1, [2, 2], [85, 3]),
+		Move.new(2, "Solid Swing", 2, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 0.75, 1.25, [2, 3], [80, 6]),
+		Move.new(3, "Masterful Swing", 3, Move.MoveType.DAMAGE, Move.AnimationPath.BASIC_ATTACK, 1, 1.5, [3, 4], [75, 9]),
+		Move.new(4, "Med Pack", 1, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 1, 2, [5, 2]),
+		Move.new(5, "Stim Pack", 2, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [10, 3], [Moves.MoveList.HEAL_T1]),
+		Move.new(6, "Healing Nanites", 3, Move.MoveType.HEAL, Move.AnimationPath.HEAL, 2, 3, [25, 6], [Moves.MoveList.HEAL_T1, Moves.MoveList.HEAL_T2]),
+		Move.new(7, "Firebolt", 1, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 0.8, 1.2, [8, 2], [95, 0]),
+		Move.new(8, "Fireball", 2, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [25, 4], [85, 3], [Moves.MoveList.PSY_T1]),
+		Move.new(9, "Immolate", 3, Move.MoveType.DAMAGE, Move.AnimationPath.FIREBOLT, 1, 2, [50, 8], [70, 5], [Moves.MoveList.PSY_T1, Moves.MoveList.PSY_T2]),
 	]
 	var available_items = [
 		# Game Start
@@ -155,7 +159,7 @@ func _ready():
 		# Advanced Moves
 		Item.new(24, "Space Machete", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "You swing the space machete.", Moves.MoveList.MELEE_T2),
 		Item.new(25, "Expanded Psychic Fire", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "More fire solves most problems.", Moves.MoveList.PSY_T2),
-		Item.new(26, "Stim Injections", Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE, "The injections make you feel invincible!", Moves.MoveList.HEAL_T2),
+		Item.new(26, "Stim Injections", Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE, "The injections make you feel invincible!", Moves.MoveList.HEAL_T2),
 
 		# T3 Bonus Items
 		Item.new(27, "Plasma Sabre", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It cuts ALL THE THINGS!", [Creature.Stats.ATTACK, 8]),
@@ -164,24 +168,66 @@ func _ready():
 		Item.new(29, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "It will absorb most of the blow.", [Creature.Stats.DEFENSE, 8]),
 		Item.new(30, "Foresight Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.BONUS, "See what happens before you make a decision.", [Creature.Stats.EVADE, 8]),
 		# Advanced Stat Items
-		Item.new(31, "Quantum Strength", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Oh no... now you got math involved.", [Creature.Stats.ATTACK, 3]),
+		Item.new(31, "Quantum Strength", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Oh no... now you got math involved.", [Creature.Stats.ATTACK, 4]),
 		Item.new(32, "Third Eye", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Nothing can hide.", [Creature.Stats.ACCURACY, 4]),
 		Item.new(33, "Chrono Boots", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "Time is relative.", [Creature.Stats.SPEED, 4]),
 		Item.new(34, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "This will stop almost everything.", [Creature.Stats.DEFENSE, 4]),
 		Item.new(35, "Essokinesis Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "In some reality, somewhere, you're not getting hit.", [Creature.Stats.EVADE, 4]),
 		# Advanced Moves
-		Item.new(36, "Space Machete", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the space machete.", Moves.MoveList.MELEE_T3),
+		Item.new(36, "Mono Blade", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the mono balde.", Moves.MoveList.MELEE_T3),
 		Item.new(37, "Psychic Immolation", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Let them live in the flames!", Moves.MoveList.PSY_T3),
-		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "These guys repair damage now for more action now!", Moves.MoveList.HEAL_T3),
+		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Healing yourself is below you.", Moves.MoveList.HEAL_T3),
 	]
 	var available_enemies = [
-		Enemy.new(1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, Creature.Stats.new([2, 2, 2, 0, 1]), Creature.Stats.new([0, 3, 0, 0, 0]), Creature.BasePath.DOG, Creature.Behavior.REVENGE, [Moves.MoveList.MELEE_T1]),
-		Enemy.new(2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60, Creature.Stats.new([3, 3, 3, 1, 3]), Creature.Stats.new([5, 6, 0, 2, 5]), Creature.BasePath.DOG, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T2]),
-		Enemy.new(1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10, Creature.Stats.new([1, 1, 2, 0, 2]), Creature.Stats.new([0, 4, 0, 0, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T1]),
-		Enemy.new(2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35, Creature.Stats.new([2, 2, 3, 1, 3]), Creature.Stats.new([2, 4, 0, 1, 4]), Creature.BasePath.BUG, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T2]),
-		Enemy.new(1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35, Creature.Stats.new(Creature.BASE_STATS), Creature.Stats.new(Creature.BASE_BONUSES), Creature.BasePath.ROBOT, Creature.Behavior.STUPID, [Moves.MoveList.MELEE_T2]),
-		Enemy.new(2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90, Creature.Stats.new([3, 3, 3, 3, 3]), Creature.Stats.new([4, 4, 0, 4, 4]), Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED, [Moves.MoveList.MELEE_T3]),
-		Enemy.new(0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200, Creature.Stats.new([5, 5, 5, 5, 5]), Creature.Stats.new([5, 5, 0, 5, 5]), Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS, [Moves.MoveList.MELEE_T3]),
+		Enemy.new(
+			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20,
+			Creature.Stats.new([2, 2, 2, 0, 1]),
+			Creature.Stats.new([0, 3, 0, 0, 0]),
+			Creature.BasePath.DOG, Creature.Behavior.PACK,
+			[Moves.MoveList.MELEE_T1]
+		),
+		Enemy.new(
+			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60,
+			Creature.Stats.new([3, 3, 3, 1, 3]),
+			Creature.Stats.new([5, 6, 0, 2, 5]),
+			Creature.BasePath.DOG, Creature.Behavior.PACK,
+			[Moves.MoveList.MELEE_T2]
+		),
+		Enemy.new(
+			1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10,
+			Creature.Stats.new([1, 1, 2, 0, 2]),
+			Creature.Stats.new([0, 4, 0, 0, 4]),
+			Creature.BasePath.BUG, Creature.Behavior.FOCUSED,
+			[Moves.MoveList.MELEE_T1]
+		),
+		Enemy.new(
+			2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 35, 35,
+			Creature.Stats.new([2, 2, 3, 1, 3]),
+			Creature.Stats.new([2, 4, 0, 1, 4]),
+			Creature.BasePath.BUG, Creature.Behavior.STUPID,
+			[Moves.MoveList.MELEE_T2]
+		),
+		Enemy.new(
+			1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35,
+			Creature.Stats.new(Creature.BASE_STATS),
+			Creature.Stats.new(Creature.BASE_BONUSES),
+			Creature.BasePath.ROBOT, Creature.Behavior.STUPID,
+			[Moves.MoveList.MELEE_T2]
+		),
+		Enemy.new(
+			2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 90, 90,
+			Creature.Stats.new([3, 3, 3, 3, 3]),
+			Creature.Stats.new([4, 4, 0, 4, 4]),
+			Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED,
+			[Moves.MoveList.MELEE_T3]
+		),
+		Enemy.new(
+			0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 200, 200,
+			Creature.Stats.new([5, 5, 5, 5, 5]),
+			Creature.Stats.new([5, 5, 0, 5, 5]),
+			Creature.BasePath.TARDIGRADE, Creature.Behavior.BOSS,
+			[Moves.MoveList.MELEE_T3]
+		),
 	]
 
 	moves = Moves.new(available_moves)
@@ -207,7 +253,7 @@ func build_player():
 	var player_bonuses = Creature.Stats.new()
 
 	# Items
-	var player_items = [Items.ItemList.CROWBAR]
+	var player_items = [Items.ItemList.MELEE_T0]
 	# Add attack-based item (T1)
 	if Upgrades.BasicWeapon:
 		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.BONUS, Stats.ATTACK)
@@ -218,7 +264,7 @@ func build_player():
 		player_items.append(item.id)
 	# Add move-based item (T1)
 	if Upgrades.CombatTraining:
-		var item = items.get_random_item(Item.ItemTier.LEVEL_ONE, Item.ItemType.MOVE)
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T1)
 		player_items.append(item.id)
 	# Add attack-based item (T2)
 	if Upgrades.AdvanceWeapon:
@@ -230,7 +276,7 @@ func build_player():
 		player_items.append(item.id)
 	# Add move-based item (T2)
 	if Upgrades.AdvanceTraining:
-		var item = items.get_random_item(Item.ItemTier.LEVEL_TWO, Item.ItemType.MOVE)
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T2)
 		player_items.append(item.id)
 
 	player = GlobalPlayer.new(
@@ -265,14 +311,14 @@ func goto_scene(target_scene, function_call = null):
 		Scene.STATS:
 			_deferred_goto_scene(target_scene, "res://Stats.tscn")
 		Scene.GAME_OVER:
-			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
-		Scene.COMBAT_WIN:
-			call_deferred("_deferred_goto_scene", target_scene, "res://combat/CombatWin.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://lose/Lose.tscn")
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
 		Scene.SETTINGS:
 			call_deferred("_deferred_goto_scene", target_scene, "res://settings/Settings.tscn")
-	
+		Scene.LOOT_WINDOW:
+			call_deferred("_deferred_goto_scene", target_scene, "res://loot_window/LootWindow.tscn")
+
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing
 	var overworld_node = persisted_scenes[Scene.OVERWORLD]
@@ -351,20 +397,18 @@ func get_random_type_by_weight(weight_list):
 		rand -= chance
 
 func populate_loot_list(loot_list, loot_bag):
-	var entries = []
 	for loot in loot_bag:
 		match loot.type:
 			Items.LootType.GEAR:
-				entries.append(loot.item.name)
+				loot_list.add_item(loot.item.name, null, false)
+				loot_list.set_item_tooltip(loot_list.get_item_count()-1, loot.item.get_description())
 			Items.LootType.CURRENCY:
-				if loot.item == 1:
-					entries.append(str(loot.item) + " " + ONE_CURRENCY_TEXT)
+			    if loot.item == 1:
+			    	loot_list.add_item(str(loot.item) + " " + ONE_CURRENCY_TEXT, null, false)
 				else:
-					entries.append(str(loot.item) + " " + CURRENCY_TEXT)
+					loot_list.add_item(str(loot.item) + " " + CURRENCY_TEXT, null, false)
 			Items.LootType.OXYGEN:
-				if loot.item == 1:
-					entries.append(str(loot.item) + " " + ONE_OXYGEN_TEXT)
+			    if loot.item == 1:
+					loot_list.add_item(str(loot.item) + " " + ONE_OXYGEN_TEXT, null, false)
 				else:
-					entries.append(str(loot.item) + " " + OXYGEN_TEXT)
-	for entry in entries:
-		loot_list.add_item(entry, null, false)
+					loot_list.add_item(str(loot.item) + " " + OXYGEN_TEXT, null, false)

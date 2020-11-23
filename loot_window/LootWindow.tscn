@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://loot_window/LootWindow.gd" type="Script" id=1]
+
+[node name="LootWindow" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="LootLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="LootLayer"]
+margin_right = 640.0
+margin_bottom = 360.0
+color = Color( 0.0196078, 0.0196078, 0.0196078, 0.32549 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Loot" type="ColorRect" parent="LootLayer"]
+margin_left = 176.0
+margin_top = 64.0
+margin_right = 464.0
+margin_bottom = 352.0
+color = Color( 0.4, 0.4, 0.4, 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="LootLayer/Loot"]
+margin_top = 8.0
+margin_right = 288.0
+margin_bottom = 24.0
+text = "Loot"
+align = 1
+valign = 1
+
+[node name="Text" type="Label" parent="LootLayer/Loot"]
+margin_left = 48.0
+margin_top = 40.0
+margin_right = 240.0
+margin_bottom = 56.0
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="LootLayer/Loot"]
+margin_left = 40.0
+margin_top = 72.0
+margin_right = 248.0
+margin_bottom = 224.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ok_button" type="Button" parent="LootLayer/Loot"]
+margin_left = 80.0
+margin_top = 232.0
+margin_right = 208.0
+margin_bottom = 280.0
+text = "Take All!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="LootLayer/Loot/ok_button" to="." method="_on_ok_button_pressed"]

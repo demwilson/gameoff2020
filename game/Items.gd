@@ -8,7 +8,10 @@ enum LootType {
 	CURRENCY
 }
 enum ItemList {
-	CROWBAR,
+	MELEE_T0 = 0,
+	MELEE_T1 = 11,
+	MELEE_T2 = 24,
+	MELEE_T3 = 36,
 }
 
 const LootTypeMap = [
@@ -22,7 +25,7 @@ const LOOT_CHANCE = 80
 const LOOT_CHANCE_MAX_RAND = 100
 const LOOT_PROBABILITY_WEIGHTS = [60, 25, 15]
 # list positions match ItemType enum in Item
-const ITEM_PROBABILITY_WEIGHTS = [94, 3, 2, 1]
+const ITEM_PROBABILITY_WEIGHTS = [75, 15, 5, 5]
 
 const CURRENCY_BASE = 10
 const OXYGEN_BASE = 5
@@ -34,11 +37,6 @@ var _items = null
 
 func _init(items):
 	self._items = items
-
-func get_item_by_id(id):
-	if id < self._items.size():
-		return self._items[id]
-	return null
 
 func generate_combat_loot(tier_level, last_combat_enemies=DEFAULT_COUNT):
 	var item_count = 0
@@ -97,6 +95,13 @@ func generate_items(tier_level, count=DEFAULT_COUNT):
 			item_list.append(item)
 	return item_list
 
+func get_item_by_id(item_id):
+	var items = []
+	for item in self._items:
+		if item.id == item_id:
+			return item
+	return null
+
 func get_items_by_tier(tier_level):
 	var items = []
 	for item in self._items:
@@ -117,6 +122,16 @@ func get_random_item(tier, item_type, modifier_type=null):
 		item = items[randi() % items.size()]
 	return item
 
+func roll_up_item(roll_item):
+	for item in self._items:
+		if item.tier > roll_item.tier && item.type == roll_item.type:
+			if roll_item.type == Item.ItemType.BONUS || roll_item.type == Item.ItemType.STAT:
+				if item.modifier[Item.GEAR_MODIFIER_TYPE] == roll_item.modifier[Item.GEAR_MODIFIER_TYPE]:
+					return item
+			else:
+				return item
+	return null
+
 static func filter_item_list_by_type(list, type):
 	var filtered_list = []
 	for item in list:
@@ -127,7 +142,7 @@ static func filter_item_list_by_type(list, type):
 static func filter_item_list_by_modifier_type(list, modifier_type):
 	var filtered_list = []
 	for item in list:
-		if item.modifier[Item.ITEM_MODIFIER_TYPE] == modifier_type:
+		if item.modifier[Item.GEAR_MODIFIER_TYPE] == modifier_type:
 			filtered_list.append(item)
 	return filtered_list
 
