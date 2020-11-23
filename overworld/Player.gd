@@ -26,6 +26,8 @@ func _ready():
 	generate_steps_to_trigger_combat()
 	
 func _process(delta):
+	if overworld.tile_map.isGeneratingNewLevel:
+		return
 	if canMove:
 		if combat_triggered():
 			stepsTaken = 0

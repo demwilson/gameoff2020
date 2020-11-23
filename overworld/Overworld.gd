@@ -24,6 +24,7 @@ var LoseWindowNode = preload("res://lose/Lose.tscn")
 var player_tile
 var score = 0
 var boss
+var currentAudioPosition = 0.0
 
 func _ready():
 	update_HUD_values()
@@ -33,6 +34,8 @@ func place_player():
 	player.position = tile_map.playerStartPosition
 	anchor.set_start_position(player.position)
 	Global.log(Settings.LogLevel.TRACE, "The player starts at: " + str(player.position))
+	#used to prevent moving when going from level to level
+	yield(get_tree().create_timer(0.3), 'timeout')
 	tile_map.isGeneratingNewLevel = false
 
 func place_boss():
@@ -78,7 +81,11 @@ func win_event():
 	load_win_window()
 	
 func set_audio(value):
-	player.get_node("AudioStreamPlayer2D").stream_paused = !value
+	if value:
+		player.get_node("AudioStreamPlayer").play(currentAudioPosition)
+	else:
+		player.get_node("AudioStreamPlayer").stop()
+		currentAudioPosition = player.get_node("AudioStreamPlayer").get_playback_position()
 
 func restart_overworld():
 	set_audio(false)
@@ -110,6 +117,7 @@ func get_loot_for_chest(floorLevel):
 	load_loot_window()
 
 func load_loot_window():
+	set_audio(false)
 	var lootInstance = LootWindowNode.instance()
 	lootInstance._init(Global.Scene.OVERWORLD)
 	add_child(lootInstance)
@@ -139,6 +147,7 @@ func trigger_boss_combat():
 	trigger_combat()
 	remove_boss()
 	Global.player.set_floor_key(true)
+	tile_map.open_hatch()
 
 func update_floor_level(value):
 	Global.floor_level = value + 1

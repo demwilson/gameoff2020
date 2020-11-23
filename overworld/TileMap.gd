@@ -8,6 +8,7 @@ var levelNum = 0
 var levelSize
 var playerStartPosition
 var bossStartPosition
+var exitPosition
 var topLeftAnchorPoints = []
 var possibleExitAnchorPoints = []
 var possibleBossAnchorPoints = []
@@ -75,6 +76,7 @@ enum Tile {
 	HALL_FLOOR_ARROWS, #14
 	HALL_FLOOR_CROSS, #15
 	ROCK, #16
+	HATCH #17
 }
 
 enum RoomCellType {
@@ -133,6 +135,8 @@ func _on_Player_collided(collisionPoint, direction, collider):
 				overworld.win_event()
 			else:
 				overworld.need_key_event()
+	elif tileIndex == Tile.HATCH:
+		overworld.need_key_event()
 
 func _on_Boss_collided(hitCollider, direction):
 	if hitCollider.name == playerNodeName:
@@ -295,7 +299,11 @@ func place_exit(startingSpot):
 			
 	var exitX = endRoom.x + exitOffset - Global.random.randi() % offsetVariance
 	var exitY = endRoom.y + exitOffset - Global.random.randi() % offsetVariance
-	set_tile(exitX, exitY, Tile.LADDER)
+	if (levelNum + 1) == LEVEL_SIZES.size():
+		set_tile(exitX, exitY, Tile.HATCH)
+	else:
+		set_tile(exitX, exitY, Tile.LADDER)
+	exitPosition = Vector2(exitX, exitY)
 	return endRoom
 
 func generate_Anchor_Points():
@@ -790,3 +798,6 @@ func open_treasure_chest(chestPosition):
 	set_tile(chestPosition.x, chestPosition.y, Tile.OPEN_CHEST)	
 	#get loot
 	overworld.get_loot_for_chest(levelNum)
+
+func open_hatch():
+	set_tile(exitPosition.x, exitPosition.y, Tile.LADDER)

@@ -30,7 +30,7 @@ onready var MoveNameLabels = [
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName5,
 ]
 onready var debug_data = $CanvasLayer/DebugContainer/
-onready var audio = get_node("AudioStreamPlayer2D")
+onready var audio = get_node("AudioStreamPlayer")
 
 const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
