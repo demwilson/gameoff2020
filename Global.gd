@@ -72,6 +72,8 @@ const BASE_HEALTH = 100
 const BASE_OXYGEN = 200
 const CURRENCY_TEXT = "Moon Rocks"
 const OXYGEN_TEXT = "Units of Oxygen"
+const ONE_CURRENCY_TEXT = "Moon Rock"
+const ONE_OXYGEN_TEXT = "Unit of Oxygen"
 var player = null
 var moves = null
 var items = null
@@ -178,14 +180,14 @@ func _ready():
 	]
 	var available_enemies = [
 		Enemy.new(
-			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, 
+			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20,
 			Creature.Stats.new([2, 2, 2, 0, 1]),
 			Creature.Stats.new([0, 3, 0, 0, 0]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
 			[Moves.MoveList.MELEE_T1]
 		),
 		Enemy.new(
-			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60, 
+			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 60, 60,
 			Creature.Stats.new([3, 3, 3, 1, 3]),
 			Creature.Stats.new([5, 6, 0, 2, 5]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
@@ -401,6 +403,12 @@ func populate_loot_list(loot_list, loot_bag):
 				loot_list.add_item(loot.item.name, null, false)
 				loot_list.set_item_tooltip(loot_list.get_item_count()-1, loot.item.get_description())
 			Items.LootType.CURRENCY:
-				loot_list.add_item(str(loot.item) + " " + Global.CURRENCY_TEXT, null, false)
+			    if loot.item == 1:
+			    	loot_list.add_item(str(loot.item) + " " + ONE_CURRENCY_TEXT, null, false)
+				else:
+					loot_list.add_item(str(loot.item) + " " + CURRENCY_TEXT, null, false)
 			Items.LootType.OXYGEN:
-				loot_list.add_item(str(loot.item) + " " + Global.OXYGEN_TEXT, null, false)
+			    if loot.item == 1:
+					loot_list.add_item(str(loot.item) + " " + ONE_OXYGEN_TEXT, null, false)
+				else:
+					loot_list.add_item(str(loot.item) + " " + OXYGEN_TEXT, null, false)
