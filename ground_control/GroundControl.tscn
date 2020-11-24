@@ -90,9 +90,8 @@ __meta__ = {
 
 [node name="AttackButton" type="Button" parent="CanvasLayer/Tier1"]
 margin_left = 24.0
-margin_top = 8.0
 margin_right = 104.0
-margin_bottom = 28.0
+margin_bottom = 20.0
 text = "Attack: 12"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -131,9 +130,8 @@ __meta__ = {
 
 [node name="DefenseButton" type="Button" parent="CanvasLayer/Tier1"]
 margin_left = 272.0
-margin_top = 8.0
 margin_right = 369.0
-margin_bottom = 28.0
+margin_bottom = 20.0
 text = "Defense: 15"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -162,9 +160,8 @@ __meta__ = {
 
 [node name="SpeedButton" type="Button" parent="CanvasLayer/Tier2"]
 margin_left = 24.0
-margin_top = 8.0
 margin_right = 104.0
-margin_bottom = 28.0
+margin_bottom = 20.0
 text = "Speed: 20"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -203,9 +200,8 @@ __meta__ = {
 
 [node name="CombatTrnButton" type="Button" parent="CanvasLayer/Tier2"]
 margin_left = 264.0
-margin_top = 8.0
 margin_right = 375.0
-margin_bottom = 28.0
+margin_bottom = 20.0
 text = "Cbt Training: 40"
 __meta__ = {
 "_edit_use_anchors_": false

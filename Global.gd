@@ -84,7 +84,7 @@ var items = null
 var enemies = null
 var last_combat_enemies = 0
 var floor_level = 1
-var currency = 0
+var currency = 600
 var roll_up_percentage = 1
 var boss_fight = false
 
