@@ -46,7 +46,7 @@ const STAT_STEP = 1
 const OXYGEN_STEP = 80
 const HEALTH_STEP = 25
 
-const version = "0.1.0"
+const version = "0.1.0-alpha"
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
