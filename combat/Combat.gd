@@ -33,8 +33,8 @@ onready var MoveNameLabels = [
 onready var debug_data = $CanvasLayer/DebugContainer/
 onready var audio = get_node("AudioStreamPlayer")
 
-const COMBAT_ARROW_RIGHT = preload("res://assets/combat_arrow_right.png")
-const COMBAT_ARROW_DOWN = preload("res://assets/combat_arrow_down.png")
+const COMBAT_ARROW_RIGHT = preload("res://assets/images/combat_arrow_right.png")
+const COMBAT_ARROW_DOWN = preload("res://assets/images/combat_arrow_down.png")
 
 const MAX_PERCENTAGE = 100.0
 const MIN_DAMAGE = 0

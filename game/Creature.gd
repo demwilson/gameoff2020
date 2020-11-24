@@ -28,11 +28,11 @@ const BASE_BONUSES = [0, 0, 0, 0, 0]
 const BASE_STATS = [1, 1, 1, 1, 1]
 
 const file_paths = [
-	"res://assets/Tony_Created_Assets/dog",
-	"res://assets/Tony_Created_Assets/tardigrade",
-	"res://assets/Tony_Created_Assets/robot",
-	"res://assets/Tony_Created_Assets/astro_idle",
-	"res://assets/Tony_Created_Assets/bug",
+	"res://assets/images/dog",
+	"res://assets/images/tardigrade",
+	"res://assets/images/robot",
+	"res://assets/images/astronaut_idle",
+	"res://assets/images/bug",
 ]
 
 var _name = null

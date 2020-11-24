@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/WE_DID_IT_AGAIN.wav-a0932f6efc3bf6dd9fc1258c34de05ad.sample"
+
+[deps]
+
+source_file="res://assets/audio/WE_DID_IT_AGAIN.wav"
+dest_files=[ "res://.import/WE_DID_IT_AGAIN.wav-a0932f6efc3bf6dd9fc1258c34de05ad.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=true
+compress/mode=0

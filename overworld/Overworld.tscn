@@ -2,16 +2,16 @@
 
 [ext_resource path="res://overworld/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://assets/Music/overworld_simple.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/audio/overworld_simple.wav" type="AudioStream" id=3]
 [ext_resource path="res://overworld/Anchor.gd" type="Script" id=4]
-[ext_resource path="res://assets/Tony_Created_Assets/icons.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/icons.png" type="Texture" id=5]
 [ext_resource path="res://overworld/Player.gd" type="Script" id=6]
 [ext_resource path="res://overworld/TileMap.gd" type="Script" id=7]
-[ext_resource path="res://assets/Tony_Created_Assets/astro_walking_overland.png" type="Texture" id=8]
-[ext_resource path="res://assets/O2_bar_empty.png" type="Texture" id=9]
-[ext_resource path="res://assets/O2_bar_fill.png" type="Texture" id=10]
-[ext_resource path="res://assets/Tony_Created_Assets/moon_stone.png" type="Texture" id=14]
-[ext_resource path="res://assets/Tony_Created_Assets/top_bar.png" type="Texture" id=15]
+[ext_resource path="res://assets/images/astro_walking_overland.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/O2_bar_empty.png" type="Texture" id=9]
+[ext_resource path="res://assets/images/O2_bar_fill.png" type="Texture" id=10]
+[ext_resource path="res://assets/images/moon_stone.png" type="Texture" id=14]
+[ext_resource path="res://assets/images/top_bar.png" type="Texture" id=15]
 
 [sub_resource type="InputEventKey" id=1]
 scancode = 32
