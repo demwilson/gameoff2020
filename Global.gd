@@ -71,8 +71,8 @@ var Upgrades = {
 
 # game mechanics
 const PLAYER_NAME = "Astronaut"
-const BASE_HEALTH = 1000
-const BASE_OXYGEN = 20000
+const BASE_HEALTH = 100
+const BASE_OXYGEN = 200
 const CURRENCY_TEXT = "Moon Rocks"
 const OXYGEN_TEXT = "Units of Oxygen"
 const ONE_CURRENCY_TEXT = "Moon Rock"

@@ -8,7 +8,7 @@ enum LogLevel {
 	TRACE,
 }
 
-var debug = LogLevel.TRACE
+var debug = LogLevel.DEBUG
 
 func _init():
 	pass
