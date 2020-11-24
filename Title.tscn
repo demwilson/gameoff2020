@@ -10,26 +10,39 @@ script = ExtResource( 2 )
 [node name="Background" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 0.840881
+margin_right = 640.841
+margin_bottom = 360.0
 texture = ExtResource( 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="CanvasLayer"]
-margin_left = 265.746
-margin_top = 7.70587
-margin_right = 441.746
-margin_bottom = 79.7059
+[node name="Title" type="Label" parent="CanvasLayer"]
+margin_right = 640.0
+margin_bottom = 64.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "SAAN: Lunar Flares
-
-Submitted By:
-GCF Team"
+text = "SAAN: Lunar Flares"
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Version" type="Label" parent="CanvasLayer"]
+margin_left = 560.0
+margin_right = 632.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0.4, 0.4, 0.4, 1 )
+text = "v 0.0.0"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -40,6 +53,7 @@ margin_right = 561.857
 margin_bottom = 225.273
 text = "Start"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
