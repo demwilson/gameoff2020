@@ -1,9 +1,10 @@
 extends Node2D
 
 onready var audio = get_node("AudioStreamPlayer")
+onready var version_label = $CanvasLayer/Version
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	version_label.text = "v " + Global.version
 
 func _on_Start_pressed():
 	audio.stop()
