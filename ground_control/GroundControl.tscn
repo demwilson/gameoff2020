@@ -21,7 +21,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Currency" type="Label" parent="CanvasLayer"]
+[node name="MoonRocks" type="Label" parent="CanvasLayer"]
 margin_left = 520.0
 margin_top = 200.0
 margin_right = 632.0
