@@ -5,7 +5,7 @@ signal animation_action_complete
 const Move = preload("res://game/Move.gd")
 onready var ani_player = get_node("AnimationPlayer")
 
-const BASE_SPRITE_PATH = "assets/Tony_Created_Assets/"
+const BASE_SPRITE_PATH = "assets/images/"
 const BASE_SPRITE_FILE_EXTENSION = ".png"
 const BASE_ANIMATION_PREFIX = "combat_anim_"
 const BASE_ANIMATION_FILE_EXTENSION = ".tres"

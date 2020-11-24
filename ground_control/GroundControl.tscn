@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://ground_control/GroundControl.gd" type="Script" id=1]
-[ext_resource path="res://assets/saan.png" type="Texture" id=2]
-[ext_resource path="res://assets/Music/saan_sound.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/images/saan.png" type="Texture" id=2]
+[ext_resource path="res://assets/audio/saan_sound.wav" type="AudioStream" id=3]
 
 [node name="GroundControl" type="Node2D"]
 script = ExtResource( 1 )
@@ -17,6 +17,16 @@ autoplay = true
 margin_right = 640.0
 margin_bottom = 384.0
 texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer/TextureRect"]
+margin_right = 640.0
+margin_bottom = 64.0
+text = "SAAN: Ground Control"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

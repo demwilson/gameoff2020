@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://lose/Lose.gd" type="Script" id=1]
-[ext_resource path="res://assets/Music/game_over.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/audio/game_over.wav" type="AudioStream" id=2]
 
 [node name="Lose" type="Node2D"]
 script = ExtResource( 1 )
@@ -19,9 +19,9 @@ __meta__ = {
 
 [node name="Text" type="Label" parent="LoseCanvas"]
 margin_left = 160.0
-margin_top = 144.0
+margin_top = 112.0
 margin_right = 478.0
-margin_bottom = 224.0
+margin_bottom = 192.0
 text = "You have made poor choices and it lead to your demise. Spend what currency you managed to find at SAAN.
 You Lose!"
 align = 1
