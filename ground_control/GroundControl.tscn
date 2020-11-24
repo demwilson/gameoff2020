@@ -110,8 +110,8 @@ __meta__ = {
 }
 
 [node name="AccuracyButton" type="Button" parent="CanvasLayer/Tier1"]
-margin_left = 136.0
-margin_right = 232.0
+margin_left = 144.0
+margin_right = 240.0
 margin_bottom = 20.0
 text = "Accuracy: 10"
 __meta__ = {
@@ -130,9 +130,9 @@ __meta__ = {
 }
 
 [node name="DefenseButton" type="Button" parent="CanvasLayer/Tier1"]
-margin_left = 264.0
+margin_left = 272.0
 margin_top = 8.0
-margin_right = 361.0
+margin_right = 369.0
 margin_bottom = 28.0
 text = "Defense: 15"
 __meta__ = {
@@ -161,9 +161,10 @@ __meta__ = {
 }
 
 [node name="SpeedButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 88.0
-margin_right = 163.0
-margin_bottom = 20.0
+margin_left = 24.0
+margin_top = 8.0
+margin_right = 104.0
+margin_bottom = 28.0
 text = "Speed: 20"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -181,8 +182,8 @@ __meta__ = {
 }
 
 [node name="EvadeButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 224.0
-margin_right = 297.0
+margin_left = 152.0
+margin_right = 232.0
 margin_bottom = 20.0
 text = "Evade: 24"
 __meta__ = {
@@ -199,6 +200,24 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CombatTrnButton" type="Button" parent="CanvasLayer/Tier2"]
+margin_left = 264.0
+margin_top = 8.0
+margin_right = 375.0
+margin_bottom = 28.0
+text = "Cbt Training: 40"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CombatTrnCount" type="Label" parent="CanvasLayer/Tier2/CombatTrnButton"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 38.0
+align = 1
+valign = 1
 
 [node name="Tier3" type="Control" parent="CanvasLayer"]
 visible = false
@@ -246,23 +265,26 @@ margin_bottom = 38.0
 align = 1
 valign = 1
 
-[node name="CombatTrnButton" type="Button" parent="CanvasLayer/Tier3"]
-margin_left = 264.0
+[node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier3"]
+margin_left = 256.0
 margin_top = 8.0
-margin_right = 375.0
+margin_right = 382.0
 margin_bottom = 28.0
-text = "Cbt Training: 60"
+text = "Adv. Training: 50"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CombatTrnCount" type="Label" parent="CanvasLayer/Tier3/CombatTrnButton"]
-margin_left = 8.0
+[node name="AdvTrnCount" type="Label" parent="CanvasLayer/Tier3/AdvTrnButton"]
+margin_left = 40.0
 margin_top = 24.0
-margin_right = 104.0
+margin_right = 88.0
 margin_bottom = 38.0
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Tier4" type="Control" parent="CanvasLayer"]
 margin_left = 128.0
@@ -311,27 +333,21 @@ margin_bottom = 38.0
 align = 1
 valign = 1
 
-[node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier4"]
+[node name="ExpertTraining" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
 margin_left = 256.0
 margin_top = 8.0
-margin_right = 382.0
+margin_right = 376.0
 margin_bottom = 28.0
-text = "Adv. Training: 60"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+text = "Exprt Training: 60"
 
-[node name="AdvTrnCount" type="Label" parent="CanvasLayer/Tier4/AdvTrnButton"]
+[node name="ExpTrainCount" type="Label" parent="CanvasLayer/Tier4/ExpertTraining"]
 margin_left = 40.0
 margin_top = 24.0
 margin_right = 88.0
 margin_bottom = 38.0
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Alert" type="ColorRect" parent="CanvasLayer"]
 visible = false
@@ -375,11 +391,12 @@ __meta__ = {
 [connection signal="pressed" from="CanvasLayer/Tier1/DefenseButton" to="." method="_on_DefenseButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier2/SpeedButton" to="." method="_on_SpeedButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier2/EvadeButton" to="." method="_on_EvadeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier2/CombatTrnButton" to="." method="_on_CombatTrnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier3/BasicWpnButton" to="." method="_on_BasicWpnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier3/BasicDefButton" to="." method="_on_BasicDefButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/Tier3/CombatTrnButton" to="." method="_on_CombatTrnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier3/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvWpnButton" to="." method="_on_AdvWpnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_AdvDefButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/Tier4/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier4/ExpertTraining" to="." method="_on_ExpertTraining_pressed"]
 [connection signal="pressed" from="CanvasLayer/Alert/AlertButton" to="." method="_on_AlertButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartGameMission" to="." method="_on_StartGameMission_pressed"]
