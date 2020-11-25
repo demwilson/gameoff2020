@@ -110,8 +110,8 @@ animations = [ {
 } ]
 
 [sub_resource type="Gradient" id=3]
-offsets = PoolRealArray( 0.0778443, 1 )
-colors = PoolColorArray( 0.0196078, 0, 0.294118, 1, 0.0196078, 0, 0.294118, 1 )
+offsets = PoolRealArray( 0.0778443 )
+colors = PoolColorArray( 0.0196078, 0, 0.294118, 1 )
 
 [sub_resource type="GradientTexture" id=4]
 gradient = SubResource( 3 )
@@ -119,23 +119,23 @@ gradient = SubResource( 3 )
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=6]
 size = 10
-font_data = ExtResource( 98 )
-
-[sub_resource type="StyleBoxFlat" id=6]
-bg_color = Color( 0.4, 0.4, 0.4, 1 )
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-
-[sub_resource type="DynamicFont" id=10]
-size = 14
 font_data = ExtResource( 98 )
 
 [sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=8]
+size = 14
+font_data = ExtResource( 98 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.4, 0.4, 0.4, 1 )
+
+[sub_resource type="DynamicFont" id=10]
 size = 10
 font_data = ExtResource( 98 )
 
@@ -157,8 +157,21 @@ __meta__ = {
 [node name="Header" type="ColorRect" parent="CanvasLayer/Background"]
 margin_right = 640.0
 margin_bottom = 40.0
-color = Color( 0, 0.27451, 1, 0.611765 )
+color = Color( 0.0196078, 0, 0.294118, 1 )
 __meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer/Background/Header"]
+visible = false
+margin_right = 640.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
+text = "Combat Screen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -172,23 +185,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" type="Label" parent="CanvasLayer/Background"]
-margin_right = 640.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 2 )
-text = "Combat Screen"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer/Background"]
 position = Vector2( 320, 91 )
 frames = SubResource( 2 )
 animation = "satelite"
-frame = 23
+frame = 75
 playing = true
 
 [node name="DebugContainer" type="Container" parent="CanvasLayer"]
@@ -281,7 +282,7 @@ margin_top = 31.0
 margin_right = 144.0
 margin_bottom = 42.0
 size_flags_vertical = 0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 6 )
 text = "Bad Guy"
 valign = 1
 __meta__ = {
@@ -294,7 +295,7 @@ margin_top = 46.0
 margin_right = 144.0
 margin_bottom = 57.0
 size_flags_vertical = 0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 6 )
 text = "Bad Guy"
 valign = 1
 __meta__ = {
@@ -307,7 +308,7 @@ margin_top = 61.0
 margin_right = 144.0
 margin_bottom = 72.0
 size_flags_vertical = 0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 6 )
 text = "Bad Guy"
 valign = 1
 __meta__ = {
@@ -319,7 +320,7 @@ margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
 margin_bottom = 8.0
-custom_styles/normal = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
@@ -369,7 +370,7 @@ margin_right = 120.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -384,7 +385,7 @@ margin_right = 120.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -399,7 +400,7 @@ margin_right = 120.0
 margin_bottom = 96.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -413,7 +414,7 @@ margin_right = 240.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -428,7 +429,7 @@ margin_right = 240.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -443,7 +444,7 @@ margin_right = 240.0
 margin_bottom = 96.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -468,7 +469,7 @@ margin_bottom = 88.0
 margin_right = 208.0
 margin_bottom = 18.0
 size_flags_vertical = 0
-custom_styles/normal = SubResource( 7 )
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Allies"
@@ -494,7 +495,7 @@ margin_bottom = 45.0
 margin_right = 56.0
 margin_bottom = 14.0
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 text = "Astronaut"
 align = 2
 
@@ -503,7 +504,7 @@ margin_left = 60.0
 margin_right = 102.0
 margin_bottom = 14.0
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 text = "46 / 50"
 align = 1
 valign = 1
@@ -525,7 +526,7 @@ margin_bottom = 63.0
 margin_top = 1.0
 margin_right = 91.0
 margin_bottom = 12.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 text = "Robotic Servant"
 align = 2
 
@@ -534,7 +535,7 @@ margin_left = 95.0
 margin_top = 1.0
 margin_right = 137.0
 margin_bottom = 12.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 text = "20 / 40"
 align = 1
 valign = 1
@@ -556,7 +557,7 @@ margin_bottom = 81.0
 margin_top = 1.0
 margin_right = 70.0
 margin_bottom = 12.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 text = "Mutated Dog"
 align = 2
 
@@ -565,7 +566,7 @@ margin_left = 74.0
 margin_top = 1.0
 margin_right = 113.0
 margin_bottom = 12.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 text = "15 / 50"
 align = 1
 valign = 1
