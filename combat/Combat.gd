@@ -207,7 +207,7 @@ func _process(delta):
 func _input(event):
 	if !event.is_pressed():
 		return
-	if event.is_action("map_change_again"):
+	if Global.debug >= Global.LogLevel.DEBUG && event.is_action("map_change_again"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
 	elif _phase != MenuPhase.NONE:
 		if event.is_action("up"):
