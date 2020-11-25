@@ -55,7 +55,7 @@ const STAT_STEP = 1
 const OXYGEN_STEP = 80
 const HEALTH_STEP = 25
 
-const version = "0.1.0-alpha"
+const version = "0.2.0-alpha"
 
 var debug = LogLevel.ERROR
 
@@ -203,7 +203,7 @@ func _ready():
 		Enemy.new(
 			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, 
 			Creature.Stats.new([3, 2, 2.3, 0, 1]),
-			Creature.Stats.new([3, 3, 0, 0, 2]),
+			Creature.Stats.new([1, 3, 0, 0, 2]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
 			[Moves.MoveList.MELEE_T0]
 		),
@@ -260,7 +260,7 @@ func _ready():
 
 	# For Debugging Only
 	# analyze_moves()
-	# analyze_creatures()
+	# analyze_creatures(1)
 
 func build_player():
 	# Stats
@@ -443,11 +443,11 @@ func populate_loot_list(loot_list, loot_bag):
 					loot_list.add_item(str(loot.item) + " " + OXYGEN_TEXT, null, false)
 
 # Debugging tools
-func analyze_creatures():
+func analyze_creatures(level):
 	var my_combat = Combat.new()
 	var static_position = Vector2(0,0)
 	Global.log(Global.LogLevel.TRACE, "[analyze_creatures] -------------------- BEGIN ANALYSIS --------------------")
-	var creature_list = enemies.get_enemies_by_tier_level(2)
+	var creature_list = enemies.get_enemies_by_tier_level(level)
 	for thing in creature_list:
 		var enemy = thing
 		Global.log(Global.LogLevel.TRACE, "NAME: " + enemy.get_name())

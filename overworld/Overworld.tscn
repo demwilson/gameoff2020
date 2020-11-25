@@ -2,7 +2,7 @@
 
 [ext_resource path="res://overworld/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://assets/audio/overworld_simple.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/audio/overworld.wav" type="AudioStream" id=3]
 [ext_resource path="res://overworld/Anchor.gd" type="Script" id=4]
 [ext_resource path="res://assets/images/icons.png" type="Texture" id=5]
 [ext_resource path="res://overworld/Player.gd" type="Script" id=6]

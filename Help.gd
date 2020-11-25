@@ -7,6 +7,12 @@ func _input(event):
 	if !event.is_pressed():
 		return
 	elif event.is_action("help_screen"):
-		get_tree().paused = false
-		self.queue_free()
+		close_help_screen()
+
+func close_help_screen():
+	get_tree().paused = false
+	self.queue_free()
+
+func _on_ReturnButton_pressed():
+	close_help_screen()
 
