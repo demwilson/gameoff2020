@@ -46,7 +46,7 @@ When on the Astronaut Stats screen the following stats will be displayed.
 * Current HP/Max HP
 * Current Oxygen/Max Oxygen
 
-Then a section of the stats used for combat in the combat screen. A **+** sign next to the stat number indicates a bonus from an item.
+Then a section of the stats used for combat in the combat screen. A plus sign (+) next to the stat number indicates a bonus from an item.
 * Attack - How much damage you deal to a target.
 * Accuracy - The capacity of your attacks to be able to hit your target.
 * Speed - How fast your time bar fills in combat.
@@ -55,6 +55,7 @@ Then a section of the stats used for combat in the combat screen. A **+** sign n
 
 Next are abilities that the astronaut learns and acquires from items picked up throughout the game. 
 The last section is equipment which provide a list of items you have picked up throughout the game.
+
 **NOTE**: You may hover over each item with your mouse to provide information on what the item is.
 
 #### Combat
