@@ -24,10 +24,10 @@ func _ready():
 	match scene:
 		Global.Scene.COMBAT:
 			loot_bag = Global.items.generate_combat_loot(Global.floor_level, Global.last_combat_enemies)
-			$LootLayer/Loot/Text.text = "After defeating the enemies you find"
+			$LootLayer/Loot/Text.text = "After defeating the enemies you find:"
 		Global.Scene.OVERWORLD:
 			loot_bag = Global.items.generate_loot(Global.floor_level)
-			$LootLayer/Loot/Text.text = "After struggling with the lock, you finaly get it open"
+			$LootLayer/Loot/Text.text = "After struggling with the lock, you finaly get it open and find:"
 			
 	possible_roll_up(loot_bag)
 	Global.items.apply_loot_bag(loot_bag, Global.player)
