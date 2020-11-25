@@ -1,7 +1,7 @@
-[gd_scene load_steps=106 format=2]
+[gd_scene load_steps=107 format=2]
 
 [ext_resource path="res://combat/Combat.gd" type="Script" id=1]
-[ext_resource path="res://font/micross.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/fonts/Orbitron Medium.otf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/images/combat_background.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/combat_arrow_right.png" type="Texture" id=4]
 [ext_resource path="res://assets/images/combat_arrow_down.png" type="Texture" id=5]
@@ -117,21 +117,24 @@ gradient = SubResource( 3 )
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
-[sub_resource type="DynamicFont" id=6]
-size = 12
-outline_color = Color( 0.933333, 0.933333, 0.933333, 1 )
+[sub_resource type="DynamicFont" id=10]
+extra_spacing_top = 2
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=7]
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
+
+[sub_resource type="DynamicFont" id=9]
+extra_spacing_top = 2
+font_data = ExtResource( 2 )
 
 [node name="Combat" type="Node2D"]
 script = ExtResource( 1 )
@@ -182,7 +185,7 @@ __meta__ = {
 position = Vector2( 320, 91 )
 frames = SubResource( 2 )
 animation = "satelite"
-frame = 82
+frame = 6
 playing = true
 
 [node name="DebugContainer" type="Container" parent="CanvasLayer"]
@@ -233,27 +236,29 @@ __meta__ = {
 }
 
 [node name="Enemies" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
-margin_right = 152.0
-margin_bottom = 104.0
+margin_left = 9.0
+margin_top = 8.0
+margin_right = 153.0
+margin_bottom = 96.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Enemies"]
-margin_right = 152.0
-margin_bottom = 104.0
+margin_right = 144.0
+margin_bottom = 88.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
-margin_right = 152.0
-margin_bottom = 15.0
+margin_right = 144.0
+margin_bottom = 18.0
 custom_styles/normal = SubResource( 5 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 10 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "ENEMIES"
+text = "Enemies"
 align = 1
 valign = 1
 __meta__ = {
@@ -261,9 +266,9 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
-margin_top = 19.0
-margin_right = 152.0
-margin_bottom = 24.0
+margin_top = 22.0
+margin_right = 144.0
+margin_bottom = 27.0
 rect_min_size = Vector2( 0, 5 )
 
 [node name="Enemy0" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
@@ -307,9 +312,9 @@ visible = false
 margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
-margin_bottom = 3.0
-custom_styles/normal = SubResource( 7 )
-custom_fonts/font = SubResource( 8 )
+margin_bottom = 8.0
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
 align = 1
@@ -320,15 +325,16 @@ __meta__ = {
 
 [node name="Menu" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
 margin_left = 160.0
+margin_top = 8.0
 margin_right = 416.0
-margin_bottom = 105.0
+margin_bottom = 96.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Menu"]
 margin_right = 256.0
-margin_bottom = 105.0
+margin_bottom = 88.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -336,7 +342,7 @@ __meta__ = {
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
 margin_right = 256.0
-margin_bottom = 101.0
+margin_bottom = 88.0
 size_flags_vertical = 3
 color = Color( 0.2, 0.2, 0.2, 1 )
 
@@ -432,41 +438,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Menu/VBoxContainer"]
-margin_top = 105.0
-margin_right = 256.0
-margin_bottom = 105.0
-
 [node name="Allies" type="VSplitContainer" parent="CanvasLayer/CombatMenu"]
 margin_left = 424.0
-margin_right = 640.0
-margin_bottom = 104.0
+margin_top = 8.0
+margin_right = 632.0
+margin_bottom = 96.0
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CombatMenu/Allies"]
-margin_right = 216.0
-margin_bottom = 104.0
+margin_right = 208.0
+margin_bottom = 88.0
 
 [node name="Label" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
-margin_right = 216.0
-margin_bottom = 15.0
+margin_right = 208.0
+margin_bottom = 18.0
 size_flags_vertical = 0
-custom_styles/normal = SubResource( 9 )
-custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "ALLIES"
+text = "Allies"
 align = 1
-valign = 1
+valign = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
-margin_top = 19.0
-margin_right = 216.0
-margin_bottom = 24.0
+margin_top = 22.0
+margin_right = 208.0
+margin_bottom = 27.0
 rect_min_size = Vector2( 0, 5 )
 
 [node name="Ally0" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
