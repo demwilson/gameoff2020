@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://win/Win.gd" type="Script" id=1]
 [ext_resource path="res://assets/audio/winner.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=4]
 
 [node name="Win" type="Node2D"]
 script = ExtResource( 1 )
@@ -23,6 +25,7 @@ margin_top = 144.0
 margin_right = 480.0
 margin_bottom = 224.0
 rect_min_size = Vector2( 328, 80 )
+custom_fonts/font = ExtResource( 3 )
 text = "You've done excellent! Spend your currency at SAAN to go further next time.
 You Win!"
 align = 1
@@ -38,7 +41,8 @@ margin_top = 256.0
 margin_right = 288.0
 margin_bottom = 320.0
 rect_min_size = Vector2( 224, 64 )
-text = "Go To SAAN"
+custom_fonts/font = ExtResource( 4 )
+text = "Go to SAAN"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -48,6 +52,7 @@ margin_left = 352.0
 margin_top = 256.0
 margin_right = 576.0
 margin_bottom = 320.0
+custom_fonts/font = ExtResource( 4 )
 text = "End Game"
 __meta__ = {
 "_edit_use_anchors_": false

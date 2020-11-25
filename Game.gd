@@ -2,6 +2,7 @@ extends Node2D
 
 const TitleScene = preload("res://Title.tscn")
 const PauseOverlay = preload("res://PauseOverlay.tscn")
+const Credits = preload("res://credits/Credits.tscn")
 const Help = preload("res://Help.tscn")
 const Settings = preload("res://settings/Settings.tscn")
 
@@ -9,6 +10,7 @@ const Settings = preload("res://settings/Settings.tscn")
 var pause_overlay = null
 var settings_overlay = null
 var help_overlay = null
+var credits_overlay = null
 
 func _ready():
 	OS.set_window_size(Vector2(1280, 720))
@@ -17,6 +19,7 @@ func _ready():
 	Global.current_scene = title
 	title.connect("settings_pressed", self, "_on_settings_pressed")
 	title.connect("help_pressed", self, "_on_help_pressed")
+	title.connect("credits_pressed", self, "_on_credits_pressed")
 	self.add_child(title)
 
 func _input(event):
@@ -43,8 +46,18 @@ func show_help():
 		help_overlay = Help.instance()
 		self.add_child(help_overlay)
 
+func show_credits():
+	if !credits_overlay:
+		credits_overlay = Credits.instance()
+		credits_overlay.from_title = true
+		credits_overlay.connect("closed_scene", Global.current_scene, "_opened_scene_closed")
+		self.add_child(credits_overlay)
+
 func _on_settings_pressed():
 	show_settings()
 
 func _on_help_pressed():
 	show_help()
+
+func _on_credits_pressed():
+	show_credits()

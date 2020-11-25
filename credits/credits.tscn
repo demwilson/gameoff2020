@@ -1,4 +1,4 @@
-[gd_scene load_steps=108 format=2]
+[gd_scene load_steps=110 format=2]
 
 [ext_resource path="res://assets/images/astronaut_idle_damaged.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/satellite/satellite42.png" type="Texture" id=2]
@@ -101,6 +101,8 @@
 [ext_resource path="res://assets/images/satellite/satellite74.png" type="Texture" id=99]
 [ext_resource path="res://assets/images/satellite/satellite82.png" type="Texture" id=100]
 [ext_resource path="res://assets/images/satellite/satellite61.png" type="Texture" id=101]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=102]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=103]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -150,9 +152,10 @@ animations = [ {
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 8 )
 
-[node name="credits" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 15
 
-[node name="background" type="ColorRect" parent="credits"]
+[node name="background" type="ColorRect" parent="CanvasLayer"]
 margin_right = 640.0
 margin_bottom = 360.0
 color = Color( 0, 0, 0, 1 )
@@ -160,7 +163,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="creditbackground" type="TextureRect" parent="credits"]
+[node name="returnbutton" type="Button" parent="CanvasLayer"]
+visible = false
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 102.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 103 )
+text = "< Return"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="creditbackground" type="TextureRect" parent="CanvasLayer"]
 margin_top = 64.0
 margin_right = 640.0
 margin_bottom = 280.0
@@ -169,15 +184,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="satalite" type="AnimatedSprite" parent="credits/creditbackground"]
+[node name="satalite" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
 position = Vector2( 319.902, 50.6747 )
 scale = Vector2( 1, 1.01327 )
 frames = SubResource( 1 )
 animation = "satelite"
-frame = 88
+frame = 49
 playing = true
 
-[node name="astro" type="AnimatedSprite" parent="credits/creditbackground"]
+[node name="astro" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
 position = Vector2( 448, 168 )
 scale = Vector2( 0.994147, 1 )
 frames = SubResource( 3 )
@@ -185,26 +200,28 @@ animation = "astro"
 frame = 1
 playing = true
 
-[node name="tardigrade" type="AnimatedSprite" parent="credits/creditbackground"]
+[node name="tardigrade" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
 position = Vector2( 184, 168 )
 frames = SubResource( 4 )
 animation = "tardigrade"
 playing = true
 
-[node name="yellowrobot" type="AnimatedSprite" parent="credits/creditbackground"]
+[node name="yellowrobot" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
 position = Vector2( 168, 96 )
 frames = SubResource( 5 )
 animation = "yellowrobot"
+frame = 1
 playing = true
 
-[node name="grayrobot" type="AnimatedSprite" parent="credits/creditbackground"]
+[node name="grayrobot" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
 position = Vector2( 472, 104 )
 frames = SubResource( 6 )
 animation = "grayrobot"
+frame = 1
 playing = true
 flip_h = true
 
-[node name="creditstext" type="Control" parent="credits"]
+[node name="creditstext" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 216.0
@@ -215,7 +232,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="creditbackground" type="ColorRect" parent="credits/creditstext"]
+[node name="creditbackground" type="ColorRect" parent="CanvasLayer/creditstext"]
 margin_right = 216.0
 margin_bottom = 120.0
 color = Color( 0.380392, 0.380392, 0.380392, 0.160784 )
@@ -223,11 +240,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="title" type="Label" parent="credits/creditstext"]
-margin_left = 40.0
-margin_top = 8.0
-margin_right = 168.0
-margin_bottom = 24.0
+[node name="title" type="Label" parent="CanvasLayer/creditstext"]
+margin_left = 16.0
+margin_right = 200.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 103 )
 custom_colors/font_color = Color( 0.423529, 0.192157, 0.466667, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
@@ -237,40 +254,44 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="contributers" type="Label" parent="credits/creditstext"]
-margin_left = 40.0
+[node name="contributers" type="Label" parent="CanvasLayer/creditstext"]
+margin_left = 16.0
 margin_top = 24.0
-margin_right = 168.0
+margin_right = 200.0
 margin_bottom = 48.0
+custom_fonts/font = ExtResource( 102 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 align = 1
 autowrap = true
 
-[node name="retry" type="Button" parent="credits/creditstext"]
+[node name="retry" type="Button" parent="CanvasLayer/creditstext"]
 visible = false
 margin_left = 56.0
 margin_top = 56.0
 margin_right = 152.0
 margin_bottom = 76.0
-text = "Back to title"
+custom_fonts/font = ExtResource( 102 )
+text = "Back to Title"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="thankyou" type="Label" parent="credits/creditstext"]
+[node name="thankyou" type="Label" parent="CanvasLayer/creditstext"]
 visible = false
-margin_left = 32.0
+margin_left = 16.0
 margin_top = 32.0
-margin_right = 176.0
-margin_bottom = 46.0
+margin_right = 202.0
+margin_bottom = 49.0
+custom_fonts/font = ExtResource( 102 )
 custom_colors/font_color = Color( 0, 1, 0.647059, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Thank you for playing"
+text = "Thank you for playing!"
 align = 1
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 97 )
 autoplay = true
-[connection signal="pressed" from="credits/creditstext/retry" to="." method="_on_retry_pressed"]
+[connection signal="pressed" from="CanvasLayer/returnbutton" to="." method="_on_returnbutton_pressed"]
+[connection signal="pressed" from="CanvasLayer/creditstext/retry" to="." method="_on_retry_pressed"]

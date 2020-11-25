@@ -41,7 +41,7 @@ enum LogLevel {
 var TEXT_COLOR = {
 	"DAMAGE": "ff3131",
 	"HEAL": "2eff27",
-	"TEXT": "000000",
+	"TEXT": "ffffff",
 }
 
 const PLAYER_POSITION_COMBAT = 0

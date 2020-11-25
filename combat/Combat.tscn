@@ -1,6 +1,7 @@
-[gd_scene load_steps=104 format=2]
+[gd_scene load_steps=109 format=2]
 
 [ext_resource path="res://combat/Combat.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/title_text.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/images/combat_background.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/combat_arrow_right.png" type="Texture" id=4]
 [ext_resource path="res://assets/images/combat_arrow_down.png" type="Texture" id=5]
@@ -96,6 +97,7 @@
 [ext_resource path="res://assets/images/satellite/satellite57.png" type="Texture" id=95]
 [ext_resource path="res://assets/images/satellite/satellite48.png" type="Texture" id=96]
 [ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=97]
+[ext_resource path="res://assets/fonts/Orbitron Medium.otf" type="DynamicFontData" id=98]
 
 [sub_resource type="Theme" id=1]
 
@@ -117,13 +119,25 @@ gradient = SubResource( 3 )
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="DynamicFont" id=8]
+size = 10
+font_data = ExtResource( 98 )
+
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="DynamicFont" id=10]
+size = 14
+font_data = ExtResource( 98 )
+
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 10
+font_data = ExtResource( 98 )
 
 [node name="Combat" type="Node2D"]
 script = ExtResource( 1 )
@@ -159,9 +173,9 @@ __meta__ = {
 }
 
 [node name="Title" type="Label" parent="CanvasLayer/Background"]
-visible = false
 margin_right = 640.0
 margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
 text = "Combat Screen"
 align = 1
 valign = 1
@@ -174,7 +188,7 @@ __meta__ = {
 position = Vector2( 320, 91 )
 frames = SubResource( 2 )
 animation = "satelite"
-frame = 72
+frame = 23
 playing = true
 
 [node name="DebugContainer" type="Container" parent="CanvasLayer"]
@@ -230,6 +244,7 @@ margin_top = 8.0
 margin_right = 153.0
 margin_bottom = 96.0
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -262,10 +277,11 @@ rect_min_size = Vector2( 0, 5 )
 
 [node name="Enemy0" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 visible = false
-margin_top = 28.0
-margin_right = 160.0
+margin_top = 31.0
+margin_right = 144.0
 margin_bottom = 42.0
 size_flags_vertical = 0
+custom_fonts/font = SubResource( 8 )
 text = "Bad Guy"
 valign = 1
 __meta__ = {
@@ -274,10 +290,11 @@ __meta__ = {
 
 [node name="Enemy1" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 visible = false
-margin_top = 28.0
-margin_right = 160.0
-margin_bottom = 42.0
+margin_top = 46.0
+margin_right = 144.0
+margin_bottom = 57.0
 size_flags_vertical = 0
+custom_fonts/font = SubResource( 8 )
 text = "Bad Guy"
 valign = 1
 __meta__ = {
@@ -286,10 +303,11 @@ __meta__ = {
 
 [node name="Enemy2" type="Label" parent="CanvasLayer/CombatMenu/Enemies/VBoxContainer"]
 visible = false
-margin_top = 28.0
-margin_right = 160.0
-margin_bottom = 42.0
+margin_top = 61.0
+margin_right = 144.0
+margin_bottom = 72.0
 size_flags_vertical = 0
+custom_fonts/font = SubResource( 8 )
 text = "Bad Guy"
 valign = 1
 __meta__ = {
@@ -297,12 +315,11 @@ __meta__ = {
 }
 
 [node name="Instructions" type="Label" parent="CanvasLayer/CombatMenu"]
-visible = false
 margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
 margin_bottom = 8.0
-custom_styles/normal = SubResource( 7 )
+custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
@@ -352,6 +369,7 @@ margin_right = 120.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 10 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -366,6 +384,7 @@ margin_right = 120.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 10 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -380,6 +399,7 @@ margin_right = 120.0
 margin_bottom = 96.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 10 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -393,6 +413,7 @@ margin_right = 240.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 10 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -407,6 +428,7 @@ margin_right = 240.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 10 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -421,6 +443,7 @@ margin_right = 240.0
 margin_bottom = 96.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 10 )
 text = "Move 1"
 valign = 1
 __meta__ = {
@@ -445,7 +468,7 @@ margin_bottom = 88.0
 margin_right = 208.0
 margin_bottom = 18.0
 size_flags_vertical = 0
-custom_styles/normal = SubResource( 9 )
+custom_styles/normal = SubResource( 7 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Allies"
@@ -463,83 +486,93 @@ rect_min_size = Vector2( 0, 5 )
 
 [node name="Ally0" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
 visible = false
-margin_top = 28.0
-margin_right = 224.0
-margin_bottom = 42.0
+margin_top = 31.0
+margin_right = 208.0
+margin_bottom = 45.0
 
 [node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
-margin_right = 62.0
+margin_right = 56.0
 margin_bottom = 14.0
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 9 )
 text = "Astronaut"
 align = 2
 
 [node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
-margin_left = 66.0
-margin_right = 111.0
+margin_left = 60.0
+margin_right = 102.0
 margin_bottom = 14.0
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 9 )
 text = "46 / 50"
 align = 1
 valign = 1
 
 [node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
-margin_left = 115.0
-margin_right = 224.0
+margin_left = 106.0
+margin_right = 208.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 max_value = 5.0
 
 [node name="Ally1" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
 visible = false
-margin_top = 28.0
-margin_right = 224.0
-margin_bottom = 42.0
+margin_top = 49.0
+margin_right = 208.0
+margin_bottom = 63.0
 
 [node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally1"]
-margin_right = 99.0
-margin_bottom = 14.0
+margin_top = 1.0
+margin_right = 91.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 9 )
 text = "Robotic Servant"
 align = 2
 
 [node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally1"]
-margin_left = 103.0
-margin_right = 148.0
-margin_bottom = 14.0
+margin_left = 95.0
+margin_top = 1.0
+margin_right = 137.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 9 )
 text = "20 / 40"
 align = 1
 valign = 1
 
 [node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally1"]
-margin_left = 152.0
-margin_right = 224.0
+margin_left = 141.0
+margin_right = 208.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 max_value = 5.0
 
 [node name="Ally2" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
 visible = false
-margin_top = 28.0
-margin_right = 224.0
-margin_bottom = 42.0
+margin_top = 67.0
+margin_right = 208.0
+margin_bottom = 81.0
 
 [node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally2"]
-margin_right = 82.0
-margin_bottom = 14.0
+margin_top = 1.0
+margin_right = 70.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 9 )
 text = "Mutated Dog"
 align = 2
 
 [node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally2"]
-margin_left = 86.0
-margin_right = 131.0
-margin_bottom = 14.0
+margin_left = 74.0
+margin_top = 1.0
+margin_right = 113.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 9 )
 text = "15 / 50"
 align = 1
 valign = 1
 
 [node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally2"]
-margin_left = 135.0
-margin_right = 224.0
+margin_left = 117.0
+margin_right = 208.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 max_value = 5.0
