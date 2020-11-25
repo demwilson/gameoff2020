@@ -29,6 +29,14 @@ enum Scene {
 	CREDITS
 }
 
+enum LogLevel {
+	ERROR,
+	DEBUG,
+	WARN,
+	INFO,
+	TRACE,
+}
+
 var TEXT_COLOR = {
 	"DAMAGE": "ff3131",
 	"HEAL": "2eff27",
@@ -47,6 +55,8 @@ const OXYGEN_STEP = 80
 const HEALTH_STEP = 25
 
 const version = "0.1.0-alpha"
+
+var debug = LogLevel.ERROR
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -100,7 +110,7 @@ func _ready():
 	log_file = File.new()
 	log_file.open("user://log_file.log", File.WRITE)
 	# Add debugging settings here
-	if Settings.debug >= Settings.LogLevel.TRACE:
+	if Global.debug >= Global.LogLevel.TRACE:
 		currency = 6000
 		# Uncomment to force a seed value
 		# seed_value = 1001992940376165448
@@ -112,7 +122,7 @@ func _ready():
 	else:
 		random.randomize()
 	current_seed = random.get_seed()
-	self.log(Settings.LogLevel.DEBUG, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
+	self.log(Global.LogLevel.DEBUG, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
 
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
@@ -328,8 +338,6 @@ func goto_scene(target_scene, function_call = null):
 			call_deferred("_deferred_goto_scene", target_scene, "res://lose/Lose.tscn")
 		Scene.GROUND_CONTROL:
 			call_deferred("_deferred_goto_scene", target_scene, "res://ground_control/GroundControl.tscn")
-		Scene.SETTINGS:
-			call_deferred("_deferred_goto_scene", target_scene, "res://settings/Settings.tscn")
 		Scene.LOOT_WINDOW:
 			call_deferred("_deferred_goto_scene", target_scene, "res://loot_window/LootWindow.tscn")
 		Scene.CREDITS:
@@ -393,7 +401,7 @@ func persist_scene(scene, scene_node):
 	persisted_scenes[scene] = scene_node
 
 func log(level, msg):
-	if level <= Settings.debug:
+	if level <= Global.debug:
 		if log_file:
 			log_file.store_line(msg)
 		print(msg)
@@ -435,11 +443,11 @@ func populate_loot_list(loot_list, loot_bag):
 func analyze_creatures():
 	var my_combat = Combat.new()
 	var static_position = Vector2(0,0)
-	Global.log(Settings.LogLevel.TRACE, "[analyze_creatures] -------------------- BEGIN ANALYSIS --------------------")
+	Global.log(Global.LogLevel.TRACE, "[analyze_creatures] -------------------- BEGIN ANALYSIS --------------------")
 	var creature_list = enemies.get_enemies_by_tier_level(2)
 	for thing in creature_list:
 		var enemy = thing
-		Global.log(Settings.LogLevel.TRACE, "NAME: " + enemy.get_name())
+		Global.log(Global.LogLevel.TRACE, "NAME: " + enemy.get_name())
 		var creature = my_combat.build_combat_creature(enemy, static_position, CombatCreature.CombatantType.ENEMY)
 		var move_id = creature.get_move()
 		var move = Global.moves.get_move_by_id(move_id)
@@ -448,8 +456,8 @@ func analyze_creatures():
 		my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 0)
 		my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 1)
 		my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 2)
-		Global.log(Settings.LogLevel.TRACE, "-------------------- BREAK --------------------")
-	Global.log(Settings.LogLevel.TRACE, "[analyze_creatures] -------------------- END ANALYSIS --------------------")
+		Global.log(Global.LogLevel.TRACE, "-------------------- BREAK --------------------")
+	Global.log(Global.LogLevel.TRACE, "[analyze_creatures] -------------------- END ANALYSIS --------------------")
 
 func analyze_moves():
 	var my_combat = Combat.new()
@@ -474,7 +482,7 @@ func analyze_moves():
 			[Items.ItemList.MELEE_T0], Creature.BasePath.PLAYER
 		),
 	]
-	Global.log(Settings.LogLevel.TRACE, "[analyze_moves] -------------------- BEGIN ANALYSIS --------------------")
+	Global.log(Global.LogLevel.TRACE, "[analyze_moves] -------------------- BEGIN ANALYSIS --------------------")
 	for move in moves._moves:
 		for player_char in players:
 			var creature = my_combat.build_combat_creature(player_char, static_position, CombatCreature.CombatantType.ENEMY)
@@ -484,5 +492,5 @@ func analyze_moves():
 			my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 0)
 			my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 1)
 			my_combat.check_to_evade(creature.get_stat("evade"), creature.get_bonus("evade"), 2)
-		Global.log(Settings.LogLevel.TRACE, "-------------------- BREAK --------------------")
-	Global.log(Settings.LogLevel.TRACE, "[analyze_moves] -------------------- END ANALYSIS --------------------")
+		Global.log(Global.LogLevel.TRACE, "-------------------- BREAK --------------------")
+	Global.log(Global.LogLevel.TRACE, "[analyze_moves] -------------------- END ANALYSIS --------------------")

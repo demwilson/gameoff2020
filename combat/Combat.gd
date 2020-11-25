@@ -9,7 +9,6 @@ enum CombatAnimationState {
 	COMPLETE = 4,
 }
 
-const PauseOverlay = preload("res://PauseOverlay.tscn")
 const Creature = preload("res://game/Creature.gd")
 const Move = preload("res://game/Move.gd")
 const Stats = preload("res://game/Stats.gd")
@@ -137,7 +136,7 @@ func _ready():
 		creature = build_combat_creature(ally, position, CombatCreature.CombatantType.ALLY)
 		allies.append(creature)
 		CombatantBox.add_child(creature.scene)
-	if Settings.debug >= Settings.LogLevel.TRACE:
+	if Global.debug >= Global.LogLevel.TRACE:
 		 debug_data.visible = true
 	OS.set_window_size(Vector2(1280, 720))
 
@@ -151,7 +150,7 @@ func _process(delta):
 		animation_ticks += delta
 	else:
 		animation_ticks = 0
-	if Settings.debug >= Settings.LogLevel.TRACE:
+	if Global.debug >= Global.LogLevel.TRACE:
 		$CanvasLayer/DebugContainer/Ticks.text = "Ticks: " + str(counter)
 		$CanvasLayer/DebugContainer/AnimationTicks.text = "Animation Ticks:\n" + str(animation_ticks) + "\n\nQueue Size:\n" + str(action_queue.size())
 
@@ -210,11 +209,6 @@ func _input(event):
 		return
 	if event.is_action("map_change_again"):
 		Global.goto_scene(Global.Scene.OVERWORLD)
-	elif event.is_action("pause"):
-		if !pause_overlay:
-			pause_overlay = PauseOverlay.instance()
-			self.add_child(pause_overlay)
-			get_tree().paused = true
 	elif _phase != MenuPhase.NONE:
 		if event.is_action("up"):
 			update_hover(-STEP_AMOUNT)
@@ -485,7 +479,7 @@ func execute_move(attacker, target, move):
 
 	# Logging stuff
 	var log_string = PoolStringArray(log_arr).join(" | ")
-	Global.log(Settings.LogLevel.INFO, log_string)
+	Global.log(Global.LogLevel.INFO, log_string)
 
 func get_damage(attacker, target, move):
 	var log_arr = []
@@ -519,7 +513,7 @@ func get_damage(attacker, target, move):
 		log_arr.append("ACTUAL DAMAGE: " + str(damage))
 	# Logging stuff
 	var log_string = PoolStringArray(log_arr).join("\n	")
-	Global.log(Settings.LogLevel.TRACE, log_string)
+	Global.log(Global.LogLevel.TRACE, log_string)
 	return damage
 
 func apply_floating_text(target, amount, type=null):
@@ -537,7 +531,7 @@ func check_to_hit(accuracy):
 		processed = ACCURACY_PROCESSED_MIN
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER
 	var hit_target = rand <= processed
-	Global.log(Settings.LogLevel.TRACE, "[check_to_hit] ACCURACY: " + str(accuracy) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
+	Global.log(Global.LogLevel.TRACE, "[check_to_hit] ACCURACY: " + str(accuracy) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return hit_target
 
 func check_to_evade(evade, bonus_evade, move_level):
@@ -546,17 +540,17 @@ func check_to_evade(evade, bonus_evade, move_level):
 		processed = EVADE_PROCESSED_MAX
 	var rand = Global.random.randf() * PERCENT_MULTIPLIER
 	var evaded = rand <= processed
-	Global.log(Settings.LogLevel.TRACE, "[check_to_evade] EVADE: " + str(evade) + " | BONUS: " + str(bonus_evade) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
+	Global.log(Global.LogLevel.TRACE, "[check_to_evade] EVADE: " + str(evade) + " | BONUS: " + str(bonus_evade) + " | PROCESSED: " + str(processed) + " | RAND: " + str(rand))
 	return evaded
 
 func calculate_damage(min_damage, max_damage):
 	var rand = 1 + Global.random.randi() % int(max_damage - min_damage) + int(min_damage)
-	Global.log(Settings.LogLevel.TRACE, "[calculate_damage] MIN: " + str(min_damage) + " | MAX: " + str(max_damage) + " | RAND: " + str(rand))
+	Global.log(Global.LogLevel.TRACE, "[calculate_damage] MIN: " + str(min_damage) + " | MAX: " + str(max_damage) + " | RAND: " + str(rand))
 	return rand
 
 func calculate_defense(defense, bonus_defense):
 	var processed = (defense * DEFENSE_MULTIPLIER) + bonus_defense
-	Global.log(Settings.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
+	Global.log(Global.LogLevel.TRACE, "[calculate_defense] RAW: " + str(defense) + " | BONUS: " + str(bonus_defense) + " | processed: " + str(processed))
 	return processed
 
 func get_combat_enemies(total_combats):

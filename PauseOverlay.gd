@@ -1,9 +1,7 @@
 extends Control
 
-onready var parent = get_parent()
-
 func _ready():
-	pass
+	get_tree().paused = true
 
 func _input(event):
 	if !event.is_pressed():

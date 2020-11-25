@@ -42,7 +42,7 @@ func possible_roll_up(loot_bag):
 				var previous_item_name = loot.item.name
 				var new_item = Global.items.roll_up_item(loot.item)
 				loot.item = new_item
-				Global.log(Settings.LogLevel.DEBUG, "[possible_roll_up] Roll Up Item: " + str(previous_item_name) + " | New Item: " + str(new_item.name))
+				Global.log(Global.LogLevel.DEBUG, "[possible_roll_up] Roll Up Item: " + str(previous_item_name) + " | New Item: " + str(new_item.name))
 				Global.roll_up_percentage = DEFAULT_ROLL_UP_PERCENTAGE
 			else:
 				Global.roll_up_percentage += ROLL_UP_STEP

@@ -33,7 +33,7 @@ func _ready():
 func place_player():
 	player.position = tile_map.playerStartPosition
 	anchor.set_start_position(player.position)
-	Global.log(Settings.LogLevel.TRACE, "The player starts at: " + str(player.position))
+	Global.log(Global.LogLevel.TRACE, "The player starts at: " + str(player.position))
 	#used to prevent moving when going from level to level
 	yield(get_tree().create_timer(0.3), 'timeout')
 	tile_map.isGeneratingNewLevel = false
@@ -44,7 +44,7 @@ func place_boss():
 	add_child(BossInstance)
 	boss = BossInstance.get_node("Boss")
 	boss.position = tile_map.bossStartPosition
-	Global.log(Settings.LogLevel.TRACE, "The Boss starts at: " + str(tile_map.bossStartPosition))
+	Global.log(Global.LogLevel.TRACE, "The Boss starts at: " + str(tile_map.bossStartPosition))
 
 func set_boss_movement(active):
 	boss.set_can_move(active)
@@ -58,7 +58,7 @@ func remove_boss():
 
 func _process(delta):
 	update_HUD_values()
-	if Settings.debug >= Settings.LogLevel.INFO:
+	if Global.debug >= Global.LogLevel.INFO:
 		debug_ui.visible = true
 		var cpos = $TileMap.world_to_map(player.position)
 		$GUI/Debug/TilePos.text = str(cpos)
@@ -174,7 +174,7 @@ func lose_event():
 
 func set_ui_visible(show):
 	$GUI/HUD.visible = show
-	if Settings.debug > Settings.LogLevel.INFO:
+	if Global.debug > Global.LogLevel.INFO:
 		debug_ui.visible = show
 
 func _on_LoseRestart_pressed():
