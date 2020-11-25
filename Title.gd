@@ -1,6 +1,7 @@
 extends Node2D
 
 signal settings_pressed
+signal help_pressed
 
 onready var audio = get_node("AudioStreamPlayer")
 onready var version_label = $CanvasLayer/Version
@@ -18,3 +19,6 @@ func _on_Start_pressed():
 
 func _on_Settings_pressed():
 	emit_signal("settings_pressed")
+
+func _on_Help_pressed():
+	emit_signal("help_pressed")

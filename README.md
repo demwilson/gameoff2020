@@ -29,7 +29,11 @@ and he cannot open them. He will need to explore the facility and escape before 
 
 ## Gameplay
 ### How to Play
-Here are some basic instructions on how to play or interact with the game on the various screens. 
+Here are some basic instructions on how to play or interact with the game on the various screens.
+#### General
+* Press **Esc** to bring up settings (does not work during combat).  
+* Press **P** to pause the game.
+* Press **H** to open the controls page.
 #### Overworld
 When in the overworld:
 * Move the astronaut using the **arrow keys** or **WASD**.
@@ -64,7 +68,6 @@ When in combat, you must wait for the astronaut's action bar to fill before you 
 Once the action bar is filled:
 * Move the arrow selector using the **arrow keys** or **WASD**.
 * Press **space bar** or **enter** to select an ability and/or an enemy pointed at by the arrow selector.
-* Press **Esc** or **P** to pause during combat.
 
 The action selected is placed in a queue, and the player will take that action without any further inputs.
 

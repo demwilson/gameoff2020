@@ -139,7 +139,6 @@ __meta__ = {
 [node name="Equipment" type="Label" parent="CanvasLayer/NinePatchRect/Equipment"]
 margin_right = 332.0
 margin_bottom = 14.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Equipment"
 align = 1
 

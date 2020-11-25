@@ -1,0 +1,251 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/title_text.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Help.gd" type="Script" id=4]
+
+[node name="Node2D" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 4 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 121
+
+[node name="Backdrop" type="ColorRect" parent="CanvasLayer"]
+margin_right = 640.0
+margin_bottom = 360.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Scene Title" type="Label" parent="CanvasLayer"]
+margin_left = 232.0
+margin_top = 8.0
+margin_right = 408.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 1 )
+text = "Help"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer"]
+margin_left = 16.0
+margin_top = 64.0
+margin_right = 208.0
+margin_bottom = 96.0
+custom_fonts/font = ExtResource( 3 )
+text = "General"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Title"]
+margin_top = 32.0
+margin_right = 192.0
+margin_bottom = 176.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Title/Background"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 136.0
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Esc - bring up settings (does not work during combat)
+
+P -  pause the game
+
+H - Opens this screen"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title2" type="Label" parent="CanvasLayer"]
+margin_left = 224.0
+margin_top = 64.0
+margin_right = 416.0
+margin_bottom = 96.0
+custom_fonts/font = ExtResource( 3 )
+text = "Overworld"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Title2"]
+margin_top = 32.0
+margin_right = 192.0
+margin_bottom = 136.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Title2/Background"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 96.0
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Arrow Keys, WASD - move the astronaut
+
+C, I - view stats and gear
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title3" type="Label" parent="CanvasLayer"]
+margin_left = 432.0
+margin_top = 64.0
+margin_right = 624.0
+margin_bottom = 96.0
+custom_fonts/font = ExtResource( 3 )
+text = "Loot Screen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Title3"]
+margin_top = 32.0
+margin_right = 192.0
+margin_bottom = 136.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Title3/Background"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 96.0
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Space Bar, Enter - close the screen
+
+You can also close it by clicking \"Take All\"."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title4" type="Label" parent="CanvasLayer"]
+margin_left = 16.0
+margin_top = 248.0
+margin_right = 208.0
+margin_bottom = 280.0
+custom_fonts/font = ExtResource( 3 )
+text = "Astronaut Stats"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Title4"]
+margin_top = 32.0
+margin_right = 192.0
+margin_bottom = 96.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Title4/Background"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 64.0
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Hover over items to see details about them."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title5" type="Label" parent="CanvasLayer"]
+margin_left = 224.0
+margin_top = 208.0
+margin_right = 624.0
+margin_bottom = 240.0
+custom_fonts/font = ExtResource( 3 )
+text = "Combat"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Title5"]
+margin_top = 32.0
+margin_right = 192.0
+margin_bottom = 136.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Title5/Background"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 96.0
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Arrow Keys, WASD - move pointer
+
+Space Bar, Enter - make a selection"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background2" type="ColorRect" parent="CanvasLayer/Title5"]
+margin_left = 208.0
+margin_top = 32.0
+margin_right = 400.0
+margin_bottom = 136.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Title5/Background2"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 96.0
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Combat Tip: Make choices quickly! The game does not wait for you to choose options!
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReturnButton" type="Button" parent="CanvasLayer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 96.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 2 )
+text = "< Return"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="CanvasLayer/ReturnButton" to="." method="_on_ReturnButton_pressed"]
