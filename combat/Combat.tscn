@@ -189,7 +189,7 @@ __meta__ = {
 position = Vector2( 320, 91 )
 frames = SubResource( 2 )
 animation = "satelite"
-frame = 75
+frame = 35
 playing = true
 
 [node name="DebugContainer" type="Container" parent="CanvasLayer"]
@@ -316,6 +316,7 @@ __meta__ = {
 }
 
 [node name="Instructions" type="Label" parent="CanvasLayer/CombatMenu"]
+visible = false
 margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
@@ -489,11 +490,11 @@ rect_min_size = Vector2( 0, 5 )
 visible = false
 margin_top = 31.0
 margin_right = 208.0
-margin_bottom = 45.0
+margin_bottom = 42.0
 
 [node name="Name" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
 margin_right = 56.0
-margin_bottom = 14.0
+margin_bottom = 11.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 10 )
 text = "Astronaut"
@@ -502,7 +503,7 @@ align = 2
 [node name="Health" type="Label" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
 margin_left = 60.0
 margin_right = 102.0
-margin_bottom = 14.0
+margin_bottom = 11.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 10 )
 text = "46 / 50"
@@ -512,8 +513,9 @@ valign = 1
 [node name="Ticks" type="ProgressBar" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally0"]
 margin_left = 106.0
 margin_right = 208.0
-margin_bottom = 14.0
+margin_bottom = 11.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 max_value = 5.0
 
 [node name="Ally1" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
@@ -546,6 +548,7 @@ margin_right = 208.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 max_value = 5.0
+value = 4.0
 
 [node name="Ally2" type="HBoxContainer" parent="CanvasLayer/CombatMenu/Allies/VBoxContainer"]
 visible = false

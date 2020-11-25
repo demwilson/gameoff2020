@@ -2,7 +2,7 @@ extends Node2D
 
 const TitleScene = preload("res://Title.tscn")
 const PauseOverlay = preload("res://PauseOverlay.tscn")
-const Credits = preload("res://credits/Credits.tscn")
+const Credits = preload("res://Credits.tscn")
 const Help = preload("res://Help.tscn")
 const Settings = preload("res://settings/Settings.tscn")
 
