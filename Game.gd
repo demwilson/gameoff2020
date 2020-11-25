@@ -27,6 +27,8 @@ func _input(event):
 		show_settings()
 
 func show_settings():
+	if Global.current_scene_id == Global.Scene.COMBAT:
+		return
 	if !settings_overlay:
 		settings_overlay = Settings.instance()
 		self.add_child(settings_overlay)

@@ -1,11 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://settings/Settings.gd" type="Script" id=1]
 [ext_resource path="res://settings/MusicSlider.gd" type="Script" id=2]
 [ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=4]
 
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 0, 0, 0, 1, 0.0316467, 0.0490263, 0.476563, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
 [node name="Settings" type="Node2D"]
+pause_mode = 2
 visible = false
 script = ExtResource( 1 )
 
@@ -20,14 +27,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HeaderBackground" type="ColorRect" parent="CanvasLayer"]
+[node name="HeaderBackground" type="NinePatchRect" parent="CanvasLayer"]
 margin_left = 192.0
 margin_right = 448.0
 margin_bottom = 360.0
-color = Color( 0, 0.27451, 1, 0.611765 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture = SubResource( 2 )
 
 [node name="Label" type="Label" parent="CanvasLayer/HeaderBackground"]
 margin_left = 8.0
