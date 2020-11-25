@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/fonts/title_text.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Story.gd" type="Script" id=4]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Backdrop" type="ColorRect" parent="CanvasLayer"]
+margin_right = 640.0
+margin_bottom = 360.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer"]
+margin_left = 64.0
+margin_top = 8.0
+margin_right = 576.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
+text = "Story"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+margin_left = 56.0
+margin_top = 40.0
+margin_right = 584.0
+margin_bottom = 320.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StoryText" type="RichTextLabel" parent="CanvasLayer/Background"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 520.0
+margin_bottom = 272.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "In the near future, the nations of the world come together in peace. Among other things, a common goal is set: sending a man to Mars. After a few short years, the Space Administration Across Nations (SAAN), successfully launches the first manned space expedition to Mars. The world rejoices, but the victory is quickly forgotten.
+
+Years later, after severe budget cuts and conflicting agendas, SAAN decides it needs to fund itself rather than depend on the world nations. SAAN's internal reports show there has been a sudden increase in lunar flares. Curious and hopeful, SAAN outfits a single astronaut with enough equipment to survive, and launches him to the moon.
+
+Upon landing the astronaut notices metallic doors. He approaches the doors and they open of their own accord. The astronaut knows this place wasn't created by SAAN. In fact, no one has been here in years. Consumed by curiosity, and with a tight hold on his trusty crowbar, he enters the gravity encased structure. Once inside, the doors close, and he cannot open them. He will need to explore the facility and escape before he runs out of oxygen!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartGame" type="Button" parent="CanvasLayer"]
+margin_left = 192.0
+margin_top = 328.0
+margin_right = 448.0
+margin_bottom = 352.0
+custom_fonts/font = ExtResource( 3 )
+text = "LET'S DO IT!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="CanvasLayer/StartGame" to="." method="_on_StartGame_pressed"]

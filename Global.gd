@@ -19,6 +19,7 @@ enum Scene {
 	MENU,
 	# normal
 	TITLE,
+	STORY,
 	COMBAT,
 	STATS,
 	COMBAT_WIN,
@@ -330,6 +331,8 @@ func goto_scene(target_scene, function_call = null):
 			call_deferred("_deferred_goto_scene", target_scene, "res://overworld/Overworld.tscn", function_call)
 		Scene.TITLE:
 			_deferred_goto_scene(target_scene, "res://Title.tscn")
+		Scene.STORY:
+			_deferred_goto_scene(target_scene, "res://Story.tscn")
 		Scene.COMBAT:
 			_deferred_goto_scene(target_scene, "res://combat/Combat.tscn")
 		Scene.STATS:
@@ -356,7 +359,7 @@ func _deferred_goto_scene(scene, path, function_call = null):
 			start_processing(overworld_node)
 
 	if current_scene_id && current_scene_id != Scene.OVERWORLD:
-		current_scene.free()
+		current_scene.queue_free()
 	# create/retrieve scene
 	current_scene_id = scene
 	match scene:
