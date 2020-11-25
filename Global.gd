@@ -41,7 +41,7 @@ enum LogLevel {
 var TEXT_COLOR = {
 	"DAMAGE": "ff3131",
 	"HEAL": "2eff27",
-	"TEXT": "000000",
+	"TEXT": "ffffff",
 }
 
 const PLAYER_POSITION_COMBAT = 0
@@ -344,7 +344,7 @@ func goto_scene(target_scene, function_call = null):
 		Scene.LOOT_WINDOW:
 			call_deferred("_deferred_goto_scene", target_scene, "res://loot_window/LootWindow.tscn")
 		Scene.CREDITS:
-			call_deferred("_deferred_goto_scene", target_scene, "res://credits/Credits.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://Credits.tscn")
 
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://lose/Lose.gd" type="Script" id=1]
 [ext_resource path="res://assets/audio/game_over.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=4]
 
 [node name="Lose" type="Node2D"]
 script = ExtResource( 1 )
@@ -22,6 +24,7 @@ margin_left = 160.0
 margin_top = 112.0
 margin_right = 478.0
 margin_bottom = 192.0
+custom_fonts/font = ExtResource( 3 )
 text = "You have made poor choices and it lead to your demise. Spend what currency you managed to find at SAAN.
 You Lose!"
 align = 1
@@ -37,7 +40,8 @@ margin_top = 256.0
 margin_right = 432.0
 margin_bottom = 320.0
 rect_min_size = Vector2( 224, 64 )
-text = "Go To SAAN"
+custom_fonts/font = ExtResource( 4 )
+text = "Go to SAAN"
 __meta__ = {
 "_edit_use_anchors_": false
 }

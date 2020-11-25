@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://overworld/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://assets/map_tileset.tres" type="TileSet" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/images/astro_walking_overland.png" type="Texture" id=8]
 [ext_resource path="res://assets/images/O2_bar_empty.png" type="Texture" id=9]
 [ext_resource path="res://assets/images/O2_bar_fill.png" type="Texture" id=10]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=11]
 [ext_resource path="res://assets/images/moon_stone.png" type="Texture" id=14]
 [ext_resource path="res://assets/images/top_bar.png" type="Texture" id=15]
 
@@ -93,19 +94,19 @@ script = ExtResource( 1 )
 
 [node name="HUD" type="MarginContainer" parent="GUI"]
 anchor_right = 1.0
-margin_bottom = 64.0
+margin_bottom = 65.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Background" type="TextureRect" parent="GUI/HUD"]
 margin_right = 640.0
-margin_bottom = 65.0
+margin_bottom = 128.0
 texture = ExtResource( 15 )
 
 [node name="HUDSpacer" type="MarginContainer" parent="GUI/HUD"]
 margin_right = 640.0
-margin_bottom = 65.0
+margin_bottom = 128.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
@@ -115,11 +116,11 @@ custom_constants/margin_bottom = 10
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 630.0
-margin_bottom = 55.0
+margin_bottom = 118.0
 
 [node name="BarsLeft" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_right = 190.0
-margin_bottom = 45.0
+margin_bottom = 108.0
 rect_min_size = Vector2( 190, 0 )
 
 [node name="OxygenBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft"]
@@ -132,6 +133,9 @@ margin_bottom = 37.0
 rect_min_size = Vector2( 32, 32 )
 custom_constants/margin_top = 8
 custom_constants/margin_left = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Sprite" type="Sprite" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/Oxygen"]
 position = Vector2( 10, 4 )
@@ -142,14 +146,19 @@ frame = 7
 
 [node name="OxygenAmount" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
 margin_left = 36.0
-margin_right = 60.0
+margin_right = 90.0
 margin_bottom = 37.0
+size_flags_horizontal = 3
 custom_constants/margin_top = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Number" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenAmount"]
-margin_top = 16.0
-margin_right = 24.0
-margin_bottom = 30.0
+margin_top = 15.0
+margin_right = 54.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "100"
 align = 1
@@ -159,10 +168,13 @@ __meta__ = {
 }
 
 [node name="OxygenGauge" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar"]
-margin_left = 64.0
-margin_right = 160.0
+margin_left = 94.0
+margin_right = 190.0
 margin_bottom = 37.0
 custom_constants/margin_top = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Gauge" type="TextureProgress" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft/OxygenBar/OxygenGauge"]
 margin_top = 5.0
@@ -177,24 +189,25 @@ __meta__ = {
 
 [node name="BarsMiddle" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_left = 194.0
-margin_right = 474.0
-margin_bottom = 45.0
+margin_right = 510.0
+margin_bottom = 108.0
 rect_min_size = Vector2( 280, 0 )
 
 [node name="PlayerInfoBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle"]
-margin_right = 280.0
-margin_bottom = 23.0
+margin_right = 316.0
+margin_bottom = 26.0
 
 [node name="PlayerLevel" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar"]
-margin_right = 58.0
-margin_bottom = 23.0
+margin_right = 70.0
+margin_bottom = 26.0
 custom_constants/margin_top = 7
 custom_constants/margin_bottom = 2
 
 [node name="Level" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerLevel"]
 margin_top = 7.0
-margin_right = 58.0
-margin_bottom = 21.0
+margin_right = 70.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Level: 10"
 valign = 1
@@ -203,9 +216,9 @@ __meta__ = {
 }
 
 [node name="PlayerHealth" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar"]
-margin_left = 62.0
-margin_right = 154.0
-margin_bottom = 23.0
+margin_left = 74.0
+margin_right = 190.0
+margin_bottom = 26.0
 custom_constants/margin_top = 7
 custom_constants/margin_left = 10
 custom_constants/margin_bottom = 2
@@ -213,8 +226,9 @@ custom_constants/margin_bottom = 2
 [node name="Health" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerHealth"]
 margin_left = 10.0
 margin_top = 7.0
-margin_right = 92.0
-margin_bottom = 21.0
+margin_right = 116.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Health: 2000"
 valign = 1
@@ -223,9 +237,9 @@ __meta__ = {
 }
 
 [node name="PlayerCombat" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar"]
-margin_left = 158.0
-margin_right = 256.0
-margin_bottom = 23.0
+margin_left = 194.0
+margin_right = 316.0
+margin_bottom = 26.0
 custom_constants/margin_top = 7
 custom_constants/margin_left = 10
 custom_constants/margin_bottom = 2
@@ -233,8 +247,9 @@ custom_constants/margin_bottom = 2
 [node name="Combats" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle/PlayerInfoBar/PlayerCombat"]
 margin_left = 10.0
 margin_top = 7.0
-margin_right = 98.0
-margin_bottom = 21.0
+margin_right = 122.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Combats: 400"
 valign = 1
@@ -243,12 +258,12 @@ __meta__ = {
 }
 
 [node name="BarsRight" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
-margin_left = 478.0
-margin_right = 554.0
-margin_bottom = 45.0
+margin_left = 514.0
+margin_right = 603.0
+margin_bottom = 108.0
 
 [node name="CurrencyBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight"]
-margin_right = 76.0
+margin_right = 89.0
 margin_bottom = 45.0
 
 [node name="Currency" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar"]
@@ -269,15 +284,16 @@ __meta__ = {
 
 [node name="CurrencyAmount" type="MarginContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar"]
 margin_left = 36.0
-margin_right = 76.0
+margin_right = 89.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 0, 45 )
 custom_constants/margin_top = 5
 
 [node name="Number" type="Label" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight/CurrencyBar/CurrencyAmount"]
-margin_top = 18.0
-margin_right = 40.0
-margin_bottom = 32.0
+margin_top = 16.0
+margin_right = 53.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "10000"
 align = 1
