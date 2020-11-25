@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="scratch_roguelike"
+config/name="SAAN: Lunar Flares"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 

@@ -14,7 +14,7 @@ func _input(event):
 
 func _on_Start_pressed():
 	audio.stop()
-	Global.goto_scene(Global.Scene.OVERWORLD)
+	Global.goto_scene(Global.Scene.STORY)
 
 func _on_Settings_pressed():
 	emit_signal("settings_pressed")
