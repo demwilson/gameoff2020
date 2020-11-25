@@ -49,7 +49,7 @@ func generate_combat_loot(tier_level, last_combat_enemies=DEFAULT_COUNT):
 	# Add the guaranteed currency for the combat
 	var combat_currency = LootItem.new(LootType.CURRENCY, tier_level * last_combat_enemies)
 	loot_bag.append(combat_currency)
-	Global.log(Settings.LogLevel.TRACE, "[generate_combat_loot] Combat Loot Bag Size: " + str(loot_bag.size()))
+	Global.log(Global.LogLevel.TRACE, "[generate_combat_loot] Combat Loot Bag Size: " + str(loot_bag.size()))
 	return loot_bag
 
 func generate_loot(tier_level, item_count=DEFAULT_COUNT):
@@ -67,8 +67,8 @@ func generate_loot(tier_level, item_count=DEFAULT_COUNT):
 				loot = LootItem.new(loot_type, get_random_count(CURRENCY_BASE, tier_level))
 		if loot:
 			loot_bag.append(loot)
-		Global.log(Settings.LogLevel.TRACE, "[generate_loot] Type: " + LootTypeMap[loot.type] + " | Loot: " + str(loot.item))
-	Global.log(Settings.LogLevel.INFO, "[generate_loot] Loot Bag Size: " + str(loot_bag.size()))
+		Global.log(Global.LogLevel.TRACE, "[generate_loot] Type: " + LootTypeMap[loot.type] + " | Loot: " + str(loot.item))
+	Global.log(Global.LogLevel.INFO, "[generate_loot] Loot Bag Size: " + str(loot_bag.size()))
 	return loot_bag
 
 func apply_loot_bag(loot_bag, player):

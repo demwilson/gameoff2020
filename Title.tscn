@@ -7,7 +7,10 @@
 [node name="Title" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 11
+
+[node name="Background" type="TextureRect" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 0.840881
@@ -18,8 +21,6 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Title" type="Label" parent="CanvasLayer"]
 margin_right = 640.0
@@ -52,7 +53,16 @@ margin_right = 561.857
 margin_bottom = 225.273
 text = "Start"
 __meta__ = {
-"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Settings" type="Button" parent="CanvasLayer"]
+margin_left = 480.0
+margin_top = 288.0
+margin_right = 560.0
+margin_bottom = 320.0
+text = "Settings"
+__meta__ = {
 "_edit_use_anchors_": false
 }
 
@@ -60,3 +70,4 @@ __meta__ = {
 stream = ExtResource( 3 )
 autoplay = true
 [connection signal="pressed" from="CanvasLayer/Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="CanvasLayer/Settings" to="." method="_on_Settings_pressed"]
