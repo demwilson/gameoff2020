@@ -86,9 +86,13 @@ Here are some basic tips to follow while playing the game:
 
 ## Credits
 **Game Design** - Angel Gonzalez, Alexander Wilson
+
 **Developers** - Angel Gonzalez, Michael Marquez, Raul Martinez, Alexander Wilson
+
 **Art** - Juan "Tony" Davila
+
 **Audio** - Ebrey Rojas 
+
 **Story** - Alexander Wilson 
 
 A special thanks to all the play testers who gave us feedback!
