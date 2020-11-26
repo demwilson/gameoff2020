@@ -71,6 +71,8 @@ const MISSED_TEXT = "MISSED"
 
 const INITIAL_WAIT_TIMER = 3 
 const ANIMATION_START_FRAME = 0
+const MIN_WAIT_TIMER = 5
+const MAX_WAIT_TIMER = 30
 
 var counter = 0
 var enemies = []
@@ -575,7 +577,7 @@ func restart_animation():
 	animatedsprite.play("satelite", false)
 	
 func _on_AnimatedSprite_animation_finished():
-	var rand = 1 + Global.random.randi() % int(30 - 5) + int(5)
+	var rand = 1 + Global.random.randi() % int(MAX_WAIT_TIMER - MIN_WAIT_TIMER) + int(MIN_WAIT_TIMER)
 	delay_animation(rand)
 	
 func _on_Timer_timeout():
