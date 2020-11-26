@@ -1,5 +1,5 @@
 ﻿# SAAN: Lunar Flares
-SAAN: Lunar Flares is a 2D rogue-lite dungeon crawler with a time-based combat system. It was developed for
+SAAN: Lunar Flares is a 2D rogue-lite dungeon crawler with a time-based combat system built with Godot. It was developed for
 [Game Off 2020](https://itch.io/jam/game-off-2020). It is also our first attempt at developing a game using the Godot
 engine.
 
@@ -83,3 +83,12 @@ Here are some basic tips to follow while playing the game:
 * Each monster has a combat pattern. Learn the patterns to help you make the right decisions during combat.
 * Open the Character Screen (using **C** or **I**) to see what abilities and items you have available. 
 * Your allies, if you have picked any up, will always aid you each fight, even if they died in a previous battle.
+
+## Credits
+**Game Design** - Angel Gonzalez, Alexander Wilson
+**Developers** - Angel Gonzalez, Michael Marquez, Raul Martinez, Alexander Wilson
+**Art** - Juan "Tony" Davila
+**Audio** - Ebrey Rojas 
+**Story** - Alexander Wilson 
+
+A special thanks to all the play testers who gave us feedback!

@@ -1,8 +1,25 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://ground_control/GroundControl.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/saan.png" type="Texture" id=2]
 [ext_resource path="res://assets/audio/saan_sound.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/fonts/title_text.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=6]
+[ext_resource path="res://assets/fonts/Orbitron Medium.otf" type="DynamicFontData" id=7]
+[ext_resource path="res://assets/fonts/Orbitron Light.otf" type="DynamicFontData" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 10
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 10
+font_data = ExtResource( 8 )
 
 [node name="GroundControl" type="Node2D"]
 script = ExtResource( 1 )
@@ -18,15 +35,38 @@ margin_right = 640.0
 margin_bottom = 384.0
 texture = ExtResource( 2 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="Title" type="Label" parent="CanvasLayer/TextureRect"]
 margin_right = 640.0
 margin_bottom = 64.0
+custom_fonts/font = ExtResource( 4 )
 text = "SAAN: Ground Control"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel2" type="Label" parent="CanvasLayer"]
+margin_left = 8.0
+margin_top = 200.0
+margin_right = 120.0
+margin_bottom = 216.0
+custom_fonts/font = ExtResource( 6 )
+text = "NOTICE:"
+align = 1
+valign = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 8.0
+margin_top = 224.0
+margin_right = 120.0
+margin_bottom = 352.0
+custom_fonts/normal_font = ExtResource( 5 )
+text = "Spend moon rocks you find in the facility to upgrade your next astronaut!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -36,17 +76,19 @@ margin_left = 520.0
 margin_top = 200.0
 margin_right = 632.0
 margin_bottom = 214.0
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.0588235, 0.745098, 0, 1 )
-align = 1
+text = "Moon Rocks:"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Tier0" type="Control" parent="CanvasLayer"]
 margin_left = 192.0
-margin_top = 288.0
+margin_top = 296.0
 margin_right = 448.0
-margin_bottom = 328.0
+margin_bottom = 336.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -55,16 +97,17 @@ __meta__ = {
 margin_left = 24.0
 margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 28.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="OxygenCount" type="Label" parent="CanvasLayer/Tier0/OxygenButton"]
-margin_left = 16.0
 margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
+margin_right = 96.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -75,13 +118,17 @@ __meta__ = {
 margin_left = 136.0
 margin_top = 8.0
 margin_right = 232.0
-margin_bottom = 28.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HealthCount" type="Label" parent="CanvasLayer/Tier0/HealthButton"]
-margin_left = 24.0
 margin_top = 24.0
-margin_right = 72.0
-margin_bottom = 38.0
+margin_right = 96.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -99,19 +146,20 @@ __meta__ = {
 }
 
 [node name="AttackButton" type="Button" parent="CanvasLayer/Tier1"]
-margin_left = 24.0
-margin_right = 104.0
-margin_bottom = 20.0
+margin_left = 16.0
+margin_right = 120.0
+margin_bottom = 24.0
+custom_fonts/font = SubResource( 2 )
 text = "Attack: 12"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AttackCount" type="Label" parent="CanvasLayer/Tier1/AttackButton"]
-margin_left = 8.0
 margin_top = 24.0
-margin_right = 72.0
-margin_bottom = 38.0
+margin_right = 104.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -119,19 +167,20 @@ __meta__ = {
 }
 
 [node name="AccuracyButton" type="Button" parent="CanvasLayer/Tier1"]
-margin_left = 144.0
+margin_left = 136.0
 margin_right = 240.0
-margin_bottom = 20.0
+margin_bottom = 24.0
+custom_fonts/font = SubResource( 2 )
 text = "Accuracy: 10"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AccuracyCount" type="Label" parent="CanvasLayer/Tier1/AccuracyButton"]
-margin_left = 8.0
 margin_top = 24.0
-margin_right = 88.0
-margin_bottom = 38.0
+margin_right = 104.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -139,19 +188,20 @@ __meta__ = {
 }
 
 [node name="DefenseButton" type="Button" parent="CanvasLayer/Tier1"]
-margin_left = 272.0
-margin_right = 369.0
-margin_bottom = 20.0
+margin_left = 256.0
+margin_right = 368.0
+margin_bottom = 24.0
+custom_fonts/font = SubResource( 2 )
 text = "Defense: 15"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="DefenseCount" type="Label" parent="CanvasLayer/Tier1/DefenseButton"]
-margin_left = 16.0
 margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
+margin_right = 112.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -161,27 +211,29 @@ __meta__ = {
 [node name="Tier2" type="Control" parent="CanvasLayer"]
 visible = false
 margin_left = 128.0
-margin_top = 192.0
+margin_top = 184.0
 margin_right = 512.0
-margin_bottom = 232.0
+margin_bottom = 224.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SpeedButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 24.0
-margin_right = 104.0
-margin_bottom = 20.0
+margin_left = 16.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Speed: 20"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SpeedCount" type="Label" parent="CanvasLayer/Tier2/SpeedButton"]
-margin_left = 8.0
 margin_top = 24.0
-margin_right = 64.0
-margin_bottom = 38.0
+margin_right = 104.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -189,19 +241,21 @@ __meta__ = {
 }
 
 [node name="EvadeButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 152.0
-margin_right = 232.0
-margin_bottom = 20.0
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 240.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Evade: 24"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="EvadeCount" type="Label" parent="CanvasLayer/Tier2/EvadeButton"]
-margin_left = 16.0
 margin_top = 24.0
-margin_right = 56.0
-margin_bottom = 38.0
+margin_right = 104.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -209,130 +263,183 @@ __meta__ = {
 }
 
 [node name="CombatTrnButton" type="Button" parent="CanvasLayer/Tier2"]
-margin_left = 264.0
-margin_right = 375.0
-margin_bottom = 20.0
+margin_left = 256.0
+margin_top = 8.0
+margin_right = 368.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Cbt Training: 40"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CombatTrnCount" type="Label" parent="CanvasLayer/Tier2/CombatTrnButton"]
-margin_left = 8.0
 margin_top = 24.0
-margin_right = 104.0
-margin_bottom = 38.0
+margin_right = 112.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 
 [node name="Tier3" type="Control" parent="CanvasLayer"]
 visible = false
 margin_left = 128.0
-margin_top = 136.0
+margin_top = 128.0
 margin_right = 512.0
-margin_bottom = 176.0
+margin_bottom = 168.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BasicWpnButton" type="Button" parent="CanvasLayer/Tier3"]
-margin_left = 8.0
+margin_left = 16.0
 margin_top = 8.0
-margin_right = 118.0
-margin_bottom = 28.0
+margin_right = 120.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Basic Wpns: 50"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BasicWpnCount" type="Label" parent="CanvasLayer/Tier3/BasicWpnButton"]
-margin_left = 8.0
 margin_top = 24.0
 margin_right = 104.0
-margin_bottom = 38.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 
 [node name="BasicDefButton" type="Button" parent="CanvasLayer/Tier3"]
 margin_left = 136.0
 margin_top = 8.0
-margin_right = 248.0
-margin_bottom = 28.0
+margin_right = 240.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Basic Def: 30"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BasicDefenseCount" type="Label" parent="CanvasLayer/Tier3/BasicDefButton"]
-margin_left = 8.0
 margin_top = 24.0
 margin_right = 104.0
-margin_bottom = 38.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 
+[node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier3"]
+visible = false
+margin_left = 256.0
+margin_top = 8.0
+margin_right = 368.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
+text = "Adv. Training: 50"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdvTrnCount" type="Label" parent="CanvasLayer/Tier3/AdvTrnButton"]
+margin_top = 24.0
+margin_right = 112.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Tier4" type="Control" parent="CanvasLayer"]
 margin_left = 128.0
-margin_top = 88.0
+margin_top = 72.0
 margin_right = 512.0
-margin_bottom = 128.0
+margin_bottom = 112.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AdvWpnButton" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
-margin_left = 8.0
+margin_left = 16.0
 margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 28.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Adv. Wpns: 75"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AdvWpnCount" type="Label" parent="CanvasLayer/Tier4/AdvWpnButton"]
-margin_left = 32.0
 margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
+margin_right = 104.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AdvDefButton" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
 margin_left = 136.0
 margin_top = 8.0
-margin_right = 241.0
-margin_bottom = 28.0
+margin_right = 240.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Adv. Def: 50"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AdvDefCount" type="Label" parent="CanvasLayer/Tier4/AdvDefButton"]
-margin_left = 32.0
 margin_top = 24.0
-margin_right = 80.0
-margin_bottom = 38.0
+margin_right = 104.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ExpertTraining" type="Button" parent="CanvasLayer/Tier4"]
 visible = false
 margin_left = 256.0
 margin_top = 8.0
-margin_right = 376.0
-margin_bottom = 28.0
+margin_right = 368.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
 text = "Exprt Training: 60"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ExpTrainCount" type="Label" parent="CanvasLayer/Tier4/ExpertTraining"]
-margin_left = 40.0
 margin_top = 24.0
-margin_right = 88.0
-margin_bottom = 38.0
+margin_right = 112.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartGameMission" type="Button" parent="CanvasLayer"]
+margin_left = 528.0
+margin_top = 296.0
+margin_right = 623.0
+margin_bottom = 320.0
+custom_fonts/font = SubResource( 2 )
+text = "Start Mission"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Alert" type="ColorRect" parent="CanvasLayer"]
 visible = false
@@ -349,6 +456,7 @@ margin_left = 144.0
 margin_top = 152.0
 margin_right = 240.0
 margin_bottom = 176.0
+custom_fonts/font = ExtResource( 6 )
 text = "OK"
 
 [node name="Label" type="Label" parent="CanvasLayer/Alert"]
@@ -356,41 +464,10 @@ margin_left = 72.0
 margin_top = 64.0
 margin_right = 320.0
 margin_bottom = 88.0
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Not enough currency"
+text = "Not enough currency!"
 align = 1
-
-[node name="StartGameMission" type="Button" parent="CanvasLayer"]
-margin_left = 528.0
-margin_top = 296.0
-margin_right = 623.0
-margin_bottom = 316.0
-text = "Start Mission"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AdvTrnButton" type="Button" parent="CanvasLayer"]
-visible = false
-margin_left = 384.0
-margin_top = 144.0
-margin_right = 510.0
-margin_bottom = 164.0
-text = "Adv. Training: 50"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AdvTrnCount" type="Label" parent="CanvasLayer/AdvTrnButton"]
-margin_left = 40.0
-margin_top = 24.0
-margin_right = 88.0
-margin_bottom = 38.0
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 [connection signal="pressed" from="CanvasLayer/Tier0/OxygenButton" to="." method="_on_OxygenButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_HealthButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_AttackButton_pressed"]
@@ -401,9 +478,9 @@ __meta__ = {
 [connection signal="pressed" from="CanvasLayer/Tier2/CombatTrnButton" to="." method="_on_CombatTrnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier3/BasicWpnButton" to="." method="_on_BasicWpnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier3/BasicDefButton" to="." method="_on_BasicDefButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Tier3/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvWpnButton" to="." method="_on_AdvWpnButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_AdvDefButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier4/ExpertTraining" to="." method="_on_ExpertTraining_pressed"]
-[connection signal="pressed" from="CanvasLayer/Alert/AlertButton" to="." method="_on_AlertButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartGameMission" to="." method="_on_StartGameMission_pressed"]
-[connection signal="pressed" from="CanvasLayer/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Alert/AlertButton" to="." method="_on_AlertButton_pressed"]

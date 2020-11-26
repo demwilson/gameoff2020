@@ -1,5 +1,7 @@
 extends Node2D
 
+const Saving = preload("res://Saving.tscn")
+
 onready var audio = get_node("AudioStreamPlayer")
 #Count on button clicks
 var Button_Click = {
@@ -80,14 +82,23 @@ var tier0_total
 var tier1_total
 var tier2_total
 
+var saving_overlay = null
 
 func _ready():
+	if Global.game_loaded:
+		Global.game_loaded = false
+	else:
+		save_game_progress()
 	actual_currency = Global.currency
 	initialize_cost()
 	$CanvasLayer/MoonRocks.text = "Moon Rocks: " + str(actual_currency)
 	OS.set_window_size(Vector2(1280, 720))
 	upgraded_skills()
-	
+
+func save_game_progress():
+	saving_overlay = Saving.instance()
+	self.add_child(saving_overlay)
+
 func upgraded_skills():
 	tier_list()
 	#Oxygen
@@ -146,7 +157,7 @@ func upgraded_skills():
 	if Button_Click.Advance_Defense == Max_Click.AdvanceDefense:
 		$CanvasLayer/Tier4/AdvDefButton.text = "Adv Def"
 	#Advance Training
-	$CanvasLayer/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
+	$CanvasLayer/Tier3/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
 	if Button_Click.Advance_Training == Max_Click.AdvanceTraining:
 		$CanvasLayer/Tier4/AdvTrnButton.text = "Adv Training"
 	#Expert Training
@@ -413,11 +424,11 @@ func advance_training():
 			spend_currency(get_cost(UpgradeType.ADVANCETRAINING, Button_Click.Advance_Training))
 			Button_Click.Advance_Training += 1
 			get_cost(UpgradeType.ADVANCETRAINING, Button_Click.Advance_Training)
-			$CanvasLayer/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
+			$CanvasLayer/Tier3/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
 			tier_list()
 			$CanvasLayer/MoonRocks.text = "Moon Rocks: " + str(actual_currency)
 			if Button_Click.Advance_Training == Max_Click.AdvanceTraining:
-				$CanvasLayer/AdvTrnButton.text = "Adv Training"
+				$CanvasLayer/Tier3/AdvTrnButton.text = "Adv Training"
 		else:
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
@@ -457,7 +468,7 @@ func tier_list():
 	if Button_Click.Advance_Training == Upgrades_Needed.Basic_to_Advance:
 		$CanvasLayer/Tier4/ExpertTraining.visible = true
 	if Button_Click.Combat_Training == Upgrades_Needed.Basic_to_Advance:
-		$CanvasLayer/AdvTrnButton.visible = true
+		$CanvasLayer/Tier3/AdvTrnButton.visible = true
 ##### Button_Click
 func _on_OxygenButton_pressed():
 	oxygen_upgrade()

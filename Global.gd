@@ -41,9 +41,10 @@ enum LogLevel {
 var TEXT_COLOR = {
 	"DAMAGE": "ff3131",
 	"HEAL": "2eff27",
-	"TEXT": "000000",
+	"TEXT": "ffffff",
 }
 
+const SAVED_GAME_PATH = "user://savegame.save"
 const PLAYER_POSITION_COMBAT = 0
 const TEXTURE_FILE_EXTENSION = ".png"
 const ANIMATION_FILE_EXTENSION = ".tres"
@@ -58,6 +59,7 @@ const HEALTH_STEP = 25
 const version = "0.2.0-alpha"
 
 var debug = LogLevel.ERROR
+var game_loaded = false
 
 # A list of scenes that are persisted, default null for each
 var persisted_scenes = [null]
@@ -98,6 +100,7 @@ var enemies = null
 var last_combat_enemies = 0
 var floor_level = 1
 var currency = 0
+var sound_volume = null
 var roll_up_percentage = 1
 var boss_fight = false
 
@@ -344,7 +347,7 @@ func goto_scene(target_scene, function_call = null):
 		Scene.LOOT_WINDOW:
 			call_deferred("_deferred_goto_scene", target_scene, "res://loot_window/LootWindow.tscn")
 		Scene.CREDITS:
-			call_deferred("_deferred_goto_scene", target_scene, "res://credits/Credits.tscn")
+			call_deferred("_deferred_goto_scene", target_scene, "res://Credits.tscn")
 
 func _deferred_goto_scene(scene, path, function_call = null):
 	# stop/start processing
@@ -408,6 +411,41 @@ func log(level, msg):
 		if log_file:
 			log_file.store_line(msg)
 		print(msg)
+
+func build_save_data():
+	var save_dict = {
+		"currency": currency,
+		"upgrades": Upgrades,
+	}
+	return save_dict
+
+func save_game():
+	var save_game = File.new()
+	save_game.open(SAVED_GAME_PATH, File.WRITE)
+	var save_data = build_save_data()
+	save_game.store_line(to_json(save_data))
+	save_game.close()
+
+func load_game():
+	var save_game = File.new()
+	if !save_game.file_exists(SAVED_GAME_PATH):
+		return
+	save_game.open(SAVED_GAME_PATH, File.READ)
+	while save_game.get_position() < save_game.get_len():
+		# Get the saved dictionary from the next line in the save file
+		var node_data = parse_json(save_game.get_line())
+		if node_data.has("currency"):
+			currency = node_data.currency
+		if node_data.has("upgrades"):
+			Upgrades = node_data.upgrades
+	save_game.close()
+	game_loaded = true
+
+func has_save():
+	var save_game = File.new()
+	if save_game.file_exists(SAVED_GAME_PATH):
+		return true
+	return false
 
 # Useful functions
 static func sum_array(array):
