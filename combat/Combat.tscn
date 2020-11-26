@@ -103,8 +103,8 @@
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 45 ), ExtResource( 50 ), ExtResource( 60 ), ExtResource( 82 ), ExtResource( 48 ), ExtResource( 68 ), ExtResource( 59 ), ExtResource( 53 ), ExtResource( 62 ), ExtResource( 74 ), ExtResource( 61 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 56 ), ExtResource( 63 ), ExtResource( 57 ), ExtResource( 43 ), ExtResource( 46 ), ExtResource( 75 ), ExtResource( 55 ), ExtResource( 81 ), ExtResource( 58 ), ExtResource( 52 ), ExtResource( 77 ), ExtResource( 54 ), ExtResource( 78 ), ExtResource( 64 ), ExtResource( 72 ), ExtResource( 65 ), ExtResource( 42 ), ExtResource( 66 ), ExtResource( 47 ), ExtResource( 76 ), ExtResource( 71 ), ExtResource( 67 ), ExtResource( 83 ), ExtResource( 69 ), ExtResource( 70 ), ExtResource( 73 ), ExtResource( 80 ), ExtResource( 79 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 44 ), ExtResource( 86 ), ExtResource( 88 ), ExtResource( 89 ), ExtResource( 96 ), ExtResource( 91 ), ExtResource( 84 ), ExtResource( 94 ), ExtResource( 87 ), ExtResource( 90 ), ExtResource( 92 ), ExtResource( 85 ), ExtResource( 93 ), ExtResource( 95 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 33 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 12 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 15 ), ExtResource( 26 ), ExtResource( 10 ), ExtResource( 19 ), ExtResource( 27 ), ExtResource( 20 ), ExtResource( 22 ), ExtResource( 11 ), ExtResource( 28 ), ExtResource( 13 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 21 ), ExtResource( 31 ), ExtResource( 14 ), ExtResource( 32 ), ExtResource( 7 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 18 ) ],
-"loop": true,
+"frames": [ ExtResource( 45 ), ExtResource( 50 ), ExtResource( 60 ), ExtResource( 82 ), ExtResource( 48 ), ExtResource( 68 ), ExtResource( 59 ), ExtResource( 53 ), ExtResource( 62 ), ExtResource( 74 ), ExtResource( 61 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 56 ), ExtResource( 63 ), ExtResource( 57 ), ExtResource( 43 ), ExtResource( 46 ), ExtResource( 75 ), ExtResource( 55 ), ExtResource( 81 ), ExtResource( 58 ), ExtResource( 52 ), ExtResource( 77 ), ExtResource( 54 ), ExtResource( 78 ), ExtResource( 64 ), ExtResource( 72 ), ExtResource( 65 ), ExtResource( 42 ), ExtResource( 66 ), ExtResource( 47 ), ExtResource( 76 ), ExtResource( 71 ), ExtResource( 67 ), ExtResource( 83 ), ExtResource( 69 ), ExtResource( 70 ), ExtResource( 73 ), ExtResource( 80 ), ExtResource( 79 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 44 ), ExtResource( 86 ), ExtResource( 88 ), ExtResource( 89 ), ExtResource( 96 ), ExtResource( 91 ), ExtResource( 84 ), ExtResource( 94 ), ExtResource( 87 ), ExtResource( 90 ), ExtResource( 92 ), ExtResource( 85 ), ExtResource( 93 ), ExtResource( 95 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 33 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 12 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 15 ), ExtResource( 26 ), ExtResource( 10 ), ExtResource( 19 ), ExtResource( 27 ), ExtResource( 20 ), ExtResource( 22 ), ExtResource( 11 ), ExtResource( 28 ), ExtResource( 13 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 21 ), ExtResource( 31 ), ExtResource( 14 ), ExtResource( 32 ), ExtResource( 7 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 18 ), ExtResource( 45 ) ],
+"loop": false,
 "name": "satelite",
 "speed": 5.0
 } ]
@@ -189,8 +189,8 @@ __meta__ = {
 position = Vector2( 320, 91 )
 frames = SubResource( 2 )
 animation = "satelite"
-frame = 12
-playing = true
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Background/AnimatedSprite"]
 
 [node name="DebugContainer" type="Container" parent="CanvasLayer"]
 visible = false
@@ -321,7 +321,7 @@ margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
 margin_bottom = 8.0
-custom_styles/normal = SubResource( 7 )
+custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
@@ -470,7 +470,7 @@ margin_bottom = 88.0
 margin_right = 208.0
 margin_bottom = 18.0
 size_flags_vertical = 0
-custom_styles/normal = SubResource( 9 )
+custom_styles/normal = SubResource( 7 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Allies"
@@ -602,3 +602,5 @@ __meta__ = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 autoplay = true
+[connection signal="animation_finished" from="CanvasLayer/Background/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="timeout" from="CanvasLayer/Background/AnimatedSprite/Timer" to="." method="_on_Timer_timeout"]

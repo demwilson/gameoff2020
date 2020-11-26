@@ -47,7 +47,7 @@ func populate_move_list():
 	var moves = obtain_move_list()
 	for move in moves:
 		var move_name = move.name
-		$CanvasLayer/NinePatchRect/Character/Commands/MoveList.add_item(move_name, null, true)
+		$CanvasLayer/NinePatchRect/MoveList.add_item(move_name, null, true)
 		
 #Equipment 
 func obtain_equipment_list():
@@ -67,15 +67,15 @@ func populate_equipment_list():
 		
 func set_data():
 	
-	$CanvasLayer/NinePatchRect/Character/Name.text = "Name: " + str(player_name)
-	$CanvasLayer/NinePatchRect/Character/HP.text = "HP: " + str(current_hp) + "/" + str(max_hp)
-	$CanvasLayer/NinePatchRect/Character/Oxygen.text = "Oxygen: " + str(current_oxygen) + "/" + str(max_oxygen)
+	$CanvasLayer/NinePatchRect/Name.text = "Name: " + str(player_name)
+	$CanvasLayer/NinePatchRect/HP.text = "HP: " + str(current_hp) + "/" + str(max_hp)
+	$CanvasLayer/NinePatchRect/Oxygen.text = "Oxygen: " + str(current_oxygen) + "/" + str(max_oxygen)
 	
-	$CanvasLayer/NinePatchRect/Character/Abilities/Attack.text = "Attack: " + str(attack) + " + " + str(attack_bonus)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Accuracy.text = "Accuracy: " + str(accuracy) + " + " + str(accuracy_bonus)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Speed.text = "Speed: " + str(speed)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Defense.text = "Defense: " + str(defense) + " + " + str(defense_bonus)
-	$CanvasLayer/NinePatchRect/Character/Abilities/Evade.text = "Evade: " + str(evade) + " + " + str(evade_bonus)
+	$CanvasLayer/NinePatchRect/Attack/AttackScore.text = str(attack) + " + " + str(attack_bonus)
+	$CanvasLayer/NinePatchRect/Accuracy/AccuracyScore.text = str(accuracy) + " + " + str(accuracy_bonus)
+	$CanvasLayer/NinePatchRect/Speed/SpeedScore.text = str(speed)
+	$CanvasLayer/NinePatchRect/Defense/DefenseScore.text = str(defense) + " + " + str(defense_bonus)
+	$CanvasLayer/NinePatchRect/Evade/EvadeScore.text = str(evade) + " + " + str(evade_bonus)
 	
 	populate_move_list()
 	populate_equipment_list()
