@@ -1,5 +1,7 @@
 extends Node2D
 
+const Saving = preload("res://Saving.tscn")
+
 onready var audio = get_node("AudioStreamPlayer")
 #Count on button clicks
 var Button_Click = {
@@ -80,14 +82,23 @@ var tier0_total
 var tier1_total
 var tier2_total
 
+var saving_overlay = null
 
 func _ready():
+	if Global.game_loaded:
+		Global.game_loaded = false
+	else:
+		save_game_progress()
 	actual_currency = Global.currency
 	initialize_cost()
 	$CanvasLayer/MoonRocks.text = "Moon Rocks: " + str(actual_currency)
 	OS.set_window_size(Vector2(1280, 720))
 	upgraded_skills()
-	
+
+func save_game_progress():
+	saving_overlay = Saving.instance()
+	self.add_child(saving_overlay)
+
 func upgraded_skills():
 	tier_list()
 	#Oxygen

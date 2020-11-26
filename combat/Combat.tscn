@@ -129,7 +129,7 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 
 [sub_resource type="DynamicFont" id=8]
-size = 14
+size = 12
 font_data = ExtResource( 98 )
 
 [sub_resource type="StyleBoxFlat" id=9]
@@ -189,7 +189,7 @@ __meta__ = {
 position = Vector2( 320, 91 )
 frames = SubResource( 2 )
 animation = "satelite"
-frame = 35
+frame = 12
 playing = true
 
 [node name="DebugContainer" type="Container" parent="CanvasLayer"]

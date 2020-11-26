@@ -9,15 +9,15 @@
 [ext_resource path="res://assets/fonts/Orbitron Medium.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://assets/fonts/Orbitron Light.otf" type="DynamicFontData" id=8]
 
-[sub_resource type="DynamicFont" id=3]
-size = 10
-font_data = ExtResource( 7 )
-
 [sub_resource type="DynamicFont" id=1]
 size = 10
 font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=2]
+size = 10
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=3]
 size = 10
 font_data = ExtResource( 8 )
 
@@ -76,7 +76,7 @@ margin_left = 520.0
 margin_top = 200.0
 margin_right = 632.0
 margin_bottom = 214.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.0588235, 0.745098, 0, 1 )
 text = "Moon Rocks:"
 valign = 1
@@ -98,7 +98,7 @@ margin_left = 24.0
 margin_top = 8.0
 margin_right = 120.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -107,7 +107,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 96.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -119,7 +119,7 @@ margin_left = 136.0
 margin_top = 8.0
 margin_right = 232.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -128,7 +128,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 96.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -149,7 +149,7 @@ __meta__ = {
 margin_left = 16.0
 margin_right = 120.0
 margin_bottom = 24.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Attack: 12"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -159,7 +159,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -170,7 +170,7 @@ __meta__ = {
 margin_left = 136.0
 margin_right = 240.0
 margin_bottom = 24.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Accuracy: 10"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -180,7 +180,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -191,7 +191,7 @@ __meta__ = {
 margin_left = 256.0
 margin_right = 368.0
 margin_bottom = 24.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Defense: 15"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -201,7 +201,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 112.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -223,7 +223,7 @@ margin_left = 16.0
 margin_top = 8.0
 margin_right = 120.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Speed: 20"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -233,7 +233,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -245,7 +245,7 @@ margin_left = 136.0
 margin_top = 8.0
 margin_right = 240.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Evade: 24"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -255,7 +255,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -267,7 +267,7 @@ margin_left = 256.0
 margin_top = 8.0
 margin_right = 368.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Cbt Training: 40"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -277,7 +277,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 112.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 
@@ -296,7 +296,7 @@ margin_left = 16.0
 margin_top = 8.0
 margin_right = 120.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Basic Wpns: 50"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -306,7 +306,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 
@@ -315,7 +315,7 @@ margin_left = 136.0
 margin_top = 8.0
 margin_right = 240.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Basic Def: 30"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -325,7 +325,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 
@@ -335,7 +335,7 @@ margin_left = 256.0
 margin_top = 8.0
 margin_right = 368.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Adv. Training: 50"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -345,7 +345,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 112.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -367,7 +367,7 @@ margin_left = 16.0
 margin_top = 8.0
 margin_right = 120.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Adv. Wpns: 75"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -377,7 +377,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -390,7 +390,7 @@ margin_left = 136.0
 margin_top = 8.0
 margin_right = 240.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Adv. Def: 50"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -400,7 +400,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 104.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -413,7 +413,7 @@ margin_left = 256.0
 margin_top = 8.0
 margin_right = 368.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Exprt Training: 60"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -423,7 +423,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 112.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
 __meta__ = {
@@ -435,7 +435,7 @@ margin_left = 528.0
 margin_top = 296.0
 margin_right = 623.0
 margin_bottom = 320.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Start Mission"
 __meta__ = {
 "_edit_use_anchors_": false
