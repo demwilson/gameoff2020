@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://CharacterStats.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/character_stats.png" type="Texture" id=2]
 [ext_resource path="res://assets/audio/WE_DID_IT_AGAIN.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/basic_theme.tres" type="Theme" id=5]
+[ext_resource path="res://assets/fonts/detail_text.tres" type="DynamicFont" id=6]
+[ext_resource path="res://assets/fonts/default_text.tres" type="DynamicFont" id=7]
 
 [node name="CharacterStats" type="Node2D"]
 script = ExtResource( 1 )
@@ -22,15 +25,20 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 286.0
 margin_bottom = 22.0
+custom_fonts/font = ExtResource( 6 )
 text = "Name:"
 valign = 1
 uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HP" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
 margin_top = 24.0
 margin_right = 286.0
 margin_bottom = 38.0
+custom_fonts/font = ExtResource( 6 )
 text = "HP:"
 valign = 1
 uppercase = true
@@ -43,18 +51,26 @@ margin_left = 8.0
 margin_top = 42.0
 margin_right = 286.0
 margin_bottom = 22.0
+custom_fonts/font = ExtResource( 6 )
 text = "Oxygen:"
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Stats" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
 margin_top = 60.0
 margin_right = 286.0
 margin_bottom = 22.0
+custom_fonts/font = ExtResource( 7 )
 text = "Stats"
 align = 1
 valign = 1
 uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Attack" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
@@ -62,12 +78,19 @@ margin_top = 78.0
 margin_right = 55.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 47, 0 )
+custom_fonts/font = ExtResource( 6 )
 text = "Attack:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AttackScore" type="Label" parent="CanvasLayer/NinePatchRect/Attack"]
-margin_left = 65.0
-margin_right = 145.0
-margin_bottom = 14.0
+margin_left = 85.0
+margin_right = 165.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -78,15 +101,22 @@ margin_top = 96.0
 margin_right = 69.0
 margin_bottom = 110.0
 rect_min_size = Vector2( 61, 0 )
+custom_fonts/font = ExtResource( 6 )
 text = "Accuracy:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AccuracyScore" type="Label" parent="CanvasLayer/NinePatchRect/Accuracy"]
-margin_left = 65.0
-margin_right = 145.0
-margin_bottom = 14.0
+margin_left = 85.0
+margin_right = 165.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Speed" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
@@ -94,15 +124,22 @@ margin_top = 114.0
 margin_right = 55.0
 margin_bottom = 128.0
 rect_min_size = Vector2( 47, 0 )
+custom_fonts/font = ExtResource( 6 )
 text = "Speed:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SpeedScore" type="Label" parent="CanvasLayer/NinePatchRect/Speed"]
-margin_left = 65.0
-margin_right = 145.0
-margin_bottom = 14.0
+margin_left = 85.0
+margin_right = 165.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Defense" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
@@ -110,12 +147,22 @@ margin_top = 132.0
 margin_right = 65.0
 margin_bottom = 146.0
 rect_min_size = Vector2( 57, 0 )
+custom_fonts/font = ExtResource( 6 )
 text = "Defense:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="DefenseScore" type="Label" parent="CanvasLayer/NinePatchRect/Defense"]
-margin_left = 65.0
-margin_right = 145.0
-margin_bottom = 14.0
+margin_left = 85.0
+margin_right = 165.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Evade" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
@@ -123,20 +170,34 @@ margin_top = 150.0
 margin_right = 55.0
 margin_bottom = 164.0
 rect_min_size = Vector2( 47, 0 )
+custom_fonts/font = ExtResource( 6 )
 text = "Evade:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="EvadeScore" type="Label" parent="CanvasLayer/NinePatchRect/Evade"]
-margin_left = 65.0
-margin_right = 145.0
-margin_bottom = 14.0
+margin_left = 85.0
+margin_right = 165.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Moves" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
 margin_top = 168.0
 margin_right = 286.0
 margin_bottom = 35.0
+custom_fonts/font = ExtResource( 7 )
 text = "Abilities"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MoveList" type="ItemList" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
@@ -145,6 +206,7 @@ margin_right = 286.0
 margin_bottom = 351.0
 rect_min_size = Vector2( 278, 85 )
 size_flags_vertical = 3
+theme = ExtResource( 5 )
 allow_reselect = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -161,17 +223,19 @@ __meta__ = {
 
 [node name="Equipment" type="Label" parent="CanvasLayer/NinePatchRect/Equipment"]
 margin_right = 332.0
-margin_bottom = 14.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 7 )
 text = "Equipment"
 align = 1
 
 [node name="EquipList" type="ItemList" parent="CanvasLayer/NinePatchRect/Equipment"]
-margin_top = 18.0
+margin_top = 22.0
 margin_right = 332.0
 margin_bottom = 344.0
 rect_min_size = Vector2( 320, 150 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( 5 )
 allow_reselect = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
