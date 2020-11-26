@@ -17,112 +17,135 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Character" type="VBoxContainer" parent="CanvasLayer/NinePatchRect"]
+[node name="Name" type="Label" parent="CanvasLayer/NinePatchRect"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 286.0
-margin_bottom = 360.0
-rect_min_size = Vector2( 278, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Name" type="Label" parent="CanvasLayer/NinePatchRect/Character"]
-margin_right = 278.0
-margin_bottom = 14.0
+margin_bottom = 22.0
 text = "Name:"
 valign = 1
 uppercase = true
 
-[node name="HP" type="Label" parent="CanvasLayer/NinePatchRect/Character"]
-margin_top = 18.0
-margin_right = 278.0
-margin_bottom = 32.0
+[node name="HP" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 286.0
+margin_bottom = 38.0
 text = "HP:"
 valign = 1
 uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Oxygen" type="Label" parent="CanvasLayer/NinePatchRect/Character"]
-margin_top = 36.0
-margin_right = 278.0
-margin_bottom = 50.0
+[node name="Oxygen" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 42.0
+margin_right = 286.0
+margin_bottom = 22.0
 text = "Oxygen:"
 valign = 1
 
-[node name="Abilities" type="VBoxContainer" parent="CanvasLayer/NinePatchRect/Character"]
-margin_top = 54.0
-margin_right = 278.0
-margin_bottom = 158.0
-
-[node name="Stats" type="Label" parent="CanvasLayer/NinePatchRect/Character/Abilities"]
-margin_right = 278.0
-margin_bottom = 14.0
+[node name="Stats" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 60.0
+margin_right = 286.0
+margin_bottom = 22.0
 text = "Stats"
 align = 1
 valign = 1
 uppercase = true
 
-[node name="Attack" type="Label" parent="CanvasLayer/NinePatchRect/Character/Abilities"]
-margin_top = 18.0
-margin_right = 278.0
-margin_bottom = 32.0
+[node name="Attack" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 78.0
+margin_right = 55.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 47, 0 )
 text = "Attack:"
 
-[node name="Accuracy" type="Label" parent="CanvasLayer/NinePatchRect/Character/Abilities"]
-margin_top = 36.0
-margin_right = 278.0
-margin_bottom = 50.0
+[node name="AttackScore" type="Label" parent="CanvasLayer/NinePatchRect/Attack"]
+margin_left = 65.0
+margin_right = 145.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Accuracy" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 96.0
+margin_right = 69.0
+margin_bottom = 110.0
+rect_min_size = Vector2( 61, 0 )
 text = "Accuracy:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Speed" type="Label" parent="CanvasLayer/NinePatchRect/Character/Abilities"]
-margin_top = 54.0
-margin_right = 278.0
-margin_bottom = 68.0
+[node name="AccuracyScore" type="Label" parent="CanvasLayer/NinePatchRect/Accuracy"]
+margin_left = 65.0
+margin_right = 145.0
+margin_bottom = 14.0
+
+[node name="Speed" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 114.0
+margin_right = 55.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 47, 0 )
 text = "Speed:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Defense" type="Label" parent="CanvasLayer/NinePatchRect/Character/Abilities"]
-margin_top = 72.0
-margin_right = 278.0
-margin_bottom = 86.0
+[node name="SpeedScore" type="Label" parent="CanvasLayer/NinePatchRect/Speed"]
+margin_left = 65.0
+margin_right = 145.0
+margin_bottom = 14.0
+
+[node name="Defense" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 132.0
+margin_right = 65.0
+margin_bottom = 146.0
+rect_min_size = Vector2( 57, 0 )
 text = "Defense:"
 
-[node name="Evade" type="Label" parent="CanvasLayer/NinePatchRect/Character/Abilities"]
-margin_top = 90.0
-margin_right = 278.0
-margin_bottom = 104.0
+[node name="DefenseScore" type="Label" parent="CanvasLayer/NinePatchRect/Defense"]
+margin_left = 65.0
+margin_right = 145.0
+margin_bottom = 14.0
+
+[node name="Evade" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 150.0
+margin_right = 55.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 47, 0 )
 text = "Evade:"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/NinePatchRect/Character"]
-margin_top = 162.0
-margin_right = 278.0
-margin_bottom = 167.0
-rect_min_size = Vector2( 0, 5 )
-
-[node name="Commands" type="VBoxContainer" parent="CanvasLayer/NinePatchRect/Character"]
-margin_top = 171.0
-margin_right = 278.0
-margin_bottom = 352.0
-rect_min_size = Vector2( 278, 0 )
-size_flags_vertical = 3
-
-[node name="Moves" type="Label" parent="CanvasLayer/NinePatchRect/Character/Commands"]
-margin_right = 278.0
+[node name="EvadeScore" type="Label" parent="CanvasLayer/NinePatchRect/Evade"]
+margin_left = 65.0
+margin_right = 145.0
 margin_bottom = 14.0
-text = "Abilities"
 
-[node name="MoveList" type="ItemList" parent="CanvasLayer/NinePatchRect/Character/Commands"]
-margin_top = 18.0
-margin_right = 278.0
-margin_bottom = 172.0
+[node name="Moves" type="Label" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 168.0
+margin_right = 286.0
+margin_bottom = 35.0
+text = "Abilities"
+align = 1
+
+[node name="MoveList" type="ItemList" parent="CanvasLayer/NinePatchRect"]
+margin_left = 8.0
+margin_top = 186.0
+margin_right = 286.0
+margin_bottom = 351.0
 rect_min_size = Vector2( 278, 85 )
 size_flags_vertical = 3
 allow_reselect = true
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/NinePatchRect/Character/Commands"]
-margin_top = 176.0
-margin_right = 278.0
-margin_bottom = 181.0
-rect_min_size = Vector2( 0, 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

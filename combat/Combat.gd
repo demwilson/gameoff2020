@@ -31,6 +31,8 @@ onready var MoveNameLabels = [
 ]
 onready var debug_data = $CanvasLayer/DebugContainer/
 onready var audio = get_node("AudioStreamPlayer")
+onready var animatedsprite = $CanvasLayer/Background/AnimatedSprite
+onready var timer = $CanvasLayer/Background/AnimatedSprite/Timer
 
 const COMBAT_ARROW_RIGHT = preload("res://assets/images/combat_arrow_right.png")
 const COMBAT_ARROW_DOWN = preload("res://assets/images/combat_arrow_down.png")
@@ -66,6 +68,9 @@ const ATTACK_ANIMATION_STEP = 1
 const BLOCKED_TEXT = "BLOCKED"
 const EVADED_TEXT = "EVADED"
 const MISSED_TEXT = "MISSED"
+
+const INITIAL_WAIT_TIMER = 3 
+const ANIMATION_START_FRAME = 0
 
 var counter = 0
 var enemies = []
@@ -139,6 +144,7 @@ func _ready():
 	if Global.debug >= Global.LogLevel.TRACE:
 		 debug_data.visible = true
 	OS.set_window_size(Vector2(1280, 720))
+	delay_animation(INITIAL_WAIT_TIMER)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -560,3 +566,18 @@ func get_combat_enemies(total_combats):
 	elif total_combats > ENEMY_COUNT_TIER_ONE:
 		count += ENEMY_COUNT_STEP
 	return min(MAX_ENEMIES, 1 + Global.random.randi() % count)
+	
+func delay_animation(wait_timer):
+	timer.start(wait_timer)
+		
+func restart_animation():
+	animatedsprite.set_frame(ANIMATION_START_FRAME)
+	animatedsprite.play("satelite", false)
+	
+func _on_AnimatedSprite_animation_finished():
+	var rand = 1 + Global.random.randi() % int(30 - 5) + int(5)
+	delay_animation(rand)
+	
+func _on_Timer_timeout():
+	timer.stop()
+	restart_animation()
