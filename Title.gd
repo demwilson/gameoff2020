@@ -6,9 +6,12 @@ signal credits_pressed
 
 onready var audio = get_node("AudioStreamPlayer")
 onready var version_label = $CanvasLayer/Version
-# Called when the node enters the scene tree for the first time.
+onready var continue_button = $CanvasLayer/Continue
+
 func _ready():
 	version_label.text = "v " + Global.version
+	if Global.has_save():
+		continue_button.disabled = false
 
 func _input(event):
 	if !event.is_pressed():
@@ -33,3 +36,8 @@ func _on_Credits_pressed():
 
 func _opened_scene_closed():
 	begin_audio()
+
+func _on_Continue_pressed():
+	Global.load_game()
+	audio.stop()
+	Global.goto_scene(Global.Scene.GROUND_CONTROL)
