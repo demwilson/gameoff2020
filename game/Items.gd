@@ -12,6 +12,7 @@ enum ItemList {
 	MELEE_T1 = 11,
 	MELEE_T2 = 24,
 	MELEE_T3 = 36,
+	BOSS_KEY = 39,
 }
 
 const LootTypeMap = [
@@ -76,6 +77,8 @@ func apply_loot_bag(loot_bag, player):
 		match loot.type:
 			LootType.GEAR:
 				player.add_item(loot.item.id)
+				if loot.item.id == ItemList.BOSS_KEY:
+					player.set_floor_key(true)
 			LootType.OXYGEN:
 				player.add_oxygen(loot.item)
 			LootType.CURRENCY:
@@ -95,8 +98,11 @@ func generate_items(tier_level, count=DEFAULT_COUNT):
 			item_list.append(item)
 	return item_list
 
+func generate_boss_key():
+	var item = get_item_by_id(ItemList.BOSS_KEY)
+	return LootItem.new(LootType.GEAR, item)
+
 func get_item_by_id(item_id):
-	var items = []
 	for item in self._items:
 		if item.id == item_id:
 			return item

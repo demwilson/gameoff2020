@@ -118,6 +118,8 @@ gradient = SubResource( 3 )
 
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 
 [sub_resource type="DynamicFont" id=6]
 size = 10
@@ -134,6 +136,8 @@ font_data = ExtResource( 98 )
 
 [sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.4, 0.4, 0.4, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 
 [sub_resource type="DynamicFont" id=10]
 size = 10
@@ -321,7 +325,7 @@ margin_left = 160.0
 margin_top = -16.0
 margin_right = 416.0
 margin_bottom = 8.0
-custom_styles/normal = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Combat Menu"
@@ -470,7 +474,7 @@ margin_bottom = 88.0
 margin_right = 208.0
 margin_bottom = 18.0
 size_flags_vertical = 0
-custom_styles/normal = SubResource( 7 )
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = ExtResource( 97 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Allies"
