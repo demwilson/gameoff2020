@@ -201,51 +201,54 @@ func _ready():
 		Item.new(36, "Mono Blade", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the mono balde.", Moves.MoveList.MELEE_T3),
 		Item.new(37, "Psychic Immolation", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Let them live in the flames!", Moves.MoveList.PSY_T3),
 		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Healing yourself is below you.", Moves.MoveList.HEAL_T3),
+		
+		# Unique Items
+		Item.new(39, "Boss Key", Item.ItemTier.LEVEL_ZERO, Item.ItemType.KEY, "This key probably opens something!", null),
 	]
 	var available_enemies = [
-		Enemy.new(
+		Enemy.new(0,
 			1, "Guard Dog", Creature.CreatureSize.MEDIUM, 20, 20, 
 			Creature.Stats.new([3, 2, 2.3, 0, 1]),
 			Creature.Stats.new([1, 3, 0, 0, 2]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
 			[Moves.MoveList.MELEE_T0]
 		),
-		Enemy.new(
+		Enemy.new(1,
 			2, "Mutated Dog", Creature.CreatureSize.MEDIUM, 45, 45,
 			Creature.Stats.new([3, 3, 3.2, 0, 3]),
 			Creature.Stats.new([5, 0, 0, 20, 5]),
 			Creature.BasePath.DOG, Creature.Behavior.PACK,
 			[Moves.MoveList.MELEE_T1]
 		),
-		Enemy.new(
+		Enemy.new(2,
 			1, "Large Bug", Creature.CreatureSize.MEDIUM, 10, 10,
 			Creature.Stats.new([2, 1, 2.6, 0, 2]),
 			Creature.Stats.new([0, 4, 0, 0, 4]),
 			Creature.BasePath.BUG, Creature.Behavior.FOCUSED,
 			[Moves.MoveList.MELEE_T0]
 		),
-		Enemy.new(
+		Enemy.new(3,
 			2, "Mutated Bug", Creature.CreatureSize.MEDIUM, 31, 31,
 			Creature.Stats.new([2, 2, 3, 0, 5]),
 			Creature.Stats.new([2, 4, 0, 10, 10]),
 			Creature.BasePath.BUG, Creature.Behavior.STUPID,
 			[Moves.MoveList.MELEE_T1]
 		),
-		Enemy.new(
+		Enemy.new(4,
 			1, "Robot Servant", Creature.CreatureSize.LARGE_TALL, 35, 35,
 			Creature.Stats.new([2, 3, 1.5, 0, 0]),
 			Creature.Stats.new([2, 5, 1.2, 20, 0]),
 			Creature.BasePath.ROBOT, Creature.Behavior.STUPID,
 			[Moves.MoveList.MELEE_T0]
 		),
-		Enemy.new(
+		Enemy.new(5,
 			2, "Robot Guard", Creature.CreatureSize.LARGE_TALL, 70, 70,
 			Creature.Stats.new([3, 3, 2, 0, 2]),
 			Creature.Stats.new([2, 4, 0, 40, 5]),
 			Creature.BasePath.ROBOT, Creature.Behavior.FOCUSED,
 			[Moves.MoveList.MELEE_T2]
 		),
-		Enemy.new(
+		Enemy.new(6,
 			0, "Spliced Tardigrade", Creature.CreatureSize.LARGE_TALL, 160, 160,
 			Creature.Stats.new([5, 5, 4.1, 0, 5]),
 			Creature.Stats.new([5, 5, 0, 25, 0]),
@@ -258,7 +261,7 @@ func _ready():
 	items = Items.new(available_items)
 	enemies = Enemies.new(available_enemies)
 
-	# Build player after initializing everything
+	# Let game start trigger build player
 	build_player()
 
 	# For Debugging Only
@@ -319,6 +322,26 @@ func build_player():
 		player_items,
 		Creature.BasePath.PLAYER
 	)
+
+func reset_global_data():
+	Upgrades = {
+		"Oxygen": 0,
+		"Health": 0,
+		"Attack": 0,
+		"Accuracy": 0,
+		"Speed": 0,
+		"Defense": 0,
+		"Evade": 0,
+		"BasicWeapon": 0,
+		"BasicDefense": 0,
+		"CombatTraining": 0,
+		"AdvanceWeapon": 0,
+		"AdvanceDefense": 0,
+		"AdvanceTraining": 0,
+		"ExpertTraining": 0,
+	}
+	currency = 0
+	build_player()
 
 func goto_scene(target_scene, function_call = null):
 	# This function will usually be called from a signal callback,

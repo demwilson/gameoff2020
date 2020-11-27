@@ -122,13 +122,23 @@ var _hover_target_last_position = 0
 func _ready():
 	# Populate Combatants
 	var num_enemies = get_combat_enemies(Global.player.get_combat_count())
+	if Global.boss_fight:
+		num_enemies -= 1
 	for i in range(num_enemies):
 		var position = enemy_positions[i]
 		var enemy = Global.enemies.get_random_enemy_by_tier_level(Global.floor_level)
 		var creature = build_combat_creature(enemy, position, CombatCreature.CombatantType.ENEMY)
 		enemies.append(creature)
 		CombatantBox.add_child(creature.scene)
-
+	
+	# Handle boss unique
+	if Global.boss_fight:
+		var position = enemy_positions[num_enemies]
+		var boss = Global.enemies.get_enemy_by_id(Global.enemies.EnemyList.BOSS_T0)
+		var creature = build_combat_creature(boss, position, CombatCreature.CombatantType.ENEMY)
+		enemies.append(creature)
+		CombatantBox.add_child(creature.scene)
+		
 	var ally_list = Global.player.get_allies()
 	ally_list.push_front(Global.player)
 	var num_allies = min(ally_list.size(), MAX_ALLIES)
@@ -355,6 +365,7 @@ func check_end_combat():
 	var dead_enemies = 0
 	if !allies[Global.PLAYER_POSITION_COMBAT].is_alive():
 		audio.stop()
+		Global.boss_fight = false
 		return Global.goto_scene(Global.Scene.GAME_OVER)
 
 	for creature in enemies:

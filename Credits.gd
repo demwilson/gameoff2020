@@ -41,7 +41,6 @@ func close_credits():
 		self.queue_free()
 	else:
 		Global.goto_scene(Global.Scene.TITLE)
-		
 
 func _on_retry_pressed():
 	close_credits()

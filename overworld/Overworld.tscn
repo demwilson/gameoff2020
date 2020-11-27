@@ -101,12 +101,12 @@ __meta__ = {
 
 [node name="Background" type="TextureRect" parent="GUI/HUD"]
 margin_right = 640.0
-margin_bottom = 128.0
+margin_bottom = 65.0
 texture = ExtResource( 15 )
 
 [node name="HUDSpacer" type="MarginContainer" parent="GUI/HUD"]
 margin_right = 640.0
-margin_bottom = 128.0
+margin_bottom = 65.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
@@ -116,11 +116,11 @@ custom_constants/margin_bottom = 10
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 630.0
-margin_bottom = 118.0
+margin_bottom = 55.0
 
 [node name="BarsLeft" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_right = 190.0
-margin_bottom = 108.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 190, 0 )
 
 [node name="OxygenBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsLeft"]
@@ -190,7 +190,7 @@ __meta__ = {
 [node name="BarsMiddle" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_left = 194.0
 margin_right = 510.0
-margin_bottom = 108.0
+margin_bottom = 45.0
 rect_min_size = Vector2( 280, 0 )
 
 [node name="PlayerInfoBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsMiddle"]
@@ -260,7 +260,7 @@ __meta__ = {
 [node name="BarsRight" type="VBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer"]
 margin_left = 514.0
 margin_right = 603.0
-margin_bottom = 108.0
+margin_bottom = 45.0
 
 [node name="CurrencyBar" type="HBoxContainer" parent="GUI/HUD/HUDSpacer/HBoxContainer/BarsRight"]
 margin_right = 89.0
