@@ -198,7 +198,7 @@ func _ready():
 		Item.new(34, "Plasteel Mesh", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "This will stop almost everything.", [Creature.Stats.DEFENSE, 4]),
 		Item.new(35, "Essokinesis Implant", Item.ItemTier.LEVEL_THREE, Item.ItemType.STAT, "In some reality, somewhere, you're not getting hit.", [Creature.Stats.EVADE, 4]),
 		# Advanced Moves
-		Item.new(36, "Mono Blade", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the mono balde.", Moves.MoveList.MELEE_T3),
+		Item.new(36, "Mono Blade", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "You swing the mono blade.", Moves.MoveList.MELEE_T3),
 		Item.new(37, "Psychic Immolation", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Let them live in the flames!", Moves.MoveList.PSY_T3),
 		Item.new(38, "Healing Nanites", Item.ItemTier.LEVEL_THREE, Item.ItemType.MOVE, "Healing yourself is below you.", Moves.MoveList.HEAL_T3),
 		
