@@ -16,10 +16,6 @@ func _init(enemies):
 	self._enemies = enemies
 
 func get_random_enemy_by_tier_level(tier_level):
-	if Global.boss_fight:
-		Global.boss_fight = false
-		return self._enemies[EnemyList.BOSS_T0]
-	
 	var enemies_tier_list = []
 	for enemy in self._enemies:
 		if enemy.get_tier() == tier_level:
@@ -35,6 +31,7 @@ func get_enemies_by_tier_level(tier_level):
 	return enemies_tier_list
 
 func get_enemy_by_id(id):
-	if id < self._enemies.size():
-		return self._enemies[id]
+	for enemy in self._enemies:
+		if enemy.id == id:
+			return enemy
 	return null

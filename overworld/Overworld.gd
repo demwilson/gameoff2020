@@ -29,7 +29,7 @@ var currentAudioPosition = 0.0
 func _ready():
 	update_HUD_values()
 	place_player()
-	
+
 func place_player():
 	player.position = tile_map.playerStartPosition
 	anchor.set_start_position(player.position)
@@ -78,8 +78,9 @@ func _input(event):
 func win_event():
 	remove_boss()
 	set_audio(false)
+	tile_map.gameOver = true
 	load_win_window()
-	
+
 func set_audio(value):
 	if value:
 		player.get_node("AudioStreamPlayer").play(currentAudioPosition)
@@ -121,7 +122,7 @@ func load_loot_window():
 	lootInstance._init(Global.Scene.OVERWORLD)
 	add_child(lootInstance)
 	lootInstance.connect("loot_window_closed", self, "_on_LootWindow_pressed")
-	
+
 func load_lose_window():
 	var loseInstance = LoseWindowNode.instance()
 	add_child(loseInstance)

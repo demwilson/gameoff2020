@@ -1,9 +1,11 @@
 extends "res://game/Creature.gd"
 
+var id = null
 var _tier = null
 var _moves = null
 
-func _init(tier, name, size, max_health, health, stats, bonuses, base_path, behavior, moves).(name, size, max_health, health, stats, bonuses, base_path, behavior):
+func _init(id, tier, name, size, max_health, health, stats, bonuses, base_path, behavior, moves).(name, size, max_health, health, stats, bonuses, base_path, behavior):
+	self.id = id
 	self._moves = moves
 	self._tier = tier
 

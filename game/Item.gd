@@ -3,17 +3,18 @@ enum ItemType {
 	MOVE,
 	ALLY,
 	STAT,
+	KEY,
 }
 enum ItemTier {
 	GAME_START,
 	LEVEL_ONE,
 	LEVEL_TWO,
 	LEVEL_THREE,
+	LEVEL_ZERO,
 }
 
 const GEAR_MODIFIER_TYPE = 0
 const GEAR_MODIFIER_VALUE = 1
-
 
 var id
 var name

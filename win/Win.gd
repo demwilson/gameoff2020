@@ -17,3 +17,4 @@ func _on_Restart_pressed():
 
 func _on_Credits_pressed():
 	Global.goto_scene(Global.Scene.CREDITS)
+	self.queue_free()

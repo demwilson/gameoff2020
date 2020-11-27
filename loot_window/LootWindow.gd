@@ -24,6 +24,9 @@ func _ready():
 	match scene:
 		Global.Scene.COMBAT:
 			loot_bag = Global.items.generate_combat_loot(Global.floor_level, Global.last_combat_enemies)
+			if Global.boss_fight:
+				Global.boss_fight = false
+				loot_bag.append(Global.items.generate_boss_key())
 			$LootLayer/Loot/Text.text = "After defeating the creatures, you find:"
 		Global.Scene.OVERWORLD:
 			loot_bag = Global.items.generate_loot(Global.floor_level)
