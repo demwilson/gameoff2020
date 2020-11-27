@@ -404,7 +404,7 @@ func confirm_combat_action(combat_action):
 				else:
 					target = get_first_living_creature(allies)
 				if target:
-						combat_action.target = target
+					combat_action.target = target
 			Move.MoveType.DAMAGE:
 				var target = null
 				if combat_action.creature.type == CombatCreature.CombatantType.ENEMY:
