@@ -7,13 +7,24 @@ enum LootType {
 	OXYGEN,
 	CURRENCY
 }
+
 enum ItemList {
 	MELEE_T0 = 0,
 	MELEE_T1 = 11,
+	MAGIC_T1 = 12,
+	HEAL_T1 = 13,
 	MELEE_T2 = 24,
+	MAGIC_T2 = 25,
+	HEAL_T2 = 26,
 	MELEE_T3 = 36,
+	MAGIC_T3 = 37,
+	HEAL_T3 = 38,
 	BOSS_KEY = 39,
 }
+
+const BEST_MELEE_DESCENDING = [ItemList.MELEE_T3, ItemList.MELEE_T2, ItemList.MELEE_T1, ItemList.MELEE_T0]
+const BEST_MAGIC_DESCENDING = [ItemList.MAGIC_T3, ItemList.MAGIC_T2, ItemList.MAGIC_T1]
+const BEST_HEAL_DESCENDING = [ItemList.HEAL_T3, ItemList.HEAL_T2, ItemList.HEAL_T1]
 
 const LootTypeMap = [
 	"GEAR",
