@@ -1,6 +1,7 @@
 extends "res://game/Creature.gd"
 
 const Item = preload("res://game/Item.gd")
+const Items = preload("res://game/Items.gd")
 
 const MAX_ALLIES = 2
 
@@ -97,30 +98,18 @@ func get_bonuses():
 	return Stats.new(processed)
 
 func get_moves():
-	var moves = []
-	for item_id in self._items:
+	var best_move_item_ids = [
+		find_first_of_set_in_list(Items.BEST_MELEE_DESCENDING, self._items),
+		find_first_of_set_in_list(Items.BEST_MAGIC_DESCENDING, self._items),
+		find_first_of_set_in_list(Items.BEST_HEAL_DESCENDING, self._items)
+	]
+	var move_ids = []
+	for item_id in best_move_item_ids:
+		if item_id == null:
+			continue
 		var item = Global.items.get_item_by_id(item_id)
-		if item.type == Item.ItemType.MOVE:
-			var move = Global.moves.get_move_by_id(item.modifier)
-			# If the move has previous tiers
-			if move.previous_tiers:
-				var found_previous_tier = false
-				# Loop through the tiers
-				for previous_tier in move.previous_tiers:
-					# see if this tier exists in the moves list
-					var position = moves.find(previous_tier)
-					if position > -1:
-						# replace the existing lower tier move with this higher tier move
-						moves[position] = item.modifier
-						found_previous_tier = true
-						continue
-				if found_previous_tier:
-					continue
-			if moves.find(item.modifier) == -1:
-				moves.append(item.modifier)
-	moves.sort()
-	moves.invert()
-	return moves
+		move_ids.append(item.modifier)
+	return move_ids
 
 func get_allies():
 	var allies = []
@@ -132,3 +121,10 @@ func get_allies():
 	while allies.size() > MAX_ALLIES:
 		allies.pop_front()
 	return allies
+
+static func find_first_of_set_in_list(set, list):
+	for set_item in set:
+		for element in list:
+			if element == set_item:
+				return element
+	return null
