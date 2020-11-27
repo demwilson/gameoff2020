@@ -146,7 +146,6 @@ func trigger_boss_combat():
 	set_boss_movement(false)
 	trigger_combat()
 	remove_boss()
-	Global.player.set_floor_key(true)
 	tile_map.open_hatch()
 
 func update_floor_level(value):

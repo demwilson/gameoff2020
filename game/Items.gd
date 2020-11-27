@@ -77,6 +77,8 @@ func apply_loot_bag(loot_bag, player):
 		match loot.type:
 			LootType.GEAR:
 				player.add_item(loot.item.id)
+				if loot.item.id == ItemList.BOSS_KEY:
+					player.set_floor_key(true)
 			LootType.OXYGEN:
 				player.add_oxygen(loot.item)
 			LootType.CURRENCY:
