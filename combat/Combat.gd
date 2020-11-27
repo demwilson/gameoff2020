@@ -398,7 +398,13 @@ func confirm_combat_action(combat_action):
 	if _current_combat_action.target && !_current_combat_action.target.is_alive():
 		match combat_action.move.type:
 			Move.MoveType.HEAL:
-				return null
+				var target = null
+				if combat_action.creature.type == CombatCreature.CombatantType.ENEMY:
+					target = get_first_living_creature(enemies)
+				else:
+					target = get_first_living_creature(allies)
+				if target:
+					combat_action.target = target
 			Move.MoveType.DAMAGE:
 				var target = null
 				if combat_action.creature.type == CombatCreature.CombatantType.ENEMY:
