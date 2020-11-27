@@ -201,6 +201,9 @@ func _process(delta):
 		ui_health.text = str(creature.get_health()) + " / " + str(creature.get_max_health())
 		var ui_ticks = get_node("CanvasLayer/CombatMenu/Allies/VBoxContainer/Ally" + str(i) + "/Ticks")
 		ui_ticks.value = creature.get_ticks()
+		if !creature.is_alive():
+			ui_name.add_color_override("font_color", Color(1,0,0,1))
+			ui_health.add_color_override("font_color", Color(1,0,0,1))
 	for i in range(enemies.size()):
 		var creature = enemies[i]
 		if creature.is_alive():
@@ -218,6 +221,8 @@ func _process(delta):
 		# UI Updates
 		var ui_text = get_node("CanvasLayer/CombatMenu/Enemies/VBoxContainer/Enemy" + str(i))
 		ui_text.text = creature.get_name()
+		if !creature.is_alive():
+			ui_text.add_color_override("font_color", Color(1,0,0,1))
 		ui_text.visible = true
 	check_end_combat()
 	check_action_queue()
