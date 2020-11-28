@@ -159,7 +159,7 @@ func upgraded_skills():
 	#Advance Training
 	$CanvasLayer/Tier3/AdvTrnButton/AdvTrnCount.text = str(Button_Click.Advance_Training) + "/" + str(Max_Click.AdvanceTraining)
 	if Button_Click.Advance_Training == Max_Click.AdvanceTraining:
-		$CanvasLayer/Tier4/AdvTrnButton.text = "Adv Training"
+		$CanvasLayer/Tier3/AdvTrnButton.text = "Adv Training"
 	#Expert Training
 	$CanvasLayer/Tier4/ExpertTraining/ExpTrainCount.text = str(Button_Click.Expert_Training) + "/" + str(Max_Click.ExpertTraining)
 	if Button_Click.Expert_Training == Max_Click.ExpertTraining:
