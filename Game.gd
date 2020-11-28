@@ -1,7 +1,5 @@
 extends Node2D
 
-signal pause_system
-
 const TitleScene = preload("res://Title.tscn")
 const PauseOverlay = preload("res://PauseOverlay.tscn")
 const Credits = preload("res://Credits.tscn")
@@ -43,7 +41,6 @@ func _input(event):
 		if event.is_action("settings"): 
 			show_overlay(OverlayType.SETTINGS)
 		elif event.is_action("help_screen"):
-			emit_signal("pause_system")
 			show_overlay(OverlayType.HELP)
 
 func show_overlay(overlay_type):
