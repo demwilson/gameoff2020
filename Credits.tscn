@@ -150,6 +150,7 @@ animations = [ {
 } ]
 
 [node name="Node2D" type="Node2D"]
+pause_mode = 1
 script = ExtResource( 77 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -189,7 +190,7 @@ position = Vector2( 319.902, 50.6747 )
 scale = Vector2( 1, 1.01327 )
 frames = SubResource( 1 )
 animation = "satelite"
-frame = 41
+frame = 78
 playing = true
 
 [node name="astro" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
@@ -197,7 +198,6 @@ position = Vector2( 448, 168 )
 scale = Vector2( 0.994147, 1 )
 frames = SubResource( 3 )
 animation = "astro"
-frame = 2
 playing = true
 
 [node name="tardigrade" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
@@ -210,14 +210,12 @@ playing = true
 position = Vector2( 168, 96 )
 frames = SubResource( 5 )
 animation = "yellowrobot"
-frame = 1
 playing = true
 
 [node name="grayrobot" type="AnimatedSprite" parent="CanvasLayer/creditbackground"]
 position = Vector2( 472, 104 )
 frames = SubResource( 6 )
 animation = "grayrobot"
-frame = 1
 playing = true
 flip_h = true
 

@@ -27,7 +27,8 @@ enum Scene {
 	GROUND_CONTROL,
 	SETTINGS,
 	LOOT_WINDOW,
-	CREDITS
+	CREDITS,
+	HELP,
 }
 
 enum LogLevel {
