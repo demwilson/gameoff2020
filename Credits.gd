@@ -17,6 +17,7 @@ var credits = [
 	"Developed with:\nGodot v3.2.3"
 	]
 
+var overlay_type = null
 var from_title = false
 
 func _ready():
@@ -37,7 +38,7 @@ func credits():
 
 func close_credits():
 	if from_title:
-		emit_signal("closed_scene")
+		emit_signal("closed_scene", self.overlay_type)
 		self.queue_free()
 	else:
 		Global.goto_scene(Global.Scene.TITLE)

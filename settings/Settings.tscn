@@ -12,7 +12,7 @@ colors = PoolColorArray( 0, 0, 0, 1, 0.0316467, 0.0490263, 0.476563, 1 )
 gradient = SubResource( 1 )
 
 [node name="Settings" type="Node2D"]
-pause_mode = 2
+pause_mode = 1
 visible = false
 script = ExtResource( 1 )
 

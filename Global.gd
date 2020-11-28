@@ -27,7 +27,8 @@ enum Scene {
 	GROUND_CONTROL,
 	SETTINGS,
 	LOOT_WINDOW,
-	CREDITS
+	CREDITS,
+	HELP,
 }
 
 enum LogLevel {
@@ -56,7 +57,7 @@ const STAT_STEP = 1
 const OXYGEN_STEP = 80
 const HEALTH_STEP = 25
 
-const version = "0.2.0-alpha"
+const version = "0.2.1-beta"
 
 var debug = LogLevel.ERROR
 var game_loaded = false

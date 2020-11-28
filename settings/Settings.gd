@@ -1,13 +1,11 @@
 extends Node
 
-func _ready():
-	pass
+signal closed_scene
 
-func _input(event):
-	if !event.is_pressed():
-		return
-	elif event.is_action("settings"):
-		_on_OKButton_pressed()
+var overlay_type = null
+
+func _ready(): pass
 
 func _on_OKButton_pressed():
+	emit_signal("closed_scene", self.overlay_type)
 	self.queue_free()

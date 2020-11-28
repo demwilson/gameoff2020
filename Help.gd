@@ -1,16 +1,13 @@
 extends Node2D
 
-func _ready():
-	get_tree().paused = true
+signal closed_scene(scene_type)
 
-func _input(event):
-	if !event.is_pressed():
-		return
-	elif event.is_action("help_screen"):
-		close_help_screen()
+var overlay_type = null
+
+func _ready(): pass
 
 func close_help_screen():
-	get_tree().paused = false
+	emit_signal("closed_scene", self.overlay_type)
 	self.queue_free()
 
 func _on_ReturnButton_pressed():

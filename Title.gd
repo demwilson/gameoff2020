@@ -34,7 +34,7 @@ func _on_Credits_pressed():
 	audio.stop()
 	emit_signal("credits_pressed")
 
-func _opened_scene_closed():
+func _opened_overlay_closed(scene_type):
 	begin_audio()
 
 func _on_Continue_pressed():

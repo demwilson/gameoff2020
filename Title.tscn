@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/fonts/hover_text.tres" type="DynamicFont" id=6]
 
 [node name="Title" type="Node2D"]
+pause_mode = 1
 script = ExtResource( 2 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
