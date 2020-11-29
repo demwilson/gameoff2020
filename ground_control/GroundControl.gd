@@ -1,7 +1,7 @@
 extends Node2D
 
 const Saving = preload("res://Saving.tscn")
-
+onready	var info = $CanvasLayer/Information
 onready var audio = get_node("AudioStreamPlayer")
 #Count on button clicks
 var Button_Click = {
@@ -447,7 +447,16 @@ func expert_training():
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
 
+func info_in(button_id):
+	match button_id:
+		UpgradeType.OXYGEN: 
+			info.text = "Each point gives " + str(Global.OXYGEN_STEP) + " more oxygen."
+		UpgradeType.HEALTH:
+			info.text = "Each point gives " + str(Global.HEALTH_STEP) + " more health."
 
+func info_out():
+	$CanvasLayer/Information.text = "Spend moon rocks you find in the facility to upgrade your next astronaut!"
+	
 #TIERS
 func tier_list():
 	#Checks to see if requirements are met to go on to next tier
@@ -524,3 +533,10 @@ func _on_StartGameMission_pressed():
 	audio.stop()
 	Global.goto_scene(Global.Scene.OVERWORLD, "restart_overworld")
 	
+
+func _on_mouse_exited():
+	info_out()
+
+
+func _on_mouse_entered(button_id):
+	info_in(button_id)

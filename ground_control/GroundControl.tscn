@@ -50,7 +50,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel2" type="Label" parent="CanvasLayer"]
+[node name="InfoTitle" type="Label" parent="CanvasLayer"]
 margin_left = 8.0
 margin_top = 200.0
 margin_right = 120.0
@@ -60,7 +60,7 @@ text = "NOTICE:"
 align = 1
 valign = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+[node name="Information" type="RichTextLabel" parent="CanvasLayer"]
 margin_left = 8.0
 margin_top = 224.0
 margin_right = 120.0
@@ -136,7 +136,6 @@ __meta__ = {
 }
 
 [node name="Tier1" type="Control" parent="CanvasLayer"]
-visible = false
 margin_left = 128.0
 margin_top = 248.0
 margin_right = 512.0
@@ -209,7 +208,6 @@ __meta__ = {
 }
 
 [node name="Tier2" type="Control" parent="CanvasLayer"]
-visible = false
 margin_left = 128.0
 margin_top = 184.0
 margin_right = 512.0
@@ -282,7 +280,6 @@ align = 1
 valign = 1
 
 [node name="Tier3" type="Control" parent="CanvasLayer"]
-visible = false
 margin_left = 128.0
 margin_top = 128.0
 margin_right = 512.0
@@ -330,7 +327,6 @@ align = 1
 valign = 1
 
 [node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier3"]
-visible = false
 margin_left = 256.0
 margin_top = 8.0
 margin_right = 368.0
@@ -468,7 +464,11 @@ custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Not enough currency!"
 align = 1
+[connection signal="mouse_entered" from="CanvasLayer/Tier0/OxygenButton" to="." method="_on_mouse_entered" binds= [ 0 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier0/OxygenButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier0/OxygenButton" to="." method="_on_OxygenButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_mouse_entered" binds= [ 1 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_HealthButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_AttackButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_AccuracyButton_pressed"]
