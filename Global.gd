@@ -57,7 +57,7 @@ const STAT_STEP = 1
 const OXYGEN_STEP = 80
 const HEALTH_STEP = 25
 
-const version = "1.0.0"
+const version = "1.0.1"
 
 var debug = LogLevel.ERROR
 var game_loaded = false
@@ -127,7 +127,7 @@ func _ready():
 	else:
 		random.randomize()
 	current_seed = random.get_seed()
-	self.log(Global.LogLevel.DEBUG, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
+	self.log(Global.LogLevel.ERROR, "[Global] Random Seed: " + str(current_seed) + " | DEBUG Seed: " + str(seed_value))
 
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() - 1)
@@ -343,6 +343,11 @@ func reset_global_data():
 	}
 	currency = 0
 	build_player()
+
+func drop_scene(scene):
+	if scene == Global.Scene.OVERWORLD && persisted_scenes[scene] != null:
+		persisted_scenes[scene].queue_free()
+		persisted_scenes[scene] = null
 
 func goto_scene(target_scene, function_call = null):
 	# This function will usually be called from a signal callback,

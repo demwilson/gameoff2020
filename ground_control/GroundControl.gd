@@ -522,5 +522,6 @@ func _on_StartGameMission_pressed():
 	#Goes back to game
 	Global.build_player()
 	audio.stop()
+	Global.drop_scene(Global.Scene.OVERWORLD)
 	Global.goto_scene(Global.Scene.OVERWORLD, "restart_overworld")
 	
