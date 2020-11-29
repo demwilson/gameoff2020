@@ -310,6 +310,10 @@ func build_player():
 	if Upgrades.AdvanceTraining:
 		var item = items.get_item_by_id(Items.ItemList.MELEE_T2)
 		player_items.append(item.id)
+	# Add move-based item (T3)
+	if Upgrades.ExpertTraining:
+		var item = items.get_item_by_id(Items.ItemList.MELEE_T3)
+		player_items.append(item.id)
 
 	player = GlobalPlayer.new(
 		PLAYER_NAME,
