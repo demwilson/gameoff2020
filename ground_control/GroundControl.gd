@@ -1,7 +1,7 @@
 extends Node2D
 
 const Saving = preload("res://Saving.tscn")
-
+onready	var info = $CanvasLayer/Information
 onready var audio = get_node("AudioStreamPlayer")
 #Count on button clicks
 var Button_Click = {
@@ -46,21 +46,52 @@ var Upgrades_Needed = {
 }
 #Upgrade
 enum UpgradeType {
-	OXYGEN,
-	HEALTH,
-	ATTACK,
-	ACCURACY,
-	SPEED,
-	DEFENSE,
-	EVADE,
-	BASICWEAPONS,
-	BASICDEFENSE,
-	COMBATTRAINING,
-	ADVANCEWEAPONS,
-	ADVANCEDEFENSE,
-	ADVANCETRAINING,
-	EXPERTTRAINING
+	OXYGEN = 0,
+	HEALTH = 1,
+	ATTACK = 2,
+	ACCURACY = 3,
+	SPEED = 4,
+	DEFENSE = 5,
+	EVADE = 6,
+	BASICWEAPONS = 7,
+	BASICDEFENSE = 8,
+	COMBATTRAINING = 9,
+	ADVANCEWEAPONS = 10,
+	ADVANCEDEFENSE = 11,
+	ADVANCETRAINING = 12,
+	EXPERTTRAINING = 13,
+	LAST_UPGRADE_TYPE = 13
 }
+const info_array = [
+	#Oxygen
+	"Each point gives " + str(Global.OXYGEN_STEP) + " more oxygen.",
+	#Health
+	"Each point gives " + str(Global.HEALTH_STEP) + " more health.",
+	#Attack
+	"Increases your damage output.",
+	#Accuracy
+	"Improves your chance to hit with all abilities.",
+	#Speed
+	"Reduces the wait time between actions.",
+	#Defense
+	"Reduces incoming damage, and increases healing.",
+	#Evade
+	"Increases the chance of not getting hit.",
+	#BasicWeapon
+	"Gives you a random floor one attack bonus item.",
+	#BasicDefense
+	"Gives you a random floor one defense bonus item.",
+	#CombatTraining
+	'Gives you the ability "Basic Swing."',
+	#AdvanceWeapon
+	"Gives you a random floor two attack bonus item.",
+	#AdvanceDefense
+	"Gives you a random floor two defense bonus item.",
+	#AdvanceTraining
+	'Gives you the ability "Solid Swing."',
+	#ExpertTraining
+	'Gives you the ability "Flawless Swing."'
+]
 #cost of upgrades
 var oxygen_cost
 var health_cost
@@ -447,7 +478,20 @@ func expert_training():
 			#if false shows an alert 
 			$CanvasLayer/Alert.visible = true
 
+func info_in(button_id):
+	#BUTTON ID CAN'T BE LESS THAN ZERO
+	#BUTTON ID CAN'T BE GREATER THAN LAST NUMBER IN ENUM
+	#BREAK IF CONDITIONS AREN'T MET
+	#ACCESS ARRAY AT BUTTON ID POSITION AND RETURN AS TEXT
+	if button_id < 0 or button_id > UpgradeType.LAST_UPGRADE_TYPE:
+		return
+	info.text = info_array[button_id]
+	
+		
 
+func info_out():
+	$CanvasLayer/Information.text = "Spend moon rocks you find in the facility to upgrade your next astronaut!"
+	
 #TIERS
 func tier_list():
 	#Checks to see if requirements are met to go on to next tier
@@ -525,3 +569,8 @@ func _on_StartGameMission_pressed():
 	Global.drop_scene(Global.Scene.OVERWORLD)
 	Global.goto_scene(Global.Scene.OVERWORLD, "restart_overworld")
 	
+func _on_mouse_exited():
+	info_out()
+
+func _on_mouse_entered(button_id):
+	info_in(button_id)
