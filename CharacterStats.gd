@@ -52,10 +52,16 @@ func populate_move_list():
 	var move_accuracy = 0
 	
 	for move in moves:
-		move_min_damage = move.calculate_damage(move.damage, attack, attack_bonus, move.low)
-		move_max_damage = move.calculate_damage(move.damage, attack, attack_bonus, move.high)
-		move_accuracy = move.calculate_accuracy(move.accuracy, accuracy, accuracy_bonus)
-		move_text = move.name + " - Dmg: " + str(move_min_damage) + " - " + str(move_max_damage) + ", Acc: " + str(move_accuracy) + "%"
+		match move.type:
+			Move.MoveType.DAMAGE:
+				move_min_damage = floor(Move.calculate_damage(move.damage, attack, attack_bonus, move.low))
+				move_max_damage = floor(Move.calculate_damage(move.damage, attack, attack_bonus, move.high))
+				move_accuracy = floor(Move.calculate_accuracy(move.accuracy, accuracy, accuracy_bonus))
+				move_text = move.name + " - Dmg: " + str(move_min_damage) + " - " + str(move_max_damage) + ", Acc: " + str(move_accuracy) + "%"
+			Move.MoveType.HEAL:
+				move_min_damage = floor(Move.calculate_damage(move.damage, defense, defense_bonus, move.low))
+				move_max_damage = floor(Move.calculate_damage(move.damage, defense, defense_bonus, move.high))
+				move_text = move.name + " - Heal: " + str(move_min_damage) + " - " + str(move_max_damage)
 		move_list.add_item(move.name, null, false)
 		move_list.set_item_tooltip(move_list.get_item_count()-1, move_text)
 #Equipment 
