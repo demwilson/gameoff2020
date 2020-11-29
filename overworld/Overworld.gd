@@ -53,8 +53,10 @@ func get_boss_node_name():
 	return self.BossNodeName
 
 func remove_boss():
-	if BossInstance:
-		BossInstance.queue_free()
+	if BossInstance == null:
+		return
+	BossInstance.queue_free()
+	BossInstance = null
 
 func _process(delta):
 	update_HUD_values()
@@ -144,8 +146,8 @@ func trigger_combat():
 func trigger_boss_combat():
 	Global.boss_fight = true
 	set_boss_movement(false)
-	trigger_combat()
 	remove_boss()
+	trigger_combat()
 	tile_map.open_hatch()
 
 func update_floor_level(value):
