@@ -453,6 +453,30 @@ func info_in(button_id):
 			info.text = "Each point gives " + str(Global.OXYGEN_STEP) + " more oxygen."
 		UpgradeType.HEALTH:
 			info.text = "Each point gives " + str(Global.HEALTH_STEP) + " more health."
+		UpgradeType.ATTACK:
+			info.text = "Increases your damage output."
+		UpgradeType.ACCURACY:
+			info.text = "Improves your chance to hit with all abilities."
+		UpgradeType.DEFENSE:
+			info.text = "Reduces incoming damage, and increases healing."
+		UpgradeType.SPEED:
+			info.text = "Reduces the wait time between actions."
+		UpgradeType.EVADE:
+			info.text = "Increases the chance of not getting hit."
+		UpgradeType.COMBATTRAINING:
+			info.text = 'Gives you the ability "Basic Swing."'
+		UpgradeType.BASICWEAPONS:
+			info.text = "Gives you a random floor one attack bonus item."
+		UpgradeType.BASICDEFENSE:
+			info.text = "Gives you a random floor one defense bonus item."
+		UpgradeType.ADVANCETRAINING:
+			info.text = 'Gives you the ability "Solid Swing."'
+		UpgradeType.ADVANCEWEAPONS:
+			info.text = "Gives you a random floor two attack bonus item."
+		UpgradeType.ADVANCEDEFENSE:
+			info.text = "Gives you a random floor two defense bonus item."
+		UpgradeType.EXPERTTRAINING:
+			info.text = 'Gives you the ability "Flawless Swing."'
 
 func info_out():
 	$CanvasLayer/Information.text = "Spend moon rocks you find in the facility to upgrade your next astronaut!"
@@ -533,10 +557,8 @@ func _on_StartGameMission_pressed():
 	audio.stop()
 	Global.goto_scene(Global.Scene.OVERWORLD, "restart_overworld")
 	
-
 func _on_mouse_exited():
 	info_out()
-
 
 func _on_mouse_entered(button_id):
 	info_in(button_id)

@@ -136,6 +136,7 @@ __meta__ = {
 }
 
 [node name="Tier1" type="Control" parent="CanvasLayer"]
+visible = false
 margin_left = 128.0
 margin_top = 248.0
 margin_right = 512.0
@@ -208,6 +209,7 @@ __meta__ = {
 }
 
 [node name="Tier2" type="Control" parent="CanvasLayer"]
+visible = false
 margin_left = 128.0
 margin_top = 184.0
 margin_right = 512.0
@@ -280,6 +282,7 @@ align = 1
 valign = 1
 
 [node name="Tier3" type="Control" parent="CanvasLayer"]
+visible = false
 margin_left = 128.0
 margin_top = 128.0
 margin_right = 512.0
@@ -327,6 +330,7 @@ align = 1
 valign = 1
 
 [node name="AdvTrnButton" type="Button" parent="CanvasLayer/Tier3"]
+visible = false
 margin_left = 256.0
 margin_top = 8.0
 margin_right = 368.0
@@ -470,17 +474,41 @@ align = 1
 [connection signal="mouse_entered" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_mouse_entered" binds= [ 1 ]]
 [connection signal="mouse_exited" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier0/HealthButton" to="." method="_on_HealthButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_mouse_entered" binds= [ 2 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AttackButton" to="." method="_on_AttackButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_mouse_entered" binds= [ 3 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier1/AccuracyButton" to="." method="_on_AccuracyButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier1/DefenseButton" to="." method="_on_mouse_entered" binds= [ 5 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier1/DefenseButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier1/DefenseButton" to="." method="_on_DefenseButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier2/SpeedButton" to="." method="_on_mouse_entered" binds= [ 4 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier2/SpeedButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier2/SpeedButton" to="." method="_on_SpeedButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier2/EvadeButton" to="." method="_on_mouse_entered" binds= [ 6 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier2/EvadeButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier2/EvadeButton" to="." method="_on_EvadeButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier2/CombatTrnButton" to="." method="_on_mouse_entered" binds= [ 9 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier2/CombatTrnButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier2/CombatTrnButton" to="." method="_on_CombatTrnButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier3/BasicWpnButton" to="." method="_on_mouse_entered" binds= [ 7 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier3/BasicWpnButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier3/BasicWpnButton" to="." method="_on_BasicWpnButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier3/BasicDefButton" to="." method="_on_mouse_entered" binds= [ 8 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier3/BasicDefButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier3/BasicDefButton" to="." method="_on_BasicDefButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier3/AdvTrnButton" to="." method="_on_mouse_entered" binds= [ 12 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier3/AdvTrnButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier3/AdvTrnButton" to="." method="_on_AdvTrnButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier4/AdvWpnButton" to="." method="_on_mouse_entered" binds= [ 10 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier4/AdvWpnButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvWpnButton" to="." method="_on_AdvWpnButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_mouse_entered" binds= [ 11 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier4/AdvDefButton" to="." method="_on_AdvDefButton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Tier4/ExpertTraining" to="." method="_on_mouse_entered" binds= [ 13 ]]
+[connection signal="mouse_exited" from="CanvasLayer/Tier4/ExpertTraining" to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Tier4/ExpertTraining" to="." method="_on_ExpertTraining_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartGameMission" to="." method="_on_StartGameMission_pressed"]
 [connection signal="pressed" from="CanvasLayer/Alert/AlertButton" to="." method="_on_AlertButton_pressed"]
