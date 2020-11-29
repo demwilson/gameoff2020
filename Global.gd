@@ -57,7 +57,7 @@ const STAT_STEP = 1
 const OXYGEN_STEP = 80
 const HEALTH_STEP = 25
 
-const version = "1.0.1"
+const version = "1.1.0"
 
 var debug = LogLevel.ERROR
 var game_loaded = false
