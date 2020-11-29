@@ -11,6 +11,7 @@ const Stats = preload("res://game/Stats.gd")
 
 onready var audio = $AudioStreamPlayer
 onready var loot_list = $CanvasLayer/NinePatchRect/Equipment/EquipList
+onready var move_list = $CanvasLayer/NinePatchRect/MoveList
 
 #Character main stats
 var current_hp = Global.player.get_health()
@@ -42,13 +43,21 @@ func obtain_move_list():
 		var command = Global.moves.get_move_by_id(move)
 		commands.append(command)
 	return commands
-
+	
 func populate_move_list():
 	var moves = obtain_move_list()
+	var move_text = ""
+	var move_min_damage = 0
+	var move_max_damage = 0
+	var move_accuracy = 0
+	
 	for move in moves:
-		var move_name = move.name
-		$CanvasLayer/NinePatchRect/MoveList.add_item(move_name, null, true)
-		
+		move_min_damage = move.calculate_damage(move.damage, attack, attack_bonus, move.low)
+		move_max_damage = move.calculate_damage(move.damage, attack, attack_bonus, move.high)
+		move_accuracy = move.calculate_accuracy(move.accuracy, accuracy, accuracy_bonus)
+		move_text = move.name + " - Dmg: " + str(move_min_damage) + " - " + str(move_max_damage) + ", Acc: " + str(move_accuracy) + "%"
+		move_list.add_item(move.name, null, false)
+		move_list.set_item_tooltip(move_list.get_item_count()-1, move_text)
 #Equipment 
 func obtain_equipment_list():
 	var equip_id = []
