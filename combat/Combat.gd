@@ -257,7 +257,6 @@ func _input(event):
 				TargetSelectionArrow.visible = true
 			elif _phase == MenuPhase.TARGET_SELECT:
 				var targeted_list = get_target_list(_menu_move)
-				_hover = check_valid_target(_hover, targeted_list)
 				_menu_target = targeted_list[_hover]
 				add_selected_move_to_queue()
 				reset_menuing()
