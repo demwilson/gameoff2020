@@ -25,7 +25,7 @@ const INITIAL_STATE = 0
 const STATE_STEP = 1
 const PIXEL_DISTANCE = 150
 const MOVE_TIME = 0.20
-
+const RED_COLOR = Color(1,0,0,1)
 
 var state = null
 var creature_name = null
@@ -44,7 +44,7 @@ var original_pos = null
 var new_pos = null
 var move_details = null
 var combat_creature = null
-
+var is_dead = false
 var is_being_hit = false
 
 # Called when the node enters the scene tree for the first time.
@@ -84,6 +84,8 @@ func update_hframes():
 func stop_animation():
 	ani_player.stop()
 	set_arrow_visibility(false)
+	name_label.add_color_override("font_color", RED_COLOR)
+	is_dead = true
 
 func move_forward(side):
 	combat_side = side
@@ -134,5 +136,8 @@ func _on_Tween_tween_all_completed():
 		update_hframes()
 		ani_player.play(IDLE_ANIMATION_NAME)
 		emit_signal("damaged_animation_complete")
+		if is_dead:
+			yield(get_tree().create_timer(1), "timeout")
+			self.visible = false
 	else:
 		emit_signal("animation_step_complete")
