@@ -9,6 +9,7 @@ onready var health = get_node("Health")
 onready var ticks = get_node("Ticks")
 onready var ani_player = get_node("AnimationPlayer")
 onready var tween = get_node("Tween")
+onready var arrow = get_node("Arrow")
 var CombatAnimation = preload("res://combat/CombatAnimation.tscn")
 
 const IDLE_ANIMATION_NAME = "idle"
@@ -82,6 +83,7 @@ func update_hframes():
 
 func stop_animation():
 	ani_player.stop()
+	set_arrow_visibility(false)
 
 func move_forward(side):
 	combat_side = side
@@ -110,6 +112,9 @@ func damage_creature():
 	tween.interpolate_property(self, 'position', position, Vector2(left_sway, position.y) , 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.1)
 	tween.interpolate_property(self, 'position', position, Vector2(original_x, position.y) , 0.3, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.2)
 	tween.start()
+
+func set_arrow_visibility(value):
+	arrow.visible = value
 
 func animation_completed():
 	emit_signal("animation_step_complete")

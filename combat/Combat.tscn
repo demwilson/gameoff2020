@@ -1,10 +1,9 @@
-[gd_scene load_steps=109 format=2]
+[gd_scene load_steps=108 format=2]
 
 [ext_resource path="res://combat/Combat.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/title_text.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/images/combat_background.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/combat_arrow_right.png" type="Texture" id=4]
-[ext_resource path="res://assets/images/combat_arrow_down.png" type="Texture" id=5]
 [ext_resource path="res://assets/audio/combat.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/images/satellite/satellite85.png" type="Texture" id=7]
 [ext_resource path="res://assets/images/satellite/satellite88.png" type="Texture" id=8]
@@ -588,17 +587,6 @@ max_value = 5.0
 [node name="CombatantBox" type="ReferenceRect" parent="CanvasLayer"]
 margin_right = 640.0
 margin_bottom = 360.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TargetSelectionArrow" type="TextureRect" parent="CanvasLayer"]
-visible = false
-margin_left = 24.0
-margin_top = 24.0
-margin_right = 56.0
-margin_bottom = 56.0
-texture = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

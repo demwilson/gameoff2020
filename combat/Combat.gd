@@ -20,7 +20,6 @@ var FloatingText = preload("res://combat/FloatingText.tscn")
 onready var CombatantBox = $CanvasLayer/CombatantBox
 onready var CombatInstructions = $CanvasLayer/CombatMenu/Instructions
 onready var MoveSelectionArrow = $CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveSelectionArrow
-onready var TargetSelectionArrow = $CanvasLayer/TargetSelectionArrow
 onready var MoveNameLabels = [
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName0,
 	$CanvasLayer/CombatMenu/Menu/VBoxContainer/ColorRect/MoveName1,
@@ -61,7 +60,6 @@ const MENU_ARROW_POSITION = 0
 const TARGET_ARROW_POSITION = 1
 const FIRST_POSITION = 0
 const STEP_AMOUNT = 1
-const MOVE_COLUMN_COUNT = 3
 const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 
 const ATTACK_ANIMATION_STEP = 1
@@ -119,6 +117,7 @@ var _creature_moves = null
 var _hover = 0
 var _hover_move_last_position = 0
 var _hover_target_last_position = 0
+var _last_target_type = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -239,10 +238,6 @@ func _input(event):
 			update_hover(-STEP_AMOUNT)
 		elif event.is_action("down"):
 			update_hover(STEP_AMOUNT)
-		elif event.is_action("left"):
-			update_hover(-STEP_AMOUNT * MOVE_COLUMN_COUNT)
-		elif event.is_action("right"):
-			update_hover(STEP_AMOUNT * MOVE_COLUMN_COUNT)
 		elif event.is_action("ui_accept"):
 			if _phase == MenuPhase.MOVE_SELECT:
 				var move = _creature_moves[_hover]
@@ -250,14 +245,17 @@ func _input(event):
 				_phase = MenuPhase.TARGET_SELECT
 				MoveSelectionArrow.visible = false
 				_hover_move_last_position = _hover
-				_hover = _hover_target_last_position
+				if _last_target_type == _menu_move.type:
+					_hover = _hover_target_last_position
+				else:
+					_hover = FIRST_POSITION
 				var targeted_list = get_target_list(_menu_move)
 				_hover = check_valid_target(_hover, targeted_list)
 				update_selection_arrow(_hover)
-				TargetSelectionArrow.visible = true
 			elif _phase == MenuPhase.TARGET_SELECT:
 				var targeted_list = get_target_list(_menu_move)
 				_menu_target = targeted_list[_hover]
+				_last_target_type = _menu_move.type
 				add_selected_move_to_queue()
 				reset_menuing()
 
@@ -299,9 +297,9 @@ func update_hover(amount):
 			var targeted_list = get_target_list(_menu_move)
 			list_size = targeted_list.size()
 	if _hover >= list_size:
-		_hover = FIRST_POSITION
+		_hover = list_size - 1
 	elif _hover < FIRST_POSITION:
-		_hover = list_size - STEP_AMOUNT
+		_hover = FIRST_POSITION
 	if _phase == MenuPhase.TARGET_SELECT:
 		var targeted_list = get_target_list(_menu_move)
 		_hover = check_valid_target(_hover, targeted_list)
@@ -346,13 +344,13 @@ func reset_menuing():
 	for i in range(MoveNameLabels.size()):
 		MoveNameLabels[i].text = ""
 		MoveNameLabels[i].visible = false
+	clear_arrow_visibility(get_target_list(_menu_move))
 	_menu_creature = null
 	_menu_move = null
 	_phase = MenuPhase.NONE
 	_hover_target_last_position = _hover
 	_hover = _hover_move_last_position
 	CombatInstructions.visible = false
-	TargetSelectionArrow.visible = false
 	MoveSelectionArrow.visible = false
 
 func update_selection_arrow(position):
@@ -361,9 +359,12 @@ func update_selection_arrow(position):
 			MoveSelectionArrow.rect_position = menu_positions[position][MENU_ARROW_POSITION]
 		MenuPhase.TARGET_SELECT:
 			var targeted_list = get_target_list(_menu_move)
-			var creature_location = targeted_list[position].scene.position
-			var altered_position = creature_location + COMBAT_ARROW_DOWN_OFFSET
-			TargetSelectionArrow.rect_position = altered_position
+			clear_arrow_visibility(targeted_list)
+			targeted_list[position].scene.set_arrow_visibility(true)
+
+func clear_arrow_visibility(combatant_list):
+	for combatant in combatant_list:
+		combatant.scene.set_arrow_visibility(false)
 
 func check_valid_target(hover_position, target_list):
 	if target_list[hover_position].is_alive():
