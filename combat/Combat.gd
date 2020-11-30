@@ -60,8 +60,6 @@ const MENU_ARROW_POSITION = 0
 const TARGET_ARROW_POSITION = 1
 const FIRST_POSITION = 0
 const STEP_AMOUNT = 1
-const MOVE_UP = 0
-const MOVE_DOWN = 1
 const COMBAT_ARROW_DOWN_OFFSET = Vector2(-16, -64)
 
 const ATTACK_ANIMATION_STEP = 1
@@ -599,7 +597,6 @@ func calculate_defense(defense, bonus_defense):
 	return processed
 
 func get_combat_enemies(total_combats):
-	return 3
 	var count = MIN_ENEMIES
 	if total_combats > ENEMY_COUNT_TIER_TWO:
 		count += 2 * ENEMY_COUNT_STEP
