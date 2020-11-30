@@ -1,8 +1,7 @@
-[gd_resource type="TileSet" load_steps=25 format=2]
+[gd_resource type="TileSet" load_steps=24 format=2]
 
 [ext_resource path="res://assets/images/moonshot_tilemap.png" type="Texture" id=1]
-[ext_resource path="res://assets/closed_chest.png" type="Texture" id=3]
-[ext_resource path="res://assets/open_chest.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/chest.png" type="Texture" id=2]
 [ext_resource path="res://assets/images/ladder.png" type="Texture" id=5]
 [ext_resource path="res://assets/images/hatch.png" type="Texture" id=6]
 [ext_resource path="res://assets/images/hall_floor_2.png" type="Texture" id=7]
@@ -258,7 +257,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 } ]
 9/z_index = 0
 10/name = "closed_chest.png 10"
-10/texture = ExtResource( 3 )
+10/texture = ExtResource( 2 )
 10/tex_offset = Vector2( 0, 0 )
 10/modulate = Color( 1, 1, 1, 1 )
 10/region = Rect2( 0, 0, 32, 32 )
@@ -279,10 +278,10 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 } ]
 10/z_index = 0
 11/name = "open_chest.png 11"
-11/texture = ExtResource( 4 )
+11/texture = ExtResource( 2 )
 11/tex_offset = Vector2( 0, 0 )
 11/modulate = Color( 1, 1, 1, 1 )
-11/region = Rect2( 0, 0, 32, 32 )
+11/region = Rect2( 32, 0, 32, 32 )
 11/tile_mode = 0
 11/occluder_offset = Vector2( 0, 0 )
 11/navigation_offset = Vector2( 0, 0 )
