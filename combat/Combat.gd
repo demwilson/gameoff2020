@@ -251,12 +251,12 @@ func _input(event):
 				MoveSelectionArrow.visible = false
 				_hover_move_last_position = _hover
 				_hover = _hover_target_last_position
+				var targeted_list = get_target_list(_menu_move)
+				_hover = check_valid_target(_hover, targeted_list)
 				update_selection_arrow(_hover)
 				TargetSelectionArrow.visible = true
 			elif _phase == MenuPhase.TARGET_SELECT:
 				var targeted_list = get_target_list(_menu_move)
-				if _hover < 0 || _hover >= targeted_list.size():
-					_hover = 0
 				_menu_target = targeted_list[_hover]
 				add_selected_move_to_queue()
 				reset_menuing()
@@ -302,6 +302,9 @@ func update_hover(amount):
 		_hover = FIRST_POSITION
 	elif _hover < FIRST_POSITION:
 		_hover = list_size - STEP_AMOUNT
+	if _phase == MenuPhase.TARGET_SELECT:
+		var targeted_list = get_target_list(_menu_move)
+		_hover = check_valid_target(_hover, targeted_list)
 	update_selection_arrow(_hover)
 
 func get_target_list(move):
@@ -358,12 +361,19 @@ func update_selection_arrow(position):
 			MoveSelectionArrow.rect_position = menu_positions[position][MENU_ARROW_POSITION]
 		MenuPhase.TARGET_SELECT:
 			var targeted_list = get_target_list(_menu_move)
-			if position < 0 || position >= targeted_list.size():
-				position = 0
 			var creature_location = targeted_list[position].scene.position
 			var altered_position = creature_location + COMBAT_ARROW_DOWN_OFFSET
 			TargetSelectionArrow.rect_position = altered_position
 
+func check_valid_target(hover_position, target_list):
+	if target_list[hover_position].is_alive():
+		return hover_position
+	#check the next position for alive target
+	for i in range(target_list.size()):
+		if target_list[i].is_alive():
+			return i
+	return FIRST_POSITION
+	
 func check_end_combat():
 	# Combat cannot end during animation
 	if animation_lock:
