@@ -1,4 +1,4 @@
-﻿# SAAN: Lunar Flares
+﻿# SAAN: Lunar Flares (Gameoff 2020)
 SAAN: Lunar Flares is a 2D rogue-lite dungeon crawler with a time-based combat system built with Godot. It was developed for
 [Game Off 2020](https://itch.io/jam/game-off-2020). It is also our first attempt at developing a game using the Godot
 engine.
